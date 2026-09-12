@@ -31,6 +31,11 @@ Practical consequences:
 - Terraform does not manage DNS records. Output the ACM validation CNAME and the
   CloudFront distribution domain name so they can be added by hand.
 
+**Both records exist in Cloudflare and are confirmed proxy-off** — the ACM validation
+CNAME (added by hand during the Stage 1.2 apply) and the apex CNAME to the CloudFront
+domain. The site returns 200 over HTTPS on `nalinkaheshan.dev` itself. Nothing pending
+here — don't re-flag or re-investigate either record.
+
 ## AWS account constraint
 The account has Free Tier restrictions on some services — Route 53 domain registration
 returns "Free Tier accounts are not supported for this service". If any Terraform apply
@@ -41,7 +46,8 @@ fails with that message, stop and flag it rather than working around it.
   placeholder page with name only, `npm run build` verified, committed and pushed to
   `master`.
 - **Stage 1.2 — done.** Terraform for S3, CloudFront, ACM applied; `dist/` synced and
-  confirmed on HTTPS via the CloudFront domain. Apex CNAME in Cloudflare still pending.
+  confirmed on HTTPS on the apex domain `nalinkaheshan.dev` (both Cloudflare records in
+  place, proxy off).
 
 ## Build order
 1. Stage 1: empty page, live on HTTPS, deployed by push to master, OIDC pipeline, no
