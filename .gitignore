@@ -22,3 +22,12 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# terraform
+# .terraform.lock.hcl is intentionally NOT ignored — it pins provider
+# versions and should be committed for a root module like this one.
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+terraform/crash.log

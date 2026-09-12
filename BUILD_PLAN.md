@@ -1,61 +1,70 @@
 # Build Plan
 
-Stage 1 is tonight. Everything below it is optional and can be abandoned at any point
-without leaving the site broken.
+Stage 1 is the whole goal. Everything below it is optional and can be abandoned at any
+point without leaving the site broken.
 
 ---
 
 ## Stage 0 — Prerequisites (do first, blocks everything)
 
-- [ ] Domain registered and nameservers pointing at a Route 53 hosted zone
-- [ ] AWS account you're happy to attach a public domain to
-- [ ] GitHub repo created (public — the repo is part of the demonstration)
+- [x] Domain registered — `nalinkaheshan.dev`, via Cloudflare Registrar
+- [x] AWS account confirmed
+- [x] GitHub repo created — public, the repo is part of the demonstration
 
-If the domain isn't sorted, buy it now. ACM validation can't start until DNS is yours,
-and propagation is the one thing tonight that you can't speed up.
+**DNS note:** Cloudflare Registrar contractually requires Cloudflare's own nameservers,
+so Route 53 is not an option and is out of the architecture. Cloudflare handles DNS only
+— records point at CloudFront with the proxy off. See CLAUDE.md for the reasoning.
 
 ---
 
-## Stage 1 — Live and deploying (target: tonight)
+## Stage 1 — Live and deploying
 
-The goal is an ugly page on a real HTTPS URL, deployed by pushing to main.
+The goal is an ugly page on a real HTTPS URL, deployed by pushing to master.
 
-### 1.1 Scaffold
-- [ ] `npm create astro@latest` — minimal template, TypeScript on
-- [ ] One page: name, one-line description, nothing else
-- [ ] `npm run build` produces `dist/`
-- [ ] Commit and push
+### 1.1 Scaffold — done
+- [x] Astro scaffolded, minimal template, TypeScript strict
+- [x] One page: name, one-line description, nothing else
+- [x] `npm run build` produces `dist/`
+- [x] Committed and pushed
 
 ### 1.2 Infrastructure as code
-Terraform or CDK, your call. Terraform reinforces the multi-cloud project; CDK is faster
-given your existing experience. Don't spend more than two minutes choosing.
+**Terraform.** Decided — don't reopen.
 
-- [ ] S3 bucket, private, no public access, no website hosting enabled
-- [ ] CloudFront distribution with Origin Access Control (not the deprecated OAI)
-- [ ] Bucket policy allowing only that distribution
-- [ ] ACM certificate **in us-east-1** — required for CloudFront regardless of where the
+- [x] S3 bucket, private, all public access blocked, no website hosting enabled
+- [x] CloudFront distribution with Origin Access Control (not the deprecated OAI)
+- [x] Bucket policy allowing only that distribution
+- [x] ACM certificate **in us-east-1** — required for CloudFront regardless of where the
       rest of the stack lives
-- [ ] Route 53 A/AAAA alias records to the distribution
-- [ ] Default root object `index.html`
-- [ ] 403/404 both mapped to `/index.html` if you want clean routing later
+- [x] Default root object `index.html`
+- [x] 403/404 both mapped to `/index.html` if you want clean routing later
+- [x] Terraform outputs the ACM validation CNAME and the CloudFront domain name
+
+DNS is out of Terraform's scope. Two records go into Cloudflare by hand:
+- [x] ACM validation CNAME — **proxy off (grey cloud)**, or validation never completes
+- [ ] Apex CNAME → CloudFront domain — **proxy off**, CNAME flattening handles the apex
 
 **Checkpoint:** upload a placeholder `index.html` by hand and confirm it loads over HTTPS
-on your domain. Do not proceed until this works.
+on the domain. Do not proceed until this works.
+
+`dist/` synced to S3 and confirmed `200 OK` over HTTPS via the CloudFront domain
+(`d3clt8nxz2mrki.cloudfront.net`). Not yet confirmed on the apex domain itself — the
+Cloudflare CNAME above is still outstanding.
 
 ### 1.3 OIDC deploy pipeline
 This is the part that makes the site worth showing.
 
 - [ ] GitHub OIDC identity provider in IAM (`token.actions.githubusercontent.com`,
       audience `sts.amazonaws.com`)
-- [ ] IAM role with a trust policy scoped to `repo:<user>/<repo>:ref:refs/heads/main` —
+- [ ] IAM role with a trust policy scoped to `repo:<user>/<repo>:ref:refs/heads/master` —
       scope it to the branch, not just the repo
 - [ ] Permissions: `s3:PutObject`/`DeleteObject` on the bucket,
       `cloudfront:CreateInvalidation` on the distribution. Nothing else.
 - [ ] Workflow with `permissions: id-token: write, contents: read`
-- [ ] Build → `aws-actions/configure-aws-credentials` with `role-to-assume` → sync → invalidate
+- [ ] Build → `aws-actions/configure-aws-credentials` with `role-to-assume` → sync →
+      invalidate
 - [ ] **No `AWS_ACCESS_KEY_ID` anywhere in the repo or in repo secrets**
 
-**Checkpoint:** push a trivial change to main, watch it appear on the live site.
+**Checkpoint:** push a trivial change to master, watch it appear on the live site.
 
 ### Stage 1 done
 A page with your name on it, live on your domain, deployed from a push, with zero stored
@@ -110,4 +119,5 @@ animations, a chatbot version of your CV.
 - Rewriting the design instead of finishing the deploy
 - Adding a blog because a blog seems like what portfolios have
 - Building a Lambda for something that doesn't need one
+- Turning the Cloudflare proxy on and quietly bypassing the ACM certificate
 - Any evening spent on this that should have been spent on applications
