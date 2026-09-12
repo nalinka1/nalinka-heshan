@@ -22,6 +22,19 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      # TEMPORARY — diagnosing "Not authorized to perform sts:AssumeRoleWithWebIdentity".
+      # Prints only the decoded sub/aud/repository claims, never the raw token, to avoid
+      # leaking a replayable (if short-lived) credential into the log. Remove once fixed.
+      - name: Debug OIDC claims
+        run: |
+          RESP=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+          JWT=$(echo "$RESP" | jq -r '.value')
+          PAYLOAD_B64=$(echo "$JWT" | cut -d '.' -f2 | tr '_-' '/+')
+          PAD=$(( (4 - ${#PAYLOAD_B64} % 4) % 4 ))
+          PAYLOAD_B64="${PAYLOAD_B64}$(printf '=%.0s' $(seq 1 $PAD 2>/dev/null))"
+          echo "$PAYLOAD_B64" | base64 -d | jq '{sub, aud, repository}'
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::103608802055:role/gha-deploy-nalinkaheshan-dev
