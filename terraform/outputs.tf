@@ -20,3 +20,8 @@ output "cloudfront_distribution_id" {
 output "s3_bucket_name" {
   value = aws_s3_bucket.site.id
 }
+
+output "github_actions_role_arn" {
+  description = "Role ARN for the deploy workflow's role-to-assume input."
+  value       = aws_iam_role.github_actions_deploy.arn
+}
