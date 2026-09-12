@@ -97,3 +97,18 @@ Y", "with a focus on". No hero-section slogans.
    repo/branch, or wrong OIDC audience (`sts.amazonaws.com`).
 4. Deploy succeeds but site is stale → CloudFront invalidation missing or scoped too
    narrowly.
+
+## OIDC subject claims are ID-qualified, not just names
+GitHub made immutable subject claims the default for repos created after 2026-07-15.
+This repo's `sub` embeds the numeric owner and repo IDs, not just their names:
+
+```
+repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master
+```
+
+not the plain `repo:nalinka1/nalinka-heshan:ref:refs/heads/master` that most
+OIDC/AWS tutorials assume. The trust policy's `sub` condition (`terraform/oidc.tf`)
+must match the ID-qualified form or role assumption fails with "Not authorized to
+perform sts:AssumeRoleWithWebIdentity" even though `aud` is correct. Confirmed by
+decoding the actual token in a live workflow run — don't assume the plain-name
+format when writing or debugging this condition.

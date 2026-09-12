@@ -14,6 +14,22 @@ variable "github_branch" {
   default     = "master"
 }
 
+# GitHub's immutable subject claims (default for repos created after 2026-07-15;
+# see CLAUDE.md) embed the numeric owner and repo IDs in `sub`, not just the
+# names, so a rename or ownership transfer can't be replayed against this trust
+# policy. IDs confirmed from a decoded token in a live workflow run.
+variable "github_owner_id" {
+  description = "Numeric GitHub user/org ID for github_repo's owner, as embedded in the OIDC sub claim."
+  type        = string
+  default     = "35029715"
+}
+
+variable "github_repo_id" {
+  description = "Numeric GitHub repo ID for github_repo, as embedded in the OIDC sub claim."
+  type        = string
+  default     = "1358027744"
+}
+
 # Fetches GitHub's current TLS certificate chain to derive the OIDC provider's
 # thumbprint, instead of hardcoding a value that goes stale on cert rotation.
 data "tls_certificate" "github_actions" {
@@ -48,7 +64,7 @@ data "aws_iam_policy_document" "github_actions_trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:${var.github_repo}:ref:refs/heads/${var.github_branch}"]
+      values   = ["repo:${split("/", var.github_repo)[0]}@${var.github_owner_id}/${split("/", var.github_repo)[1]}@${var.github_repo_id}:ref:refs/heads/${var.github_branch}"]
     }
   }
 }
