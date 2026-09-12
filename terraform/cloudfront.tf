@@ -5,6 +5,18 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
+# Appends index.html to URIs ending in "/" or with no file extension. Needed
+# because the S3 origin is private and reached through OAC, not S3 website
+# hosting (see s3.tf) — so there's no automatic directory-index resolution for
+# anything but the bare "/" request. See functions/append-index-html.js.
+resource "aws_cloudfront_function" "append_index_html" {
+  name    = "${replace(var.domain_name, ".", "-")}-append-index-html"
+  runtime = "cloudfront-js-1.0"
+  comment = "Append index.html to extensionless URIs"
+  publish = true
+  code    = file("${path.module}/functions/append-index-html.js")
+}
+
 # AWS-managed cache policy, referenced by name rather than hardcoding its ID.
 data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
@@ -31,6 +43,11 @@ resource "aws_cloudfront_distribution" "site" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
     cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.append_index_html.arn
+    }
   }
 
   # SPA-style fallback: both a missing object (403 from a private bucket via
