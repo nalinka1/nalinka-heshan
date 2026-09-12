@@ -136,19 +136,32 @@ Skip the phone number. Email and LinkedIn are enough on a public page.
 
 ---
 
-## Optional: /architecture page
+## /architecture page — built, Stage 4
 
-If you build Stage 4's architecture page, the content is roughly:
+Live at `/architecture`, linked from the intro's "This site is one of them." Content
+matches what's actually deployed, not the rough draft below:
 
-> This site is a static Astro build in a private S3 bucket, served through CloudFront with
-> Origin Access Control. Pushing to `main` triggers a GitHub Actions workflow that builds
-> the site, assumes an IAM role through OIDC federation, syncs to the bucket and
-> invalidates the distribution.
+> This site is a static Astro build — plain HTML and CSS, no client-side framework.
+> Pushing to `master` triggers a GitHub Actions workflow that builds the site and pushes
+> it live.
 >
-> There are no AWS access keys stored in the repository or in GitHub secrets. The role's
-> trust policy is scoped to this repository and this branch, and its permissions cover
-> writing to one bucket and invalidating one distribution.
+> Infrastructure — S3, CloudFront, ACM, and the IAM role GitHub Actions assumes — is
+> defined in Terraform. DNS is Cloudflare, not Route 53: the domain is registered through
+> Cloudflare Registrar, whose registration agreement requires Cloudflare's own
+> nameservers, so there's no delegating to Route 53. The ACM validation record and the
+> apex record are both added by hand in Cloudflare with the proxy off.
 >
-> Infrastructure is defined in [Terraform/CDK] — [link to repo].
+> There are no AWS access keys stored in the repository or in GitHub secrets. GitHub
+> Actions authenticates via a short-lived OIDC token exchanged for temporary credentials
+> scoped to one IAM role. The role's trust policy is scoped to this repository and this
+> branch — and, since this repo was created after GitHub's 2026-07-15 switch to immutable
+> subject claims, the trust policy's `sub` condition matches the ID-qualified form
+> (`repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master`), not the
+> plain-name format most OIDC tutorials assume.
+>
+> The role's permissions cover writing to one S3 bucket and invalidating one CloudFront
+> distribution — nothing else.
+
+Links out to the `terraform/` directory and the deploy workflow file on GitHub.
 
 That paragraph is worth more in an interview than any amount of visual design.

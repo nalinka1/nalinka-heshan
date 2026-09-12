@@ -107,6 +107,13 @@ a {
 	text-underline-offset: 0.15em;
 }
 
+code {
+	font-family: inherit;
+	font-size: 0.9em;
+	background: var(--rule);
+	padding: 0.1em 0.35em;
+}
+
 a:hover,
 a:focus {
 	text-decoration-color: currentColor;

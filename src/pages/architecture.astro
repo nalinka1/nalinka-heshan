@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Architecture — Nalinka Heshan</title>
+		<meta
+			name="description"
+			content="How nalinkaheshan.dev deploys itself: S3, CloudFront and ACM via Terraform, Cloudflare DNS, and GitHub Actions assuming an IAM role over OIDC with no stored AWS keys."
+		/>
+	</head>
+	<body>
+	<main>
+		<header>
+			<p><a href="/">Nalinka Heshan</a></p>
+			<h1>How this site deploys itself</h1>
+		</header>
+
+		<section>
+			<p>
+				This site is a static Astro build — plain HTML and CSS, no client-side
+				framework. Pushing to <code>master</code> on GitHub runs the deploy
+				workflow, which builds the site and pushes it live. There's no manual
+				step in between.
+			</p>
+			<p>
+				The infrastructure — the S3 bucket, the CloudFront distribution, the
+				ACM certificate, and the IAM role GitHub Actions assumes — is defined
+				in Terraform, not clicked together by hand in the AWS console.
+			</p>
+			<p>
+				The site sits in a private S3 bucket. It isn't public, and it isn't
+				using S3's static website hosting feature. CloudFront reads it through
+				Origin Access Control, and the bucket policy only allows reads from
+				this one distribution's ARN — not from any CloudFront distribution in
+				the account.
+			</p>
+			<p>
+				The TLS certificate is issued by ACM in <code>us-east-1</code>, which is
+				where CloudFront requires it to live no matter which region anything
+				else runs in.
+			</p>
+			<p>
+				DNS is Cloudflare, not Route 53. The domain is registered through
+				Cloudflare Registrar, and its registration agreement requires
+				Cloudflare's own nameservers — there's no way to delegate this domain
+				to Route 53. The ACM validation record and the apex record pointing at
+				CloudFront are both added by hand in Cloudflare, with the proxy
+				switched off. With the proxy on, Cloudflare would terminate TLS with
+				its own certificate in front of CloudFront, which would make the ACM
+				certificate pointless.
+			</p>
+			<p>
+				Deploying doesn't use any stored AWS access keys. GitHub Actions
+				authenticates to AWS by requesting a short-lived OIDC token from
+				GitHub's own token endpoint and exchanging it for temporary
+				credentials scoped to one IAM role. Nothing is stored in the repo or
+				in GitHub secrets.
+			</p>
+			<p>
+				The role's trust policy only accepts that token if it's for this exact
+				repository and this exact branch. GitHub changed how it writes that
+				identity into the token: for repositories created after 15 July 2026,
+				the subject claim embeds the numeric owner and repository IDs, not
+				just their names —
+				<code>repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master</code>,
+				not the plain <code>repo:nalinka1/nalinka-heshan:ref:refs/heads/master</code>
+				that most OIDC tutorials still assume. I found this out by decoding the
+				token from a live workflow run after role assumption kept failing
+				against a trust policy that looked correct.
+			</p>
+			<p>
+				The role itself can only write to this one S3 bucket and invalidate
+				this one CloudFront distribution. It can't read anything, and it can't
+				touch any other AWS resource.
+			</p>
+		</section>
+
+		<section aria-labelledby="links-heading">
+			<h2 id="links-heading">Links</h2>
+			<ul>
+				<li><a href="https://github.com/nalinka1/nalinka-heshan/tree/master/terraform">Terraform directory</a></li>
+				<li><a href="https://github.com/nalinka1/nalinka-heshan/blob/master/.github/workflows/deploy.yml">Deploy workflow</a></li>
+			</ul>
+		</section>
+	</main>
+	</body>
+</html>
