@@ -8,9 +8,141 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Nalinka Heshan</title>
+		<title>Nalinka Heshan — Software Engineer</title>
+		<meta
+			name="description"
+			content="Backend and cloud engineer in Geelong, Victoria. Java, Spring Boot, Kafka, AWS. Six years building payment, claims and clinical systems."
+		/>
 	</head>
 	<body>
-		<h1>Nalinka Heshan</h1>
+		<header>
+			<h1>Nalinka Heshan</h1>
+		</header>
+
+		<section>
+			<p>I'm Nalinka, a software engineer in Geelong, Victoria.</p>
+			<p>
+				I build backend systems where failure costs real money — insurance claims,
+				banking, payments, hospital billing. Mostly Java and Spring Boot, Kafka at
+				transactional scale, and AWS. Right now I'm working on enterprise claims
+				systems at the Transport Accident Commission, mapping a payments platform
+				and its interconnected systems to design the integration layer for its
+				replacement.
+			</p>
+			<p>
+				Outside that I'm building cloud infrastructure projects to go deeper on AWS
+				and Azure. This site is one of them.
+			</p>
+		</section>
+
+		<section aria-labelledby="projects-heading">
+			<h2 id="projects-heading">Projects</h2>
+
+			<article>
+				<h3>AWS Event-Driven Order Platform</h3>
+				<p>
+					Serverless order flow built with API Gateway, Lambda, DynamoDB, SNS/SQS
+					and S3, provisioned end to end with AWS CDK. Later added a DynamoDB to
+					Aurora PostgreSQL migration with contract tests comparing behaviour
+					before and after the move.
+				</p>
+				<p>
+					<code>AWS CDK · API Gateway · Lambda · DynamoDB · Aurora PostgreSQL · SNS · SQS · S3</code>
+				</p>
+				<p><a href="https://github.com/nalinka1/aws-order-flow">github.com/nalinka1/aws-order-flow</a></p>
+			</article>
+
+			<article>
+				<h3>Multi-Cloud Secure Document Platform <em>(in progress)</em></h3>
+				<p>
+					A secure document platform built with Terraform on Azure — Entra ID,
+					RBAC, managed identities and Key Vault — with AWS federation next. The
+					focus is least-privilege access, credentialless workloads, and testing
+					what happens when access <em>should</em> be denied.
+				</p>
+				<p>
+					<code>Terraform · Azure Entra ID · Key Vault · RBAC · managed identities · VNet · NSG</code>
+				</p>
+			</article>
+
+			<article>
+				<h3>AI-Powered LEGO Sorting System</h3>
+				<p>
+					Computer vision and a CNN classifying LEGO pieces by type in real time.
+					The interesting part wasn't the model — the first version failed on
+					pieces with no clean training examples, and accuracy only moved once I
+					stopped tuning the network and fixed the data pipeline.
+				</p>
+				<p><code>Python · TensorFlow · OpenCV</code></p>
+			</article>
+		</section>
+
+		<section aria-labelledby="experience-heading">
+			<h2 id="experience-heading">Experience</h2>
+
+			<article>
+				<h3>Software Developer — Transport Accident Commission</h3>
+				<p>Geelong, VIC · Dec 2025 – Present</p>
+				<p>
+					Claims and payments systems for Victoria's transport accident insurer.
+					Integration design for a platform replacement, a recovery-payments
+					consolidation moving 13,000+ records, and extensions to the Fineos
+					claims platform.
+				</p>
+			</article>
+
+			<article>
+				<h3>Software Engineer — Cloud Solutions International</h3>
+				<p>Jul 2023 – Aug 2025</p>
+				<p>
+					Designed and delivered an outpatient pharmacy billing and payments
+					platform for a major Middle Eastern private healthcare group. Live two
+					years, $100M+ in annual transactions. Also built a real-time drug
+					interaction checking service against patient medical history.
+				</p>
+			</article>
+
+			<article>
+				<h3>Senior Software Engineer — Qbitum Solution</h3>
+				<p>Oct 2022 – Jul 2023</p>
+				<p>
+					Migrated a Sri Lankan bank's core digital platform onto Red Hat
+					OpenShift, with Prometheus and Grafana monitoring and load testing to
+					support the production cutover.
+				</p>
+			</article>
+
+			<article>
+				<h3>Software Engineer — Zilingo</h3>
+				<p>Feb 2020 – May 2022</p>
+				<p>
+					Backend services on Play Framework for an eCommerce marketplace, plus
+					analytics and reporting systems and a major architectural migration.
+				</p>
+			</article>
+		</section>
+
+		<section aria-labelledby="certifications-heading">
+			<h2 id="certifications-heading">Certifications</h2>
+			<ul>
+				<li>
+					<a href="https://www.credly.com/badges/7ba4feca-7ce4-42b4-bd64-f7b2566c29ac/public_url">AWS Certified Developer – Associate</a>
+					(July 2025)
+				</li>
+				<li>
+					<a href="https://www.credly.com/badges/9b57afd1-0cce-4883-bf64-7e09df3ddef7/linked_in_profile">AWS Certified AI Practitioner</a>
+					(August 2026)
+				</li>
+			</ul>
+		</section>
+
+		<section aria-labelledby="links-heading">
+			<h2 id="links-heading">Links</h2>
+			<ul>
+				<li><a href="https://github.com/nalinka1">GitHub</a></li>
+				<li><a href="https://linkedin.com/in/nalinka-heshan">LinkedIn</a></li>
+				<li><a href="mailto:nalinkaheshann@gmail.com">Email</a></li>
+			</ul>
+		</section>
 	</body>
 </html>

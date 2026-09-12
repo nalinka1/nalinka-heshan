@@ -1,0 +1,154 @@
+# Site Content — source of truth for copy
+
+Everything here is drawn from the job-hunt knowledge base. Nothing is invented. Edit the
+wording freely; don't add facts that aren't here.
+
+---
+
+## Meta
+
+- **Title:** Nalinka Heshan — Software Engineer
+- **Description:** Backend and cloud engineer in Geelong, Victoria. Java, Spring Boot,
+  Kafka, AWS. Six years building payment, claims and clinical systems.
+
+---
+
+## Intro
+
+Draft — cut it further if it feels long:
+
+> I'm Nalinka, a software engineer in Geelong, Victoria.
+>
+> I build backend systems where failure costs real money — insurance claims, banking,
+> payments, hospital billing. Mostly Java and Spring Boot, Kafka at transactional scale,
+> and AWS. Right now I'm working on enterprise claims systems at the Transport Accident
+> Commission, mapping a payments platform and its interconnected systems to design the
+> integration layer for its replacement.
+>
+> Outside that I'm building cloud infrastructure projects to go deeper on AWS and Azure.
+> This site is one of them — [how it's deployed](/architecture).
+
+Availability line, only if you want it visible:
+
+> My current contract ends in September 2026 and I'm open to backend, integration and
+> cloud engineering roles in Melbourne, Geelong, or remote across Australia.
+
+---
+
+## Projects
+
+Three. Ordered by what you most want to be hired for.
+
+### AWS Event-Driven Order Platform
+Serverless order flow built with API Gateway, Lambda, DynamoDB, SNS/SQS and S3,
+provisioned end to end with AWS CDK. Later added a DynamoDB to Aurora PostgreSQL
+migration with contract tests comparing behaviour before and after the move.
+
+`AWS CDK · API Gateway · Lambda · DynamoDB · Aurora PostgreSQL · SNS · SQS · S3`
+
+https://github.com/nalinka1/aws-order-flow
+
+### Multi-Cloud Secure Document Platform *(in progress)*
+A secure document platform built with Terraform on Azure — Entra ID, RBAC, managed
+identities and Key Vault — with AWS federation next. The focus is least-privilege access,
+credentialless workloads, and testing what happens when access *should* be denied.
+
+`Terraform · Azure Entra ID · Key Vault · RBAC · managed identities · VNet · NSG`
+
+> Label this as a project, not production experience. Azure and Terraform are project-only.
+
+### AI-Powered LEGO Sorting System
+Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
+part wasn't the model — the first version failed on pieces with no clean training
+examples, and accuracy only moved once I stopped tuning the network and fixed the data
+pipeline.
+
+`Python · TensorFlow · OpenCV`
+
+### Alternate, if you want a fourth
+**99Yards** — React Native mobile app for a textile industry vendor-client platform, with
+Spring Boot backend and Firebase/GCP infrastructure. Built remotely for a US client, 2025.
+
+---
+
+## Experience
+
+Compressed. One line each. The CV carries the detail.
+
+**Software Developer — Transport Accident Commission** · Geelong, VIC · Dec 2025 – Present
+Claims and payments systems for Victoria's transport accident insurer. Integration design
+for a platform replacement, a recovery-payments consolidation moving 13,000+ records, and
+extensions to the Fineos claims platform.
+
+**Software Engineer — Cloud Solutions International** · Jul 2023 – Aug 2025
+Designed and delivered an outpatient pharmacy billing and payments platform for a major
+Middle Eastern private healthcare group. Live two years, $100M+ in annual transactions.
+Also built a real-time drug interaction checking service against patient medical history.
+
+**Senior Software Engineer — Qbitum Solution** · Oct 2022 – Jul 2023
+Migrated a Sri Lankan bank's core digital platform onto Red Hat OpenShift, with
+Prometheus and Grafana monitoring and load testing to support the production cutover.
+
+**Software Engineer — Zilingo** · Feb 2020 – May 2022
+Backend services on Play Framework for an eCommerce marketplace, plus analytics and
+reporting systems and a major architectural migration.
+
+> **TAC confidentiality:** keep this at the level already published on the CV. No internal
+> system detail beyond naming Fineos and Avanti, no data, no architecture diagrams, no
+> screenshots.
+
+---
+
+## Skills
+
+Group them. Be honest about the second group.
+
+**Production:** Java, Spring Boot, Node.js, Angular, TypeScript, Apache Kafka, PostgreSQL,
+Oracle, MongoDB, Docker, Kubernetes, Red Hat OpenShift, Jenkins, REST and SOAP web
+services, MQ messaging, AWS (Lambda, EC2, S3, RDS, DynamoDB, SNS, SQS, API Gateway, CDK,
+CloudFormation)
+
+**Project work:** Terraform, Azure (Entra ID, Key Vault, RBAC, managed identities),
+GitHub Actions, OIDC workload identity federation, Python
+
+Leave React off unless you decide otherwise — it's rusty. Leave off anything unconfirmed:
+JUnit, Mockito, Jest, Cypress, SonarQube, Redis, Kinesis, Ionic, Graylog.
+
+---
+
+## Certifications
+
+- AWS Certified Developer – Associate (July 2025) —
+  https://www.credly.com/badges/7ba4feca-7ce4-42b4-bd64-f7b2566c29ac/public_url
+- AWS Certified AI Practitioner (August 2026) —
+  https://www.credly.com/badges/9b57afd1-0cce-4883-bf64-7e09df3ddef7/linked_in_profile
+
+---
+
+## Links
+
+- GitHub — github.com/nalinka1
+- LinkedIn — linkedin.com/in/nalinka-heshan
+- Email — nalinkaheshann@gmail.com
+- CV (PDF)
+
+Skip the phone number. Email and LinkedIn are enough on a public page.
+
+---
+
+## Optional: /architecture page
+
+If you build Stage 4's architecture page, the content is roughly:
+
+> This site is a static Astro build in a private S3 bucket, served through CloudFront with
+> Origin Access Control. Pushing to `main` triggers a GitHub Actions workflow that builds
+> the site, assumes an IAM role through OIDC federation, syncs to the bucket and
+> invalidates the distribution.
+>
+> There are no AWS access keys stored in the repository or in GitHub secrets. The role's
+> trust policy is scoped to this repository and this branch, and its permissions cover
+> writing to one bucket and invalidating one distribution.
+>
+> Infrastructure is defined in [Terraform/CDK] — [link to repo].
+
+That paragraph is worth more in an interview than any amount of visual design.
