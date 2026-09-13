@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects', ({ data }) => Boolean(data.body));
+	return projects.map((project) => ({
+		params: { slug: project.data.slug },
+		props: { project },
+	}));
+}
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, stack, repo } = project.data;
+const body = project.data.body!;
+---
+
+<BaseLayout title={`${title} — Nalinka Heshan`} description={body.whatItIs}>
+	<p class="back"><a href="/projects">← Projects</a></p>
+	<h1>{title}</h1>
+
+	<section aria-labelledby="what-it-is-heading">
+		<h2 id="what-it-is-heading">What it is</h2>
+		<p>{body.whatItIs}</p>
+	</section>
+
+	<section aria-labelledby="decisions-heading">
+		<h2 id="decisions-heading">Decisions</h2>
+		{body.decisions.map((item) => (
+			<article class="decision">
+				<h3>{item.decision}</h3>
+				<p class="rejected">Rejected: {item.rejected}</p>
+				<p>{item.why}</p>
+			</article>
+		))}
+	</section>
+
+	<section aria-labelledby="what-broke-heading">
+		<h2 id="what-broke-heading">What broke</h2>
+		<p>{body.whatBroke}</p>
+	</section>
+
+	<section aria-labelledby="stack-heading">
+		<h2 id="stack-heading">Stack</h2>
+		<p class="mono">{stack.join(' · ')}</p>
+		{repo && <p><a href={repo}>{repo.replace('https://', '')}</a></p>}
+	</section>
+</BaseLayout>
+
+<style>
+	.back {
+		margin-bottom: var(--space-8);
+	}
+
+	h1 {
+		margin-bottom: var(--space-8);
+	}
+
+	section + section {
+		margin-top: var(--space-8);
+		padding-top: var(--space-8);
+		border-top: var(--rule-width) solid var(--rule);
+	}
+
+	.decision + .decision {
+		margin-top: var(--space-6);
+	}
+
+	.decision h3 {
+		margin-bottom: var(--space-1);
+	}
+
+	.rejected {
+		color: var(--muted);
+		font-size: var(--text-sm);
+		margin: 0 0 var(--space-2);
+	}
+</style>

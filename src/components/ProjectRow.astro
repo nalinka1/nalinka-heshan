@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, summary, stack, status, repo } = project.data;
+const { title, slug, summary, stack, status, repo, body } = project.data;
 ---
 
 <div class="project-row">
@@ -16,6 +16,7 @@ const { title, summary, stack, status, repo } = project.data;
 	</div>
 	<div class="project-body">
 		<p>{summary}</p>
+		{body && <p><a href={`/projects/${slug}`}>Read the decisions</a></p>}
 		{repo && <p><a href={repo}>{repo.replace('https://', '')}</a></p>}
 		<p class="mono">{stack.join(' · ')}</p>
 	</div>
