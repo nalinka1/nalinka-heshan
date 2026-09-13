@@ -8,15 +8,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 >
 	<section class="intro">
 		<div class="intro-main">
-			<h1>Nalinka Heshan</h1>
+			<h1 class="intro-line">I build backend systems where failure costs real money.</h1>
 			<p>I'm Nalinka, a software engineer in Melbourne, Victoria.</p>
 			<p>
-				I build backend systems where failure costs real money — insurance claims,
-				banking, payments, hospital billing. Mostly Java and Spring Boot, Kafka at
-				transactional scale, and AWS. Right now I'm working on enterprise claims
-				systems at the Transport Accident Commission, mapping a payments platform
-				and its interconnected systems to design the integration layer for its
-				replacement.
+				Insurance claims, banking, payments, hospital billing. Mostly Java and
+				Spring Boot, Kafka at transactional scale, and AWS. Right now I'm working
+				on enterprise claims systems at the Transport Accident Commission, mapping
+				a payments platform and its interconnected systems to design the
+				integration layer for its replacement.
 			</p>
 			<p>
 				Outside that I'm building cloud infrastructure projects to go deeper on AWS
@@ -43,7 +42,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		<div class="project-row">
 			<div class="project-label">
 				<h3>AWS Event-Driven Order Platform</h3>
-				<p class="mono">AWS CDK · API Gateway · Lambda · DynamoDB · Aurora PostgreSQL · SNS · SQS · S3</p>
 			</div>
 			<div class="project-body">
 				<p>
@@ -53,13 +51,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 					before and after the move.
 				</p>
 				<p><a href="https://github.com/nalinka1/aws-order-flow">github.com/nalinka1/aws-order-flow</a></p>
+				<p class="mono">AWS CDK · API Gateway · Lambda · DynamoDB · Aurora PostgreSQL · SNS · SQS · S3</p>
 			</div>
 		</div>
 
 		<div class="project-row">
 			<div class="project-label">
 				<h3>Multi-Cloud Secure Document Platform</h3>
-				<p class="mono">Terraform · Azure Entra ID · Key Vault · RBAC · managed identities · VNet · NSG</p>
 				<p class="status-tag">In progress</p>
 			</div>
 			<div class="project-body">
@@ -69,13 +67,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 					focus is least-privilege access, credentialless workloads, and testing
 					what happens when access <em>should</em> be denied.
 				</p>
+				<p class="mono">Terraform · Azure Entra ID · Key Vault · RBAC · managed identities · VNet · NSG</p>
 			</div>
 		</div>
 
 		<div class="project-row">
 			<div class="project-label">
 				<h3>AI-Powered LEGO Sorting System</h3>
-				<p class="mono">Python · TensorFlow · OpenCV</p>
 			</div>
 			<div class="project-body">
 				<p>
@@ -84,6 +82,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 					pieces with no clean training examples, and accuracy only moved once I
 					stopped tuning the network and fixed the data pipeline.
 				</p>
+				<p class="mono">Python · TensorFlow · OpenCV</p>
 			</div>
 		</div>
 	</section>
@@ -152,6 +151,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		grid-template-columns: 1fr 260px;
 		gap: var(--space-12);
 		align-items: start;
+	}
+
+	.intro-line {
+		font-size: var(--text-xl);
 	}
 
 	.intro-rail {
