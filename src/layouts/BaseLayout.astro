@@ -1,13 +1,15 @@
 ---
 import { execSync } from 'node:child_process';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/tokens.css';
 
 interface Props {
 	title: string;
 	description: string;
+	noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 
 const navItems = [
 	{ label: 'Home', href: '/' },
@@ -39,6 +41,8 @@ const commitUrl = commitSha
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex" />}
+		<ClientRouter />
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
