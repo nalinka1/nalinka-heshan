@@ -11,13 +11,14 @@ const { title, description } = Astro.props;
 
 const navItems = [
 	{ label: 'Home', href: '/' },
-	{ label: 'Projects', href: null },
-	{ label: 'Experience', href: null },
+	{ label: 'Projects', href: '/projects' },
+	{ label: 'Experience', href: '/experience' },
 	{ label: 'Architecture', href: null },
 ];
 
-const currentPath = Astro.url.pathname;
-const isActive = (href: string) => currentPath === href;
+const normalize = (path: string) => (path.length > 1 ? path.replace(/\/$/, '') : path);
+const currentPath = normalize(Astro.url.pathname);
+const isActive = (href: string) => currentPath === normalize(href);
 
 let commitSha = '';
 try {
