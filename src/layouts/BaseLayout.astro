@@ -1,0 +1,173 @@
+---
+import { execSync } from 'node:child_process';
+import '../styles/tokens.css';
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+
+const navItems = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Projects', href: '/#projects' },
+	{ label: 'Experience', href: '/#experience' },
+	{ label: 'Architecture', href: '/architecture' },
+];
+
+const currentPath = Astro.url.pathname;
+const isActive = (href: string) => !href.includes('#') && currentPath === href;
+
+let commitSha = '';
+try {
+	commitSha = execSync('git rev-parse --short HEAD').toString().trim();
+} catch {
+	commitSha = '';
+}
+const commitUrl = commitSha
+	? `https://github.com/nalinka1/nalinka-heshan/commit/${commitSha}`
+	: null;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+	</head>
+	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-header">
+			<nav aria-label="Primary">
+				<a class="site-name" href="/">Nalinka Heshan</a>
+				<ul class="nav-list">
+					{navItems.map((item) => (
+						<li>
+							<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<p>
+				<a href="mailto:nalinkaheshann@gmail.com">nalinkaheshann@gmail.com</a>
+			</p>
+			{commitUrl && (
+				<p class="mono">
+					<a href={commitUrl}>{commitSha}</a>
+				</p>
+			)}
+		</footer>
+	</body>
+</html>
+
+<style>
+	.skip-link {
+		position: absolute;
+		left: var(--space-4);
+		top: -3rem;
+		background: var(--paper);
+		color: var(--ink);
+		padding: var(--space-2) var(--space-4);
+		border: var(--rule-width) solid var(--rule);
+		z-index: 10;
+		transition: top 0.1s ease-in-out;
+	}
+
+	.skip-link:focus {
+		top: var(--space-4);
+	}
+
+	.site-header,
+	main,
+	.site-footer {
+		max-width: var(--page-max);
+		margin: 0 auto;
+		padding-left: var(--space-6);
+		padding-right: var(--space-6);
+	}
+
+	.site-header {
+		padding-top: var(--space-8);
+		padding-bottom: var(--space-8);
+	}
+
+	.site-header nav {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-4);
+	}
+
+	.site-name {
+		color: var(--ink);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.site-name:hover {
+		text-decoration: underline;
+	}
+
+	.nav-list {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-6);
+		margin: 0;
+		padding: 0;
+	}
+
+	.nav-list a {
+		color: var(--muted);
+		text-decoration: none;
+	}
+
+	.nav-list a:hover {
+		color: var(--ink);
+	}
+
+	.nav-list a[aria-current='page'] {
+		color: var(--accent);
+	}
+
+	main {
+		padding-bottom: var(--space-16);
+	}
+
+	.site-footer {
+		border-top: var(--rule-width) solid var(--rule);
+		padding-top: var(--space-6);
+		padding-bottom: var(--space-8);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2) var(--space-6);
+		color: var(--muted);
+	}
+
+	.site-footer p {
+		margin: 0;
+	}
+
+	.site-footer a {
+		color: var(--muted);
+	}
+
+	.site-footer a:hover {
+		color: var(--accent);
+	}
+</style>
