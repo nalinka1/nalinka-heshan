@@ -1,15 +1,14 @@
 ---
-title: "Multi-Cloud Secure Document Platform"
+title: "Multi-Cloud Secure Platform, AWS and Azure"
 slug: "multi-cloud-secure-document-platform"
-summary: "A secure document platform built with Terraform on Azure — Entra ID, RBAC, managed identities and Key Vault — with AWS federation next. The focus is least-privilege access, credentialless workloads, and testing what happens when access should be denied."
+summary: "Cross-cloud OIDC workload identity federation so a workload authenticates across clouds with no stored access keys, with negative tests proving expired tokens and wrong identities are denied. Terraform-provisioned landing zone with remote state and locking, custom RBAC roles, and managed identities pulling secrets with no credentials in code."
 stack:
   - "Terraform"
-  - "Azure Entra ID"
-  - "Key Vault"
-  - "RBAC"
-  - "managed identities"
-  - "VNet"
-  - "NSG"
-status: "in progress"
+  - "Bicep"
+  - "AWS CDK"
+  - "AWS (S3, KMS, IAM)"
+  - "Azure (Entra ID, RBAC, Key Vault)"
+  - "GitHub Actions"
+  - "OIDC"
 order: 2
 ---

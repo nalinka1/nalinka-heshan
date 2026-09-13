@@ -77,8 +77,7 @@ animations beyond subtle polish, chatbot version of the CV.
 - Azure and Terraform are project-level experience — label as such, never presented at
   the same weight as production AWS work.
 - Keep React off the site (rusty) unless he says otherwise.
-- Don't use unconfirmed skills: JUnit, Mockito, Jest, Cypress, SonarQube, Redis, Kinesis,
-  Ionic, Graylog.
+- Don't use unconfirmed skills: Jest, SonarQube, Ionic, Graylog.
 
 ## Tone for site copy
 Plain, specific, first person, short sentences. Banned words: leverage, spearheaded,

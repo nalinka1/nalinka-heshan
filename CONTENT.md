@@ -48,12 +48,13 @@ migration with contract tests comparing behaviour before and after the move.
 
 https://github.com/nalinka1/aws-order-flow
 
-### Multi-Cloud Secure Document Platform *(in progress)*
-A secure document platform built with Terraform on Azure — Entra ID, RBAC, managed
-identities and Key Vault — with AWS federation next. The focus is least-privilege access,
-credentialless workloads, and testing what happens when access *should* be denied.
+### Multi-Cloud Secure Platform, AWS and Azure
+Cross-cloud OIDC workload identity federation so a workload authenticates across clouds
+with no stored access keys, with negative tests proving expired tokens and wrong
+identities are denied. Terraform-provisioned landing zone with remote state and locking,
+custom RBAC roles, and managed identities pulling secrets with no credentials in code.
 
-`Terraform · Azure Entra ID · Key Vault · RBAC · managed identities · VNet · NSG`
+`Terraform · Bicep · AWS CDK · AWS (S3, KMS, IAM) · Azure (Entra ID, RBAC, Key Vault) · GitHub Actions · OIDC`
 
 > Label this as a project, not production experience. Azure and Terraform are project-only.
 
@@ -80,7 +81,7 @@ Claims and payments systems for Victoria's transport accident insurer. Integrati
 for a platform replacement, a recovery-payments consolidation moving 13,000+ records, and
 extensions to the Fineos claims platform.
 
-**Software Engineer — Cloud Solutions International** · Colombo, Sri Lanka · Jul 2023 – Aug 2025
+**Software Engineer — Cloud Solutions International** · Colombo, Sri Lanka · Jul 2023 – Dec 2025
 Designed and delivered an outpatient pharmacy billing and payments platform for a major
 Middle Eastern private healthcare group. Live two years, $100M+ in annual transactions.
 Also built a real-time drug interaction checking service against patient medical history.
@@ -89,7 +90,7 @@ Also built a real-time drug interaction checking service against patient medical
 Migrated a Sri Lankan bank's core digital platform onto Red Hat OpenShift, with
 Prometheus and Grafana monitoring and load testing to support the production cutover.
 
-**Software Engineer — Zilingo** · Colombo, Sri Lanka · Feb 2020 – May 2022
+**Software Engineer — Zilingo** · Colombo, Sri Lanka · Mar 2020 – Sep 2022
 Backend services on Play Framework for an eCommerce marketplace, plus analytics and
 reporting systems and a major architectural migration.
 
