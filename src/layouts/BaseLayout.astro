@@ -11,13 +11,13 @@ const { title, description } = Astro.props;
 
 const navItems = [
 	{ label: 'Home', href: '/' },
-	{ label: 'Projects', href: '/#projects' },
-	{ label: 'Experience', href: '/#experience' },
-	{ label: 'Architecture', href: '/architecture' },
+	{ label: 'Projects', href: null },
+	{ label: 'Experience', href: null },
+	{ label: 'Architecture', href: null },
 ];
 
 const currentPath = Astro.url.pathname;
-const isActive = (href: string) => !href.includes('#') && currentPath === href;
+const isActive = (href: string) => currentPath === href;
 
 let commitSha = '';
 try {
@@ -48,9 +48,13 @@ const commitUrl = commitSha
 				<ul class="nav-list">
 					{navItems.map((item) => (
 						<li>
-							<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
-								{item.label}
-							</a>
+							{item.href ? (
+								<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+									{item.label}
+								</a>
+							) : (
+								<span>{item.label}</span>
+							)}
 						</li>
 					))}
 				</ul>
@@ -114,7 +118,6 @@ const commitUrl = commitSha
 	}
 
 	.site-name {
-		color: var(--ink);
 		font-weight: 600;
 		text-decoration: none;
 	}
@@ -132,8 +135,12 @@ const commitUrl = commitSha
 		padding: 0;
 	}
 
-	.nav-list a {
+	.nav-list a,
+	.nav-list span {
 		color: var(--muted);
+	}
+
+	.nav-list a {
 		text-decoration: none;
 	}
 
@@ -161,13 +168,5 @@ const commitUrl = commitSha
 
 	.site-footer p {
 		margin: 0;
-	}
-
-	.site-footer a {
-		color: var(--muted);
-	}
-
-	.site-footer a:hover {
-		color: var(--accent);
 	}
 </style>
