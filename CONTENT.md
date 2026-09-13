@@ -75,21 +75,21 @@ Spring Boot backend and Firebase/GCP infrastructure. Built remotely for a US cli
 
 Compressed. One line each. The CV carries the detail.
 
-**Software Developer — Transport Accident Commission** · Geelong, VIC · Dec 2025 – Present
+**Software Engineer — Transport Accident Commission** · Melbourne, VIC · Dec 2025 – Present
 Claims and payments systems for Victoria's transport accident insurer. Integration design
 for a platform replacement, a recovery-payments consolidation moving 13,000+ records, and
 extensions to the Fineos claims platform.
 
-**Software Engineer — Cloud Solutions International** · Jul 2023 – Aug 2025
+**Software Engineer — Cloud Solutions International** · Colombo, Sri Lanka · Jul 2023 – Aug 2025
 Designed and delivered an outpatient pharmacy billing and payments platform for a major
 Middle Eastern private healthcare group. Live two years, $100M+ in annual transactions.
 Also built a real-time drug interaction checking service against patient medical history.
 
-**Senior Software Engineer — Qbitum Solution** · Oct 2022 – Jul 2023
+**Senior Software Engineer — Qbitum Solution** · Colombo, Sri Lanka · Oct 2022 – Jul 2023
 Migrated a Sri Lankan bank's core digital platform onto Red Hat OpenShift, with
 Prometheus and Grafana monitoring and load testing to support the production cutover.
 
-**Software Engineer — Zilingo** · Feb 2020 – May 2022
+**Software Engineer — Zilingo** · Colombo, Sri Lanka · Feb 2020 – May 2022
 Backend services on Play Framework for an eCommerce marketplace, plus analytics and
 reporting systems and a major architectural migration.
 
