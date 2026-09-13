@@ -48,6 +48,14 @@ fails with that message, stop and flag it rather than working around it.
 - **Stage 1.2 — done.** Terraform for S3, CloudFront, ACM applied; `dist/` synced and
   confirmed on HTTPS on the apex domain `nalinkaheshan.dev` (both Cloudflare records in
   place, proxy off).
+- **Stage 1.3 — done.** OIDC identity provider and IAM role in place, GitHub Actions
+  workflow builds and deploys on push to `master` via role assumption, no stored AWS
+  credentials anywhere. Pipeline confirmed working end to end.
+- **Stage 1 — done.** Site is live on HTTPS at `nalinkaheshan.dev`, deployed by push to
+  master, zero long-lived AWS credentials.
+
+**Phase 2 — see `PHASE_2_PLAN.md`** for design, structure, and the route split. It
+supersedes Stages 2–4 in the Build order below.
 
 ## Build order
 1. Stage 1: empty page, live on HTTPS, deployed by push to master, OIDC pipeline, no

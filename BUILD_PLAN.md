@@ -41,34 +41,39 @@ The goal is an ugly page on a real HTTPS URL, deployed by pushing to master.
 
 DNS is out of Terraform's scope. Two records go into Cloudflare by hand:
 - [x] ACM validation CNAME — **proxy off (grey cloud)**, or validation never completes
-- [ ] Apex CNAME → CloudFront domain — **proxy off**, CNAME flattening handles the apex
+- [x] Apex CNAME → CloudFront domain — **proxy off**, CNAME flattening handles the apex
 
 **Checkpoint:** upload a placeholder `index.html` by hand and confirm it loads over HTTPS
 on the domain. Do not proceed until this works.
 
-`dist/` synced to S3 and confirmed `200 OK` over HTTPS via the CloudFront domain
-(`d3clt8nxz2mrki.cloudfront.net`). Not yet confirmed on the apex domain itself — the
-Cloudflare CNAME above is still outstanding.
+`dist/` synced to S3 and confirmed `200 OK` over HTTPS on the apex domain itself
+(`nalinkaheshan.dev`). Both Cloudflare records are in place, proxy off.
 
 ### 1.3 OIDC deploy pipeline
 This is the part that makes the site worth showing.
 
-- [ ] GitHub OIDC identity provider in IAM (`token.actions.githubusercontent.com`,
+- [x] GitHub OIDC identity provider in IAM (`token.actions.githubusercontent.com`,
       audience `sts.amazonaws.com`)
-- [ ] IAM role with a trust policy scoped to `repo:<user>/<repo>:ref:refs/heads/master` —
+- [x] IAM role with a trust policy scoped to `repo:<user>/<repo>:ref:refs/heads/master` —
       scope it to the branch, not just the repo
-- [ ] Permissions: `s3:PutObject`/`DeleteObject` on the bucket,
+- [x] Permissions: `s3:PutObject`/`DeleteObject` on the bucket,
       `cloudfront:CreateInvalidation` on the distribution. Nothing else.
-- [ ] Workflow with `permissions: id-token: write, contents: read`
-- [ ] Build → `aws-actions/configure-aws-credentials` with `role-to-assume` → sync →
+- [x] Workflow with `permissions: id-token: write, contents: read`
+- [x] Build → `aws-actions/configure-aws-credentials` with `role-to-assume` → sync →
       invalidate
-- [ ] **No `AWS_ACCESS_KEY_ID` anywhere in the repo or in repo secrets**
+- [x] **No `AWS_ACCESS_KEY_ID` anywhere in the repo or in repo secrets**
 
 **Checkpoint:** push a trivial change to master, watch it appear on the live site.
 
-### Stage 1 done
+### Stage 1 — done
 A page with your name on it, live on your domain, deployed from a push, with zero stored
 AWS credentials. Stop here if it's late. This is already a legitimate thing to link.
+
+The OIDC pipeline works end to end. Both Cloudflare records are in place, proxy off, and
+`nalinkaheshan.dev` returns 200 over HTTPS.
+
+**Phase 2 — see `PHASE_2_PLAN.md`** for design, structure, and the route split that
+follows Stage 1. It supersedes Stages 2–4 below.
 
 ---
 
