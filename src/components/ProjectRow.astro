@@ -1,0 +1,59 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, summary, stack, status, repo } = project.data;
+---
+
+<div class="project-row">
+	<div class="project-label">
+		<h3>{title}</h3>
+		{status && <p class="status-tag">In progress</p>}
+	</div>
+	<div class="project-body">
+		<p>{summary}</p>
+		{repo && <p><a href={repo}>{repo.replace('https://', '')}</a></p>}
+		<p class="mono">{stack.join(' · ')}</p>
+	</div>
+</div>
+
+<style>
+	.project-row {
+		display: grid;
+		grid-template-columns: 200px 1fr;
+		gap: var(--space-8);
+		padding: var(--space-6) 0;
+	}
+
+	.project-row + .project-row {
+		border-top: var(--rule-width) solid var(--rule);
+	}
+
+	.project-label h3 {
+		margin-bottom: var(--space-2);
+	}
+
+	.project-label p {
+		margin: 0 0 var(--space-1);
+	}
+
+	.status-tag {
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	.project-body p:last-child {
+		margin-bottom: 0;
+	}
+
+	@media (max-width: 700px) {
+		.project-row {
+			grid-template-columns: 1fr;
+			gap: var(--space-2);
+		}
+	}
+</style>

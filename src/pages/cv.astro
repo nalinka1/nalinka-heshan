@@ -1,16 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectRow from '../components/ProjectRow.astro';
+import RoleRow from '../components/RoleRow.astro';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects'))
-	.sort((a, b) => a.data.order - b.data.order)
-	.slice(0, 3);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const roles = (await getCollection('roles')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout
-	title="Nalinka Heshan — Software Engineer"
-	description="Backend and cloud engineer in Geelong, Victoria. Java, Spring Boot, Kafka, AWS. Six years building payment, claims and clinical systems."
+	title="Nalinka Heshan — CV"
+	description="Backend and cloud engineer in Melbourne, Victoria. Java, Spring Boot, Kafka, AWS. Six years building payment, claims and clinical systems."
 >
 	<section class="intro">
 		<div class="intro-main">
@@ -45,6 +45,23 @@ const projects = (await getCollection('projects'))
 	<section id="projects" aria-labelledby="projects-heading">
 		<h2 id="projects-heading">Projects</h2>
 		{projects.map((project) => <ProjectRow project={project} />)}
+	</section>
+
+	<hr />
+
+	<section id="experience" aria-labelledby="experience-heading">
+		<h2 id="experience-heading">Experience</h2>
+		{roles.map((role) => <RoleRow role={role} />)}
+	</section>
+
+	<hr />
+
+	<section aria-labelledby="certifications-heading">
+		<h2 id="certifications-heading">Certifications</h2>
+		<ul class="rail-links">
+			<li><a href="https://www.credly.com/badges/7ba4feca-7ce4-42b4-bd64-f7b2566c29ac/public_url">AWS Certified Developer – Associate</a> (July 2025)</li>
+			<li><a href="https://www.credly.com/badges/9b57afd1-0cce-4883-bf64-7e09df3ddef7/linked_in_profile">AWS Certified AI Practitioner</a> (August 2026)</li>
+		</ul>
 	</section>
 </BaseLayout>
 
@@ -94,6 +111,24 @@ const projects = (await getCollection('projects'))
 			border-top: var(--rule-width) solid var(--rule);
 			padding-left: 0;
 			padding-top: var(--space-6);
+		}
+	}
+
+	@media print {
+		:global(.skip-link),
+		:global(.site-header),
+		:global(.site-footer) {
+			display: none;
+		}
+
+		:global(main) {
+			padding: 0;
+			max-width: none;
+		}
+
+		.intro-rail {
+			border-left: none;
+			padding-left: 0;
 		}
 	}
 </style>
