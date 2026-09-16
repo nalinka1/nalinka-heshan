@@ -1,6 +1,5 @@
 ---
 import { execSync } from 'node:child_process';
-import { ClientRouter } from 'astro:transitions';
 import '../styles/tokens.css';
 
 interface Props {
@@ -42,7 +41,6 @@ const commitUrl = commitSha
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		{noindex && <meta name="robots" content="noindex" />}
-		<ClientRouter />
 	</head>
 	<body>
 		<a class="skip-link" href="#main">Skip to content</a>
@@ -71,9 +69,9 @@ const commitUrl = commitSha
 		</main>
 
 		<footer class="site-footer">
-			<p>
-				<a href="mailto:nalinkaheshann@gmail.com">nalinkaheshann@gmail.com</a>
-			</p>
+			<p><a href="https://github.com/nalinka1">GitHub</a></p>
+			<p><a href="https://linkedin.com/in/nalinka-heshan">LinkedIn</a></p>
+			<p><a href="mailto:nalinkaheshann@gmail.com">Email</a></p>
 			{commitUrl && (
 				<p class="mono">
 					<a href={commitUrl}>{commitSha}</a>

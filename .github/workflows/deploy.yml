@@ -30,8 +30,11 @@ jobs:
       # Hashed, fingerprinted build output (_astro/*) — safe to cache for a year
       - run: aws s3 sync dist/ s3://nalinkaheshan.dev/ --delete --exclude "*" --include "_astro/*" --cache-control "public,max-age=31536000,immutable"
 
-      # Everything else that isn't HTML (favicon, cv.pdf) — not fingerprinted, default caching
-      - run: aws s3 sync dist/ s3://nalinkaheshan.dev/ --delete --exclude "*.html" --exclude "_astro/*"
+      # Everything else that isn't HTML (favicon, etc.) — not fingerprinted, default caching
+      - run: aws s3 sync dist/ s3://nalinkaheshan.dev/ --delete --exclude "*.html" --exclude "_astro/*" --exclude "cv.pdf"
+
+      # cv.pdf — not fingerprinted, and an updated CV must not serve stale from cache
+      - run: aws s3 cp dist/cv.pdf s3://nalinkaheshan.dev/cv.pdf --cache-control "no-cache"
 
       # HTML last, after the assets it references exist — revalidate every time, directory-style URLs carry no fingerprint
       - run: aws s3 sync dist/ s3://nalinkaheshan.dev/ --delete --exclude "*" --include "*.html" --cache-control "no-cache"
