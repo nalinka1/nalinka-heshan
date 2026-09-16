@@ -1,0 +1,101 @@
+---
+// Shared wrapper for hand-written SVG diagrams. Handles the accessible
+// scaffolding (role, title, desc), the caption, and responsive sizing —
+// each diagram component only supplies the boxes/lines/labels as its
+// default slot (and an optional "mobile" slot for the stacked variant
+// below 700px, per PHASE_3_PLAN.md's mobile rules).
+
+interface Props {
+	/** Unique slug for this diagram instance — becomes the id prefix for title/desc. */
+	id: string;
+	/** SVG viewBox for the default (desktop) layout, e.g. "0 0 800 300". */
+	viewBox: string;
+	/** SVG viewBox for the stacked vertical layout shown below 700px. Omit if the
+	 * diagram doesn't need restacking. */
+	mobileViewBox?: string;
+	/** Accessible name — becomes the SVG <title>. */
+	title: string;
+	/** Accessible long description — becomes the SVG <desc>. Should carry the same
+	 * facts as the surrounding prose, never a fact that exists only in the picture. */
+	desc: string;
+}
+
+const { id, viewBox, mobileViewBox, title, desc } = Astro.props;
+
+const aspectRatio = (vb: string) => {
+	const [, , w, h] = vb.trim().split(/\s+/).map(Number);
+	return `${w} / ${h}`;
+};
+
+const titleId = `${id}-title`;
+const descId = `${id}-desc`;
+const hasCaption = Astro.slots.has('caption');
+---
+
+<figure class="diagram">
+	<svg
+		class="diagram-svg diagram-svg--desktop"
+		viewBox={viewBox}
+		style={`aspect-ratio: ${aspectRatio(viewBox)};`}
+		role="img"
+		aria-labelledby={`${titleId} ${descId}`}
+		preserveAspectRatio="xMidYMid meet"
+	>
+		<title id={titleId}>{title}</title>
+		<desc id={descId}>{desc}</desc>
+		<slot />
+	</svg>
+
+	{mobileViewBox && (
+		<svg
+			class="diagram-svg diagram-svg--mobile"
+			viewBox={mobileViewBox}
+			style={`aspect-ratio: ${aspectRatio(mobileViewBox)};`}
+			role="img"
+			aria-labelledby={`${titleId} ${descId}`}
+			preserveAspectRatio="xMidYMid meet"
+		>
+			<slot name="mobile" />
+		</svg>
+	)}
+
+	{hasCaption && (
+		<figcaption>
+			<slot name="caption" />
+		</figcaption>
+	)}
+</figure>
+
+<style>
+	.diagram {
+		margin: var(--space-8) 0;
+	}
+
+	.diagram-svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		font-family: var(--font-sans);
+		font-size: var(--diagram-label-size);
+	}
+
+	.diagram-svg--mobile {
+		display: none;
+	}
+
+	figcaption {
+		margin-top: var(--space-2);
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	@media (max-width: 700px) {
+		.diagram-svg--desktop {
+			display: none;
+		}
+
+		.diagram-svg--mobile {
+			display: block;
+		}
+	}
+</style>

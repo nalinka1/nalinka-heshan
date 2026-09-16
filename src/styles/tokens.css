@@ -41,6 +41,15 @@
   --measure: 68ch;      /* body text never exceeds this */
   --page-max: 60rem;    /* the content column on wide screens */
   --rule-width: 1px;
+
+  /* Diagrams — Phase 3. Hand-written SVG only, no Mermaid or exported images.
+     Colour stays within --ink / --rule / --accent / --muted / --paper — nothing new. */
+  --diagram-stroke-width:      1.5;   /* box outlines, arrows — unitless SVG user units */
+  --diagram-stroke-width-thin: 1;     /* secondary lines, paired with --rule */
+  --diagram-fill:      var(--paper);  /* the only fill a box may use, to occlude a line behind it; default is none */
+  --diagram-corner-radius: 4;         /* user units; matches the site's 4px border-radius cap */
+  --diagram-arrow-size: 8;            /* arrowhead marker width/height, user units */
+  --diagram-label-size: 0.75rem;      /* 12px — minimum label size, mobile included */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
