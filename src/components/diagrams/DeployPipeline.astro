@@ -1,0 +1,353 @@
+---
+// Deploy pipeline diagram for /architecture, under "Deploys".
+//
+// Layout is computed, not hand-plotted: box widths come from an estimated
+// text width per label so the diagram stays easy to edit (change a label,
+// the boxes reflow) without reaching for Mermaid or an exported image —
+// still plain SVG, no build step, no client JS.
+import Diagram from './Diagram.astro';
+
+interface Part {
+	text: string;
+	mono?: boolean;
+}
+
+interface NodeDef {
+	id: string;
+	/** Desktop label, possibly wrapped across lines. */
+	deskLines: Part[][];
+	/** Mobile label, one line — the narrow stacked boxes are wide enough for it. */
+	mobileLine: Part[];
+	/** True if the arrow (and box outline) leading INTO this node is part of the
+	 * token-exchange path and gets --accent instead of --ink. */
+	accentIn?: boolean;
+}
+
+const nodes: NodeDef[] = [
+	{
+		id: 'push',
+		deskLines: [[{ text: 'push to ' }, { text: 'master', mono: true }]],
+		mobileLine: [{ text: 'push to ' }, { text: 'master', mono: true }],
+	},
+	{
+		id: 'actions',
+		deskLines: [[{ text: 'GitHub Actions' }]],
+		mobileLine: [{ text: 'GitHub Actions' }],
+	},
+	{
+		id: 'oidc',
+		deskLines: [[{ text: 'OIDC token' }], [{ text: 'request' }]],
+		mobileLine: [{ text: 'OIDC token request' }],
+		accentIn: true,
+	},
+	{
+		id: 'sts',
+		deskLines: [[{ text: 'STS AssumeRole' }], [{ text: 'WithWebIdentity' }]],
+		mobileLine: [{ text: 'STS AssumeRoleWithWebIdentity' }],
+		accentIn: true,
+	},
+	{
+		id: 'creds',
+		deskLines: [[{ text: 'temporary' }], [{ text: 'credentials' }]],
+		mobileLine: [{ text: 'temporary credentials' }],
+		accentIn: true,
+	},
+	{
+		id: 's3',
+		deskLines: [[{ text: 'S3 sync' }]],
+		mobileLine: [{ text: 'S3 sync' }],
+	},
+	{
+		id: 'cloudfront',
+		deskLines: [[{ text: 'CloudFront' }], [{ text: 'invalidation' }]],
+		mobileLine: [{ text: 'CloudFront invalidation' }],
+	},
+	{
+		id: 'viewer',
+		deskLines: [[{ text: 'viewer' }]],
+		mobileLine: [{ text: 'viewer' }],
+	},
+];
+
+// Rough glyph widths at 12px IBM Plex Sans/Mono — good enough to size boxes
+// that fit their labels without measuring text at build time.
+const CHAR_W = 6.3;
+const MONO_CHAR_W = 6.8;
+const lineWidth = (parts: Part[]) =>
+	parts.reduce((sum, p) => sum + p.text.length * (p.mono ? MONO_CHAR_W : CHAR_W), 0);
+
+// --- Desktop: left to right ---------------------------------------------
+const D_PAD_X = 16;
+const D_BOX_H = 64;
+const D_MIN_W = 88;
+const D_GAP = 34;
+const D_MARGIN = 24;
+const D_ROW_Y = 28;
+const D_LINE_H = 15;
+
+let cursorX = D_MARGIN;
+const desktopBoxes = nodes.map((n) => {
+	const w = Math.max(D_MIN_W, Math.max(...n.deskLines.map(lineWidth)) + D_PAD_X * 2);
+	const box = { node: n, x: cursorX, y: D_ROW_Y, w, h: D_BOX_H };
+	cursorX += w + D_GAP;
+	return box;
+});
+const desktopWidth = cursorX - D_GAP + D_MARGIN;
+
+const desktopEdges = desktopBoxes.slice(1).map((box, i) => ({
+	x1: desktopBoxes[i].x + desktopBoxes[i].w,
+	x2: box.x,
+	y: box.y + box.h / 2,
+	accent: !!box.node.accentIn,
+}));
+
+// Cloudflare sits below the row, near the viewer end — connected by a thin
+// dashed line with no arrowhead, since it's not a step in the request path.
+const D_CF_W = 132;
+const D_CF_H = 54;
+const viewerBox = desktopBoxes[desktopBoxes.length - 1];
+const cfBoxDesktop = {
+	x: viewerBox.x + viewerBox.w / 2 - D_CF_W - 20,
+	y: D_ROW_Y + D_BOX_H + 46,
+	w: D_CF_W,
+	h: D_CF_H,
+};
+const desktopHeight = cfBoxDesktop.y + cfBoxDesktop.h + D_MARGIN;
+const desktopViewBox = `0 0 ${desktopWidth} ${desktopHeight}`;
+
+// --- Mobile: stacked top to bottom, arrows pointing down -----------------
+const M_WIDTH = 300;
+const M_PAD_X = 14;
+const M_BOX_H = 44;
+const M_BOX_W = M_WIDTH - 48;
+const M_GAP = 34;
+const M_MARGIN = 24;
+
+let cursorY = M_MARGIN;
+const mobileBoxes = nodes.map((n) => {
+	const box = { node: n, x: (M_WIDTH - M_BOX_W) / 2, y: cursorY, w: M_BOX_W, h: M_BOX_H };
+	cursorY += M_BOX_H + M_GAP;
+	return box;
+});
+
+const mobileEdges = mobileBoxes.slice(1).map((box, i) => ({
+	y1: mobileBoxes[i].y + mobileBoxes[i].h,
+	y2: box.y,
+	x: box.x + box.w / 2,
+	accent: !!box.node.accentIn,
+}));
+
+const M_CF_W = 180;
+const M_CF_H = 54;
+const mViewerBox = mobileBoxes[mobileBoxes.length - 1];
+const cfBoxMobile = {
+	x: mViewerBox.x + mViewerBox.w - M_CF_W,
+	y: cursorY - M_GAP + 44,
+	w: M_CF_W,
+	h: M_CF_H,
+};
+const mobileHeight = cfBoxMobile.y + cfBoxMobile.h + M_MARGIN;
+const mobileViewBox = `0 0 ${M_WIDTH} ${mobileHeight}`;
+
+const desc =
+	'Push to master triggers GitHub Actions, which requests an OIDC token from GitHub, ' +
+	'exchanges it with AWS STS for temporary credentials, syncs the build to S3, and ' +
+	'invalidates CloudFront. A viewer then loads the site from CloudFront. Cloudflare ' +
+	'resolves DNS for the domain separately, outside this request path.';
+---
+
+<Diagram
+	id="deploy-pipeline"
+	viewBox={desktopViewBox}
+	mobileViewBox={mobileViewBox}
+	title="How a push to master reaches a viewer, with no stored AWS credentials"
+	desc={desc}
+>
+	<defs>
+		<marker id="dp-arrow-ink" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+			<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--ink" />
+		</marker>
+		<marker id="dp-arrow-accent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+			<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--accent" />
+		</marker>
+	</defs>
+
+	{desktopEdges.map((e) => (
+		<line
+			x1={e.x1}
+			y1={e.y}
+			x2={e.x2 - 2}
+			y2={e.y}
+			class={`edge ${e.accent ? 'edge--accent' : 'edge--ink'}`}
+			marker-end={`url(#dp-arrow-${e.accent ? 'accent' : 'ink'})`}
+		/>
+	))}
+
+	<line
+		x1={cfBoxDesktop.x + cfBoxDesktop.w / 2}
+		y1={cfBoxDesktop.y}
+		x2={viewerBox.x + viewerBox.w / 2}
+		y2={viewerBox.y + viewerBox.h}
+		class="connector"
+	/>
+
+	{desktopBoxes.map((box) => (
+		<g>
+			<rect
+				x={box.x}
+				y={box.y}
+				width={box.w}
+				height={box.h}
+				rx="4"
+				class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
+			/>
+			<text x={box.x + box.w / 2} y={box.y + box.h / 2 - ((box.node.deskLines.length - 1) * D_LINE_H) / 2} class="label">
+				{box.node.deskLines.map((line, i) => (
+					<tspan x={box.x + box.w / 2} dy={i === 0 ? 0 : D_LINE_H}>
+						{line.map((part) => (
+							<tspan class={part.mono ? 'mono-part' : undefined}>{part.text}</tspan>
+						))}
+					</tspan>
+				))}
+			</text>
+		</g>
+	))}
+
+	<g>
+		<rect x={cfBoxDesktop.x} y={cfBoxDesktop.y} width={cfBoxDesktop.w} height={cfBoxDesktop.h} rx="4" class="box box--satellite" />
+		<text x={cfBoxDesktop.x + cfBoxDesktop.w / 2} y={cfBoxDesktop.y + cfBoxDesktop.h / 2 - D_LINE_H / 2} class="label label--muted">
+			<tspan x={cfBoxDesktop.x + cfBoxDesktop.w / 2} dy="0">Cloudflare</tspan>
+			<tspan x={cfBoxDesktop.x + cfBoxDesktop.w / 2} dy={D_LINE_H}>resolves DNS</tspan>
+		</text>
+	</g>
+
+	<text x={desktopWidth / 2} y={desktopHeight - 6} class="annotation">no credentials stored at any step</text>
+
+	<Fragment slot="mobile">
+		<defs>
+			<marker id="dp-m-arrow-ink" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+				<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--ink" />
+			</marker>
+			<marker id="dp-m-arrow-accent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+				<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--accent" />
+			</marker>
+		</defs>
+
+		{mobileEdges.map((e) => (
+			<line
+				x1={e.x}
+				y1={e.y1}
+				x2={e.x}
+				y2={e.y2 - 2}
+				class={`edge ${e.accent ? 'edge--accent' : 'edge--ink'}`}
+				marker-end={`url(#dp-m-arrow-${e.accent ? 'accent' : 'ink'})`}
+			/>
+		))}
+
+		<line
+			x1={cfBoxMobile.x + cfBoxMobile.w / 2}
+			y1={cfBoxMobile.y}
+			x2={mViewerBox.x + mViewerBox.w / 2}
+			y2={mViewerBox.y + mViewerBox.h}
+			class="connector"
+		/>
+
+		{mobileBoxes.map((box) => (
+			<g>
+				<rect
+					x={box.x}
+					y={box.y}
+					width={box.w}
+					height={box.h}
+					rx="4"
+					class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
+				/>
+				<text x={box.x + box.w / 2} y={box.y + box.h / 2} class="label">
+					<tspan x={box.x + box.w / 2} dy="0">
+						{box.node.mobileLine.map((part) => (
+							<tspan class={part.mono ? 'mono-part' : undefined}>{part.text}</tspan>
+						))}
+					</tspan>
+				</text>
+			</g>
+		))}
+
+		<g>
+			<rect x={cfBoxMobile.x} y={cfBoxMobile.y} width={cfBoxMobile.w} height={cfBoxMobile.h} rx="4" class="box box--satellite" />
+			<text x={cfBoxMobile.x + cfBoxMobile.w / 2} y={cfBoxMobile.y + cfBoxMobile.h / 2 - D_LINE_H / 2} class="label label--muted">
+				<tspan x={cfBoxMobile.x + cfBoxMobile.w / 2} dy="0">Cloudflare</tspan>
+				<tspan x={cfBoxMobile.x + cfBoxMobile.w / 2} dy={D_LINE_H}>resolves DNS</tspan>
+			</text>
+		</g>
+
+		<text x={M_WIDTH / 2} y={mobileHeight - 6} class="annotation">no credentials stored at any step</text>
+	</Fragment>
+
+	<Fragment slot="caption">
+		The accent path is the only place a credential exists — a short-lived token exchanged
+		for temporary STS credentials, never stored.
+	</Fragment>
+</Diagram>
+
+<style>
+	.box {
+		fill: var(--diagram-fill);
+		stroke: var(--ink);
+		stroke-width: 1.5;
+	}
+
+	.box--accent {
+		stroke: var(--accent);
+	}
+
+	.box--satellite {
+		stroke: var(--rule);
+		stroke-dasharray: 3 3;
+	}
+
+	.edge {
+		stroke-width: 1.5;
+	}
+
+	.edge--ink {
+		stroke: var(--ink);
+	}
+
+	.edge--accent {
+		stroke: var(--accent);
+	}
+
+	.connector {
+		stroke: var(--rule);
+		stroke-width: 1;
+		stroke-dasharray: 4 4;
+	}
+
+	.arrow--ink {
+		fill: var(--ink);
+	}
+
+	.arrow--accent {
+		fill: var(--accent);
+	}
+
+	.label {
+		fill: var(--ink);
+		text-anchor: middle;
+		dominant-baseline: middle;
+	}
+
+	.label--muted {
+		fill: var(--muted);
+	}
+
+	.mono-part {
+		font-family: var(--font-mono);
+	}
+
+	.annotation {
+		fill: var(--muted);
+		text-anchor: middle;
+		font-size: 0.85em;
+	}
+</style>

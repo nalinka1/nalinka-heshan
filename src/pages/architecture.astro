@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DeployPipeline from '../components/diagrams/DeployPipeline.astro';
 ---
 
 <BaseLayout
@@ -34,6 +35,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			this exact repository and branch, and its permissions cover writing to one
 			S3 bucket and invalidating one CloudFront distribution — nothing else.
 		</p>
+
+		<DeployPipeline />
 	</section>
 
 	<section aria-labelledby="infrastructure-heading">
