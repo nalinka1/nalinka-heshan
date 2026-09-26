@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, stack, repo } = project.data;
+const { title, stack, repo, images = [] } = project.data;
 const body = project.data.body!;
 ---
 
@@ -26,6 +27,19 @@ const body = project.data.body!;
 	<section aria-labelledby="what-it-is-heading">
 		<h2 id="what-it-is-heading">What it is</h2>
 		<p>{body.whatItIs}</p>
+		{images.map((img) => (
+			<figure class="project-image">
+				<Image
+					src={img.src}
+					alt={img.alt}
+					widths={[480, 960, 1920]}
+					sizes="(max-width: 60rem) 100vw, 60rem"
+					format="webp"
+					loading="lazy"
+				/>
+				{img.caption && <figcaption>{img.caption}</figcaption>}
+			</figure>
+		))}
 	</section>
 
 	<section aria-labelledby="decisions-heading">
@@ -73,6 +87,22 @@ const body = project.data.body!;
 
 	.decision + .decision {
 		margin-top: var(--space-6);
+	}
+
+	.project-image {
+		margin: var(--space-8) 0;
+	}
+
+	.project-image img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+
+	.project-image figcaption {
+		margin-top: var(--space-2);
+		font-size: var(--text-sm);
+		color: var(--muted);
 	}
 
 	.rejected {

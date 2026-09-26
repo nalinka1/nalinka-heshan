@@ -131,12 +131,17 @@ Section 2 above. Shipped, reviewed, accent widened to match its caption, pushed.
 Section 3 above. Do not attempt the vertical-stack version of the fanout — read the
 reasoning above first.
 
-### Stage 3.5 — Image support — not started
+### Stage 3.5 — Image support — done
 
 - Extend the projects schema: optional `images` array, each with `src`, `alt`, `caption`
 - Astro `<Image />`, WebP, explicit dimensions, lazy below the fold
 - Render on deep-dive pages only
 - Source images live in `src/assets/projects/`, not `public/`, so Astro optimises them
+
+Shipped as plumbing only — no project has images yet. Images render under "What it is"
+with a 480/960/1920w WebP srcset; an empty `alt` fails the build. `src/assets/projects/`
+doesn't exist until the first real image arrives (Stage 3.6). If the LEGO page needs an
+image in "What broke" instead, add a per-image section field then, not before.
 
 ### Stage 3.6 — LEGO deep-dive page — not started
 

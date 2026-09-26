@@ -109,4 +109,6 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
     parallel relationship; stacking it vertically for mobile would make it read as
     sequential, which is false. Split into two diagrams when it returns: the linear
     path, then the fanout separately.
-  - 3.5, 3.6 not started — image support, LEGO Sorting System deep-dive page.
+  - 3.5 done — optional `images` on projects, rendered with Astro `<Image />` (WebP,
+    srcset, lazy) on deep-dive pages only. No project uses it yet.
+  - 3.6 not started — LEGO Sorting System deep-dive page.
