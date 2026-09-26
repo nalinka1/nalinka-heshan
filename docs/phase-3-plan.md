@@ -83,7 +83,7 @@ Be honest about this. Two of three projects have nothing to show.
 
 - **LEGO sorting** — the only project with genuine visual material. Pieces being
   classified, the rig, a confusion matrix, before-and-after on the data pipeline fix.
-  Worth a deep-dive page of its own in this phase (Stage 3.6).
+  Its deep-dive page (Stage 3.6) was cancelled — see below.
 - **Order platform** — nothing photogenic. The diagram is the visual.
 - **Multi-Cloud** — nothing photogenic. Terraform output and denied-access test results
   are text, and belong in the prose.
@@ -140,15 +140,15 @@ reasoning above first.
 
 Shipped as plumbing only — no project has images yet. Images render under "What it is"
 with a 480/960/1920w WebP srcset; an empty `alt` fails the build. `src/assets/projects/`
-doesn't exist until the first real image arrives (Stage 3.6). If the LEGO page needs an
-image in "What broke" instead, add a per-image section field then, not before.
+doesn't exist until the first real image arrives. If a page needs an image in "What
+broke" instead, add a per-image section field then, not before.
 
-### Stage 3.6 — LEGO deep-dive page — not started
+### Stage 3.6 — LEGO deep-dive page — cancelled
 
-Same decision-record structure as the order platform page. Needs decision and failure
-material from Nalinka — don't invent it. The failure story already in docs/content.md
-(data pipeline fix, not model tuning) is the seed; the specific decisions still need to
-come from him.
+Cancelled 2026-09-27. The project was built for someone else's startup a long time ago;
+there isn't enough remembered detail to write decisions and a failure story without
+inventing them, and the work isn't Nalinka's to document in depth. The LEGO row stays
+on `/projects` with its existing one-paragraph summary, no deep-dive page.
 
 ---
 

@@ -85,8 +85,8 @@ got fixed instead.
 `Python · TensorFlow · OpenCV`
 
 Not on the current CV, but the site can carry more than the CV — kept here deliberately.
-No deep-dive page yet (Phase 3, Stage 3.6). Needs decision/failure material from
-Nalinka before that page is written; don't invent it.
+No deep-dive page — Stage 3.6 was cancelled. Built for someone else's startup long ago;
+not enough remembered detail to write one without inventing it. Row only.
 
 ### Alternate, not currently used
 **99Yards** — React Native mobile app for a textile industry vendor-client platform,

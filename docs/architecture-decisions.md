@@ -95,7 +95,7 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
   `/architecture`, plus `/cv`), Astro Content Collections, one project deep-dive (AWS
   Event-Driven Order Platform), `/architecture` written up, cache-control split,
   `noindex` on `/cv`. See docs/phase-2-plan.md.
-- **Phase 3 — in progress.** See docs/phase-3-plan.md for full detail.
+- **Phase 3 — done** (3.4 deferred, 3.6 cancelled). See docs/phase-3-plan.md.
   - 3.0 done — View Transitions removed (so "no client-side framework" on
     `/architecture` stays true), `cv.pdf` cache-control fixed, footer rule alignment
     fixed.
@@ -111,4 +111,10 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
     path, then the fanout separately.
   - 3.5 done — optional `images` on projects, rendered with Astro `<Image />` (WebP,
     srcset, lazy) on deep-dive pages only. No project uses it yet.
-  - 3.6 not started — LEGO Sorting System deep-dive page.
+  - 3.6 cancelled — LEGO deep-dive page. Someone else's startup project, not enough
+    remembered detail to write it without inventing facts. Row stays on `/projects`.
+- **Next — not planned yet.** Nalinka wants to add more projects and give every project
+  and every role a deep-dive page like the order platform one (technical and
+  architectural detail). Waiting on content from him; plan it as its own phase when it
+  arrives. Role pages stay inside what the CV already says publicly. TAC in particular:
+  no internal systems beyond Fineos and Avanti, no architecture diagrams.
