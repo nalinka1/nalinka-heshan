@@ -38,8 +38,8 @@ Availability line:
 
 ## Projects
 
-Three shown, ordered by what he most wants to be hired for. A fourth exists but isn't
-currently used.
+Four shown, ordered by what he most wants to be hired for, in-progress work last. A
+fifth exists but isn't currently used.
 
 ### AWS Event-Driven Order Platform
 Serverless order flow built with API Gateway, Lambda, DynamoDB, SNS/SQS and S3,
@@ -87,6 +87,25 @@ got fixed instead.
 Not on the current CV, but the site can carry more than the CV — kept here deliberately.
 No deep-dive page — Stage 3.6 was cancelled. Built for someone else's startup long ago;
 not enough remembered detail to write one without inventing it. Row only.
+
+### Claims Intelligence Assistant — in progress
+A question-and-answer tool for insurance claim documents, built on retrieval-augmented
+generation over synthetic data. Two rules shape it: every answer cites the document it
+came from, and LLM cost is capped per request. I chose pgvector over a separate vector
+database so one Postgres instance holds both the claims data and the embeddings. The
+scaffolding is done; document ingestion and the cited Q&A pipeline are next.
+
+`Python · FastAPI · Postgres + pgvector · AWS Bedrock · AWS CDK`
+
+Source: the repo README (github.com/nalinka1/claims-intelligence-assistant). As of
+2026-09-27 only the scaffold exists — FastAPI `/health`, default CDK stack, local
+pgvector compose, Next.js starter. Only claim what's built.
+
+> Portfolio project on synthetic data. Never connect it to TAC or any real claims work
+> — the README's "borrowed from real claims work" line stays off the site. No repo link
+> until ingestion works (an empty scaffold reads as abandoned). Next.js left off the
+> stack line (React stays off the site). Deep-dive page once there's a working pipeline
+> and a real "what broke".
 
 ### Alternate, not currently used
 **99Yards** — React Native mobile app for a textile industry vendor-client platform,
