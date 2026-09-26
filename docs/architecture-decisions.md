@@ -141,3 +141,6 @@ Not started. One at a time, in roughly this order.
 - **Stage 3.4 — order platform diagrams.** Deferred; see docs/phase-3-plan.md.
 - **Content from Nalinka.** "Technical detail" for each role page; what broke,
   decisions and repo URL for Multi-Cloud.
+- **`claims-lakehouse` row?** It's a project on the CV (github.com/nalinka1/
+  claims-lakehouse) but not on the site. Review the repo the same way as the claims
+  assistant — only claim what's built — and draft a row if Nalinka wants it.

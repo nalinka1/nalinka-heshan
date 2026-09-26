@@ -21,12 +21,16 @@ Job hunt comes first. Ship ugly, ship fast, keep every stage abandonable. No sco
 
 ## Detailed context (loaded every session)
 @docs/architecture-decisions.md
-@docs/phase-3-plan.md
 
-## History (read on demand — not auto-loaded, ask for these when relevant)
+The Backlog section at the end of that file is the to-do list. Start there.
+
+## Read on demand — not auto-loaded
+- docs/content.md — site copy and per-item rules (the CV wins on facts; see below).
+  Read before writing or changing any copy.
+- docs/phase-3-plan.md — Phase 3, done. Diagram rules (tokens, 12px minimum labels,
+  mobile stacking) and the deferred Stage 3.4 — read before touching any diagram.
 - docs/build-plan.md — Phase 1, done
 - docs/phase-2-plan.md — Phase 2, done
-- docs/content.md — source of truth for every fact used as site copy
 
 ## Content rules
 - **The CV (`public/cv.pdf`) is the source of truth** for work experience, projects and
@@ -60,6 +64,11 @@ Y", "with a focus on". No hero-section slogans.
 - Flag anything that touches cost (NAT gateways, always-on compute, RDS) before creating
   it — budget is a few dollars a month.
 - Interactive CLI wizards hang in this terminal. Use non-interactive flags.
+- Pushing to `master` deploys. Ask before every push. `gh` isn't installed — check
+  Actions runs through the public GitHub API with curl.
+- Nalinka usually has `astro dev` running on port 4321. A second dev server can't be
+  started from here (Astro's lock file). Verify with `npm run build` and dist/, or
+  against 4321 — a new route needs his dev server restarted.
 
 ## Settled wording
 - Site intro says "a software engineer", even though the CV headline is "Full Stack
