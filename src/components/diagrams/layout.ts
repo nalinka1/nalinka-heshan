@@ -17,7 +17,7 @@ const MONO_CHAR_W = 6.8;
 export const lineWidth = (parts: Part[], fontSize = 12) =>
 	parts.reduce((sum, p) => sum + p.text.length * (p.mono ? MONO_CHAR_W : CHAR_W), 0) * (fontSize / 12);
 
-// Smallest label a reader may ever see, in CSS px (PHASE_3_PLAN.md).
+// Smallest label a reader may ever see, in CSS px (docs/phase-3-plan.md).
 export const MIN_LABEL_PX = 12;
 
 // --- Desktop: one row, left to right -------------------------------------
