@@ -119,6 +119,25 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
   required; "What I worked on", "Technical detail" and Stack optional. `body.draft:
   true` builds a page under `astro dev` only (`src/lib/published.ts`), so placeholder
   content never reaches the live site. Multi-Cloud and all four roles were
-  published 2026-09-27 from CV content; more detail to come from Nalinka. Role pages stay inside what the CV already says
-  publicly. TAC in particular: system names only as the CV names them, no
-  architecture diagrams.
+  published 2026-09-27 from CV content; more detail to come from Nalinka. Role pages
+  stay inside what the CV already says publicly. TAC in particular: system names only
+  as the CV names them, no architecture diagrams.
+
+---
+
+## Backlog
+
+Not started. One at a time, in roughly this order.
+
+- **Real 404 page.** `terraform/cloudfront.tf` maps both 403 and 404 to `/index.html`
+  with a 200 — an SPA fallback for client-side routing the site doesn't have. Every
+  mistyped or dead URL serves the home page as a 200 (a soft 404), so broken links are
+  invisible and search engines can index junk paths. Fix: add `src/pages/404.astro`
+  (Astro emits `404.html`), then change both `custom_error_response` blocks to
+  `response_code = 404`, `response_page_path = "/404.html"`. Terraform change — show
+  the plan before apply. Check the CloudFront Function doesn't rewrite `/404.html`,
+  and that `/404.html` gets `no-cache` like other HTML.
+- **`@astrojs/check` in CI.** Carried over from Stage 3.0. Workflow diff before change.
+- **Stage 3.4 — order platform diagrams.** Deferred; see docs/phase-3-plan.md.
+- **Content from Nalinka.** "Technical detail" for each role page; what broke,
+  decisions and repo URL for Multi-Cloud.
