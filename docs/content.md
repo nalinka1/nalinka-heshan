@@ -76,6 +76,11 @@ GitHub Actions · OIDC`
 > Label as project work, not production experience, regardless of completion status —
 > Azure and Terraform are project-level.
 
+**Draft deep-dive page** (`body.draft: true` — local dev only, not live). Hands-on
+project, so it uses "What I built" (taken from the facts above) instead of Decisions.
+Still needs from Nalinka: what broke, any decisions worth recording, and the repo URL
+once the code is pushed (currently local only). Remove `draft` to publish.
+
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
 part wasn't the model — the first version failed on pieces with no clean training

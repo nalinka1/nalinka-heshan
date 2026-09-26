@@ -7,10 +7,16 @@ const decision = z.object({
 	why: z.string(),
 });
 
+// Deep-dive page content. Only whatItIs is required; each other section renders
+// only when present, so a hands-on project and a decision-record project share
+// one template. `draft: true` builds the page in `astro dev` only — see
+// src/lib/published.ts.
 const projectBody = z.object({
+	draft: z.boolean().optional(),
 	whatItIs: z.string(),
-	decisions: z.array(decision).min(1),
-	whatBroke: z.string(),
+	built: z.array(z.string()).min(1).optional(),
+	decisions: z.array(decision).min(1).optional(),
+	whatBroke: z.string().optional(),
 });
 
 const projects = defineCollection({

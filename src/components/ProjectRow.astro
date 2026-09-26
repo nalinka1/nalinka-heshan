@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { isPublished } from '../lib/published';
 
 interface Props {
 	project: CollectionEntry<'projects'>;
@@ -16,7 +17,9 @@ const { title, slug, summary, stack, status, repo, body } = project.data;
 	</div>
 	<div class="project-body">
 		<p>{summary}</p>
-		{body && <p><a href={`/projects/${slug}`}>Read the decisions</a></p>}
+		{isPublished(body) && (
+			<p><a href={`/projects/${slug}`}>{body!.decisions ? 'Read the decisions' : 'Read more'}</a></p>
+		)}
 		{repo && <p><a href={repo}>{repo.replace('https://', '')}</a></p>}
 		<p class="mono">{stack.join(' · ')}</p>
 	</div>

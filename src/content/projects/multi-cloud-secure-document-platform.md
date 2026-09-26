@@ -11,4 +11,14 @@ stack:
   - "GitHub Actions"
   - "OIDC"
 order: 2
+body:
+  draft: true
+  whatItIs: "A project connecting AWS and Azure so a workload in one cloud can authenticate to the other with no stored access keys. Both sides are provisioned as code, and negative tests prove that the wrong callers are denied."
+  built:
+    - "Cross-cloud OIDC workload identity federation between AWS and Azure — no stored access keys."
+    - "Negative tests proving expired tokens and wrong identities are denied."
+    - "A Terraform-provisioned landing zone with remote state and locking."
+    - "Custom RBAC roles."
+    - "Managed identities pulling secrets, with no credentials in code."
+    - "GitHub Actions deploying to both clouds through federated credentials."
 ---
