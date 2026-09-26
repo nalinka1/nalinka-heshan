@@ -25,9 +25,9 @@ interface NodeDef {
 	deskLines: Lines;
 	/** Mobile label — one line where the narrow stacked boxes are wide enough for it. */
 	mobileLines: Lines;
-	/** True if the arrow (and box outline) leading INTO this node is part of the
-	 * origin path — the only way into the bucket — and gets --accent instead of --ink. */
-	accentIn?: boolean;
+	/** True if this box is on the trust path from viewer to bucket and gets an
+	 * --accent outline. An arrow is --accent if either end is. */
+	accent?: boolean;
 }
 
 const nodes: NodeDef[] = [
@@ -35,9 +35,12 @@ const nodes: NodeDef[] = [
 		id: 'viewer',
 		deskLines: [[{ text: 'viewer' }], [{ text: 'request' }]],
 		mobileLines: [[{ text: 'viewer request' }]],
+		accent: true,
 	},
 	{
 		// Viewer-request function, so the rewrite happens before the cache lookup.
+		// A rewrite step the request passes through, not part of the trust path —
+		// so --ink, though the arrows either side of it stay --accent.
 		id: 'function',
 		deskLines: [
 			[{ text: 'CloudFront Function' }],
@@ -53,18 +56,19 @@ const nodes: NodeDef[] = [
 		id: 'cloudfront',
 		deskLines: [[{ text: 'CloudFront' }], [{ text: 'cache lookup' }]],
 		mobileLines: [[{ text: 'CloudFront cache lookup' }]],
+		accent: true,
 	},
 	{
 		id: 'oac',
 		deskLines: [[{ text: 'Origin Access' }], [{ text: 'Control' }]],
 		mobileLines: [[{ text: 'Origin Access Control' }]],
-		accentIn: true,
+		accent: true,
 	},
 	{
 		id: 'bucket',
 		deskLines: [[{ text: 'private S3' }], [{ text: 'bucket' }]],
 		mobileLines: [[{ text: 'private S3 bucket' }]],
-		accentIn: true,
+		accent: true,
 	},
 ];
 
@@ -75,7 +79,7 @@ const desktopEdges = desktopBoxes.slice(1).map((box, i) => ({
 	x1: desktopBoxes[i].x + desktopBoxes[i].w,
 	x2: box.x,
 	y: box.y + box.h / 2,
-	accent: !!box.node.accentIn,
+	accent: !!(box.node.accent || desktopBoxes[i].node.accent),
 }));
 
 const desktopHeight = desktopBoxes[0].h + D_EDGE * 2;
@@ -88,7 +92,7 @@ const mobileEdges = mobileBoxes.slice(1).map((box, i) => ({
 	y1: mobileBoxes[i].y + mobileBoxes[i].h,
 	y2: box.y,
 	x: box.x + box.w / 2,
-	accent: !!box.node.accentIn,
+	accent: !!(box.node.accent || mobileBoxes[i].node.accent),
 }));
 
 const mobileHeight = stackBottom - M_GAP + M_MARGIN;
@@ -137,7 +141,7 @@ const desc =
 				width={box.w}
 				height={box.h}
 				rx="4"
-				class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
+				class={`box ${box.node.accent ? 'box--accent' : ''}`}
 			/>
 			<text x={box.x + box.w / 2} y={textY(box, box.node.deskLines.length, D_LINE_H)} font-size={D_FONT} class="label">
 				{box.node.deskLines.map((line, i) => (
@@ -180,7 +184,7 @@ const desc =
 					width={box.w}
 					height={box.h}
 					rx="4"
-					class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
+					class={`box ${box.node.accent ? 'box--accent' : ''}`}
 				/>
 				<text x={box.x + box.w / 2} y={textY(box, box.node.mobileLines.length, M_LINE_H)} class="label">
 					{box.node.mobileLines.map((line, i) => (
