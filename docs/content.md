@@ -76,10 +76,10 @@ GitHub Actions · OIDC`
 > Label as project work, not production experience, regardless of completion status —
 > Azure and Terraform are project-level.
 
-**Draft deep-dive page** (`body.draft: true` — local dev only, not live). Hands-on
-project, so it uses "What I built" (taken from the facts above) instead of Decisions.
-Still needs from Nalinka: what broke, any decisions worth recording, and the repo URL
-once the code is pushed (currently local only). Remove `draft` to publish.
+**Has a deep-dive page** (published 2026-09-27). Hands-on project, so it uses "What I
+built" (taken from the facts above) instead of Decisions. Still to add from Nalinka:
+what broke, any decisions worth recording, and the repo URL once the code is pushed
+(currently local only).
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
@@ -152,8 +152,8 @@ reporting systems on Apache Druid and Flink, and a major architectural migration
 > diagrams, no screenshots. This matters more than usual during Phase 3, which is
 > otherwise entirely about drawing architecture diagrams.
 >
-> **Role deep-dive pages** exist as drafts (`body.draft: true`, local dev only) for all
-> four roles, filled from the CV's bullets and stack lines. The optional "Technical
+> **Role deep-dive pages** are published (2026-09-27) for all four roles, filled from
+> the CV's bullets and stack lines. The optional "Technical
 > detail" section is empty everywhere until Nalinka writes it.
 >
 > **Client names for CSI and Qbitum are fine to use** — they're already public on the

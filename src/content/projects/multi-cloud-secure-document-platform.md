@@ -13,7 +13,6 @@ stack:
 status: "in progress"
 order: 2
 body:
-  draft: true
   whatItIs: "A project connecting AWS and Azure so a workload in one cloud can authenticate to the other with no stored access keys. Both sides are provisioned as code, and negative tests prove that the wrong callers are denied."
   built:
     - "Cross-cloud OIDC workload identity federation between AWS and Azure — no stored access keys."

@@ -8,7 +8,6 @@ endDate: "Dec 2025"
 summary: "Designed and delivered an outpatient pharmacy billing and payments platform for a major Middle Eastern private healthcare group. Live two years, $100M+ in annual transactions. Also built a real-time drug interaction checking service against patient medical history."
 order: 2
 body:
-  draft: true
   overview: "I designed and owned the invoice, billing and payments platform for Dr. Sulaiman Al Habib Medical Group, the largest private healthcare network in the Middle East. It has been live two years and handles USD 100M+ in annual transactions."
   work:
     - "Designed and owned the payment and billing platform end to end."

@@ -118,7 +118,7 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
   and What broke optional. Role pages (`/experience/[slug]`): only "The role"
   required; "What I worked on", "Technical detail" and Stack optional. `body.draft:
   true` builds a page under `astro dev` only (`src/lib/published.ts`), so placeholder
-  content never reaches the live site. Multi-Cloud and all four roles are drafts
-  waiting on Nalinka's content. Role pages stay inside what the CV already says
+  content never reaches the live site. Multi-Cloud and all four roles were
+  published 2026-09-27 from CV content; more detail to come from Nalinka. Role pages stay inside what the CV already says
   publicly. TAC in particular: system names only as the CV names them, no
   architecture diagrams.

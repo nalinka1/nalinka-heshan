@@ -8,7 +8,6 @@ endDate: "Jul 2023"
 summary: "Migrated a Sri Lankan bank's core digital platform onto Red Hat OpenShift, with Prometheus and Grafana monitoring and load testing to support the production cutover."
 order: 3
 body:
-  draft: true
   overview: "I migrated Seylan Bank's core digital platform onto Red Hat OpenShift. It was a live financial system, and the cutover had zero disruption."
   work:
     - "Migrated Seylan Bank's core digital platform onto Red Hat OpenShift, with zero disruption at cutover."

@@ -7,7 +7,6 @@ startDate: "Dec 2025"
 summary: "Claims and payments systems for Victoria's transport accident insurer. Integration design for a platform replacement, a recovery-payments consolidation moving 13,000+ records, and extensions to the Fineos claims platform."
 order: 1
 body:
-  draft: true
   overview: "Claims and payments systems for Victoria's transport accident insurer, on an enterprise transformation program."
   work:
     - "Reverse-engineering 50+ interconnected systems to design the integration layer for TAC's next claims platform."
