@@ -64,7 +64,7 @@ Caught before staging.
 > appears — row, deep-dive page, or diagram.**
 
 ### Multi-Cloud Secure Platform, AWS and Azure
-Complete, not in progress. Cross-cloud OIDC workload identity federation so a workload
+In progress — the CV lists it as "2026, in build". Cross-cloud OIDC workload identity federation so a workload
 authenticates across clouds with no stored access keys, with negative tests proving
 expired tokens and wrong identities are denied. Terraform-provisioned landing zone with
 remote state and locking, custom RBAC roles, and managed identities pulling secrets with
@@ -148,14 +148,13 @@ Backend services on Play Framework for a B2B eCommerce marketplace, plus analyti
 reporting systems on Apache Druid and Flink, and a major architectural migration.
 
 > **TAC confidentiality:** keep this at the level already published on the CV. No
-> internal system detail beyond naming Fineos and Avanti, no data, no architecture
+> internal system detail beyond the names the CV uses (Fineos, Domino), no data, no architecture
 > diagrams, no screenshots. This matters more than usual during Phase 3, which is
 > otherwise entirely about drawing architecture diagrams.
 >
 > **Role deep-dive pages** exist as drafts (`body.draft: true`, local dev only) for all
-> four roles, filled from the CV's bullets and stack lines. The TAC draft leaves out the
-> CV's Domino bullet — it names an internal system beyond Fineos and Avanti. The
-> optional "Technical detail" section is empty everywhere until Nalinka writes it.
+> four roles, filled from the CV's bullets and stack lines. The optional "Technical
+> detail" section is empty everywhere until Nalinka writes it.
 >
 > **Client names for CSI and Qbitum are fine to use** — they're already public on the
 > CV. This is a different rule from the Order Platform project above, whose client

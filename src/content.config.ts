@@ -46,7 +46,7 @@ const projects = defineCollection({
 
 // Role deep-dive page content, same rules as projectBody: only overview is
 // required, the rest render when present, `draft: true` is dev-only.
-// TAC stays at CV level — no internal system names beyond Fineos and Avanti.
+// TAC stays at CV level — system names only as the CV names them.
 const roleBody = z.object({
 	draft: z.boolean().optional(),
 	overview: z.string(),

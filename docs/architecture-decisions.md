@@ -120,5 +120,5 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
   true` builds a page under `astro dev` only (`src/lib/published.ts`), so placeholder
   content never reaches the live site. Multi-Cloud and all four roles are drafts
   waiting on Nalinka's content. Role pages stay inside what the CV already says
-  publicly. TAC in particular: no internal systems beyond Fineos and Avanti, no
+  publicly. TAC in particular: system names only as the CV names them, no
   architecture diagrams.

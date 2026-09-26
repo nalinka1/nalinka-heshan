@@ -15,6 +15,7 @@ body:
     - "Migrated 13,000+ financial records into the core platform. 100% accuracy, zero reconciliation issues, and the legacy system was decommissioned."
     - "Automated document extraction into structured tables through scheduled batch jobs, feeding analytics and reporting."
     - "Extending the Fineos claims platform."
+    - "Documented the Domino document management services, replacing informal knowledge with a basis for future-state design."
   stack:
     - "Java"
     - "Oracle SQL"

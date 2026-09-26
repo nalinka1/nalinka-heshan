@@ -29,12 +29,12 @@ Job hunt comes first. Ship ugly, ship fast, keep every stage abandonable. No sco
 - docs/content.md — source of truth for every fact used as site copy
 
 ## Content rules
-- All facts come from docs/content.md and the CV. Never invent projects, employers,
+- **The CV (`public/cv.pdf`) is the source of truth** for work experience, projects and
+  skills. docs/content.md holds site copy and per-item rules; where the two disagree on
+  a fact, the CV wins and content.md gets corrected. Never invent projects, employers,
   metrics or skills.
-- Nothing about TAC beyond what's already public on the CV. No internal system names
-  beyond Fineos and Avanti, no data, no architecture diagrams of TAC systems — this
-  matters more in Phase 3 than any previous phase, since Phase 3 is otherwise all about
-  drawing architecture diagrams.
+- Nothing about TAC beyond what's already public on the CV. TAC system names only as
+  the CV names them (Fineos, Domino). No data, no architecture diagrams of TAC systems.
 - Azure and Terraform are project-level experience. Never presented at the same weight
   as production AWS work.
 - The AWS Event-Driven Order Platform was built for a client demo. Never name or refer
@@ -43,9 +43,7 @@ Job hunt comes first. Ship ugly, ship fast, keep every stage abandonable. No sco
   Dr. Sulaiman Al Habib Medical Group (Cloud Solutions International), Seylan Bank
   (Qbitum Solution).
 - Keep React off the site (rusty) unless told otherwise.
-- Unconfirmed skills — don't use on the site: Jest, SonarQube, Ionic, Graylog.
-  (JUnit, Mockito, Cypress, Redis, Kinesis, Elasticsearch, Selenium, Apache Druid and
-  Apache Flink are now confirmed on the CV and may be used.)
+- Skills: only what the CV lists. If it isn't on the CV, it doesn't go on the site.
 
 ## Tone for site copy
 Plain, specific, first person, short sentences. Banned words: leverage, spearheaded,
@@ -64,6 +62,6 @@ Y", "with a focus on". No hero-section slogans.
 - Interactive CLI wizards hang in this terminal. Use non-interactive flags.
 
 ## Settled wording
-- Site intro says "a software engineer", even though the CV headline is "Senior Software
-  Engineer". Decided 2026-09-27 — the plain wording covers both. Don't change it or
-  re-raise it.
+- Site intro says "a software engineer", even though the CV headline is "Full Stack
+  Developer" and the Qbitum title was Senior. Decided 2026-09-27 — the plain wording
+  covers it. Don't change it or re-raise it.

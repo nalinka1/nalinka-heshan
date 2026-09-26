@@ -10,6 +10,7 @@ stack:
   - "Azure (Entra ID, RBAC, Key Vault)"
   - "GitHub Actions"
   - "OIDC"
+status: "in progress"
 order: 2
 body:
   draft: true
