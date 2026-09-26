@@ -1,0 +1,202 @@
+---
+// Request path diagram for /architecture, under "Hosting".
+//
+// Layout is computed, not hand-plotted — see layout.ts.
+import Diagram from './Diagram.astro';
+import {
+	type Lines,
+	D_EDGE,
+	D_FONT,
+	D_LINE_H,
+	D_WIDTH,
+	M_GAP,
+	M_LINE_H,
+	M_MARGIN,
+	M_WIDTH,
+	STACK_BELOW,
+	layoutRow,
+	layoutStack,
+	textY,
+} from './layout';
+
+interface NodeDef {
+	id: string;
+	/** Desktop label, possibly wrapped across lines. */
+	deskLines: Lines;
+	/** Mobile label — one line where the narrow stacked boxes are wide enough for it. */
+	mobileLines: Lines;
+	/** True if the arrow (and box outline) leading INTO this node is part of the
+	 * origin path — the only way into the bucket — and gets --accent instead of --ink. */
+	accentIn?: boolean;
+}
+
+const nodes: NodeDef[] = [
+	{
+		id: 'viewer',
+		deskLines: [[{ text: 'viewer' }], [{ text: 'request' }]],
+		mobileLines: [[{ text: 'viewer request' }]],
+	},
+	{
+		// Viewer-request function, so the rewrite happens before the cache lookup.
+		id: 'function',
+		deskLines: [
+			[{ text: 'CloudFront Function' }],
+			[{ text: '/path', mono: true }, { text: ' →' }],
+			[{ text: '/path/index.html', mono: true }],
+		],
+		mobileLines: [
+			[{ text: 'CloudFront Function' }],
+			[{ text: '/path', mono: true }, { text: ' → ' }, { text: '/path/index.html', mono: true }],
+		],
+	},
+	{
+		id: 'cloudfront',
+		deskLines: [[{ text: 'CloudFront' }], [{ text: 'cache lookup' }]],
+		mobileLines: [[{ text: 'CloudFront cache lookup' }]],
+	},
+	{
+		id: 'oac',
+		deskLines: [[{ text: 'Origin Access' }], [{ text: 'Control' }]],
+		mobileLines: [[{ text: 'Origin Access Control' }]],
+		accentIn: true,
+	},
+	{
+		id: 'bucket',
+		deskLines: [[{ text: 'private S3' }], [{ text: 'bucket' }]],
+		mobileLines: [[{ text: 'private S3 bucket' }]],
+		accentIn: true,
+	},
+];
+
+// --- Desktop ---------------------------------------------------------------
+const desktopBoxes = layoutRow('RequestPath', nodes, (n) => n.deskLines);
+
+const desktopEdges = desktopBoxes.slice(1).map((box, i) => ({
+	x1: desktopBoxes[i].x + desktopBoxes[i].w,
+	x2: box.x,
+	y: box.y + box.h / 2,
+	accent: !!box.node.accentIn,
+}));
+
+const desktopHeight = desktopBoxes[0].h + D_EDGE * 2;
+const desktopViewBox = `0 0 ${D_WIDTH} ${desktopHeight}`;
+
+// --- Mobile ---------------------------------------------------------------
+const { boxes: mobileBoxes, bottom: stackBottom } = layoutStack(nodes, (n) => n.mobileLines);
+
+const mobileEdges = mobileBoxes.slice(1).map((box, i) => ({
+	y1: mobileBoxes[i].y + mobileBoxes[i].h,
+	y2: box.y,
+	x: box.x + box.w / 2,
+	accent: !!box.node.accentIn,
+}));
+
+const mobileHeight = stackBottom - M_GAP + M_MARGIN;
+const mobileViewBox = `0 0 ${M_WIDTH} ${mobileHeight}`;
+
+const desc =
+	'A viewer request reaches CloudFront. A CloudFront Function runs first and rewrites ' +
+	'/path to /path/index.html, before the cache lookup. CloudFront then reads from the ' +
+	'private S3 bucket through Origin Access Control; the bucket policy only allows reads ' +
+	'from this one distribution.';
+---
+
+<Diagram
+	id="request-path"
+	viewBox={desktopViewBox}
+	mobileViewBox={mobileViewBox}
+	stackBelow={STACK_BELOW}
+	title="How a viewer request reaches the private S3 bucket"
+	desc={desc}
+>
+	<defs>
+		<marker id="rp-arrow-ink" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+			<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--ink" />
+		</marker>
+		<marker id="rp-arrow-accent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+			<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--accent" />
+		</marker>
+	</defs>
+
+	{desktopEdges.map((e) => (
+		<line
+			x1={e.x1}
+			y1={e.y}
+			x2={e.x2 - 2}
+			y2={e.y}
+			class={`edge ${e.accent ? 'edge--accent' : 'edge--ink'}`}
+			marker-end={`url(#rp-arrow-${e.accent ? 'accent' : 'ink'})`}
+		/>
+	))}
+
+	{desktopBoxes.map((box) => (
+		<g>
+			<rect
+				x={box.x}
+				y={box.y}
+				width={box.w}
+				height={box.h}
+				rx="4"
+				class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
+			/>
+			<text x={box.x + box.w / 2} y={textY(box, box.node.deskLines.length, D_LINE_H)} font-size={D_FONT} class="label">
+				{box.node.deskLines.map((line, i) => (
+					<tspan x={box.x + box.w / 2} dy={i === 0 ? 0 : D_LINE_H}>
+						{line.map((part) => (
+							<tspan class={part.mono ? 'mono-part' : undefined}>{part.text}</tspan>
+						))}
+					</tspan>
+				))}
+			</text>
+		</g>
+	))}
+
+	<Fragment slot="mobile">
+		<defs>
+			<marker id="rp-m-arrow-ink" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+				<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--ink" />
+			</marker>
+			<marker id="rp-m-arrow-accent" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+				<path d="M0,0 L8,4 L0,8 Z" class="arrow arrow--accent" />
+			</marker>
+		</defs>
+
+		{mobileEdges.map((e) => (
+			<line
+				x1={e.x}
+				y1={e.y1}
+				x2={e.x}
+				y2={e.y2 - 2}
+				class={`edge ${e.accent ? 'edge--accent' : 'edge--ink'}`}
+				marker-end={`url(#rp-m-arrow-${e.accent ? 'accent' : 'ink'})`}
+			/>
+		))}
+
+		{mobileBoxes.map((box) => (
+			<g>
+				<rect
+					x={box.x}
+					y={box.y}
+					width={box.w}
+					height={box.h}
+					rx="4"
+					class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
+				/>
+				<text x={box.x + box.w / 2} y={textY(box, box.node.mobileLines.length, M_LINE_H)} class="label">
+					{box.node.mobileLines.map((line, i) => (
+						<tspan x={box.x + box.w / 2} dy={i === 0 ? 0 : M_LINE_H}>
+							{line.map((part) => (
+								<tspan class={part.mono ? 'mono-part' : undefined}>{part.text}</tspan>
+							))}
+						</tspan>
+					))}
+				</text>
+			</g>
+		))}
+	</Fragment>
+
+	<Fragment slot="caption">
+		The accent path is the only route from a viewer to the bucket — through CloudFront and
+		Origin Access Control, never directly.
+	</Fragment>
+</Diagram>

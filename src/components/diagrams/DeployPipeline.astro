@@ -1,23 +1,31 @@
 ---
 // Deploy pipeline diagram for /architecture, under "Deploys".
 //
-// Layout is computed, not hand-plotted: box widths come from an estimated
-// text width per label so the diagram stays easy to edit (change a label,
-// the boxes reflow) without reaching for Mermaid or an exported image —
-// still plain SVG, no build step, no client JS.
+// Layout is computed, not hand-plotted — see layout.ts.
 import Diagram from './Diagram.astro';
-
-interface Part {
-	text: string;
-	mono?: boolean;
-}
+import {
+	type Lines,
+	D_EDGE,
+	D_FONT,
+	D_LINE_H,
+	D_PAD_X,
+	D_WIDTH,
+	M_GAP,
+	M_LINE_H,
+	M_WIDTH,
+	STACK_BELOW,
+	layoutRow,
+	layoutStack,
+	lineWidth,
+	textY,
+} from './layout';
 
 interface NodeDef {
 	id: string;
 	/** Desktop label, possibly wrapped across lines. */
-	deskLines: Part[][];
+	deskLines: Lines;
 	/** Mobile label — one line where the narrow stacked boxes are wide enough for it. */
-	mobileLines: Part[][];
+	mobileLines: Lines;
 	/** True if the arrow (and box outline) leading INTO this node is part of the
 	 * token-exchange path and gets --accent instead of --ink. */
 	accentIn?: boolean;
@@ -64,46 +72,7 @@ const nodes: NodeDef[] = [
 	},
 ];
 
-// Rough glyph widths at 12px IBM Plex Sans/Mono — good enough to size boxes
-// that fit their labels without measuring text at build time.
-const CHAR_W = 6.3;
-const MONO_CHAR_W = 6.8;
-const lineWidth = (parts: Part[], fontSize = 12) =>
-	parts.reduce((sum, p) => sum + p.text.length * (p.mono ? MONO_CHAR_W : CHAR_W), 0) * (fontSize / 12);
-
-// Smallest label a reader may ever see, in CSS px (PHASE_3_PLAN.md).
-const MIN_LABEL_PX = 12;
-
-// --- Desktop: left to right ---------------------------------------------
-// The viewBox is as wide as the content column at --page-max (60rem minus
-// 2 × --space-6 padding), so at full width one user unit is one CSS pixel
-// and the row fills the column edge to edge.
-const D_WIDTH = 912;
-const D_FONT = 14;
-const D_PAD_X = 14;
-const D_PAD_Y = 14;
-const D_MIN_W = 84;
-const D_GAP = 28;
-const D_EDGE = 1; // half the stroke width, so the outer box edges don't clip
-const D_LINE_H = 18;
-const D_BOX_H = Math.max(...nodes.map((n) => n.deskLines.length)) * D_LINE_H + D_PAD_Y * 2;
-
-const naturalWidths = nodes.map((n) =>
-	Math.max(D_MIN_W, Math.max(...n.deskLines.map((l) => lineWidth(l, D_FONT))) + D_PAD_X * 2),
-);
-const spare = D_WIDTH - D_EDGE * 2 - D_GAP * (nodes.length - 1) - naturalWidths.reduce((a, b) => a + b, 0);
-if (spare < 0) {
-	throw new Error(`DeployPipeline: desktop labels overflow the row by ${Math.ceil(-spare)} units`);
-}
-
-// Leftover width goes evenly to every box, so the row spans the full column.
-let cursorX = D_EDGE;
-const desktopBoxes = nodes.map((n, i) => {
-	const w = naturalWidths[i] + spare / nodes.length;
-	const box = { node: n, x: cursorX, y: D_EDGE, w, h: D_BOX_H };
-	cursorX += w + D_GAP;
-	return box;
-});
+const desktopBoxes = layoutRow('DeployPipeline', nodes, (n) => n.deskLines);
 
 const desktopEdges = desktopBoxes.slice(1).map((box, i) => ({
 	x1: desktopBoxes[i].x + desktopBoxes[i].w,
@@ -119,32 +88,15 @@ const D_CF_H = D_LINE_H * 2 + 24;
 const viewerBox = desktopBoxes[desktopBoxes.length - 1];
 const cfBoxDesktop = {
 	x: viewerBox.x + viewerBox.w / 2 - D_CF_W - 20,
-	y: D_EDGE + D_BOX_H + 40,
+	y: viewerBox.y + viewerBox.h + 40,
 	w: D_CF_W,
 	h: D_CF_H,
 };
 const desktopHeight = cfBoxDesktop.y + cfBoxDesktop.h + D_EDGE;
 const desktopViewBox = `0 0 ${D_WIDTH} ${desktopHeight}`;
 
-// Below this viewport width the row would scale labels under MIN_LABEL_PX, so
-// the stacked layout takes over. 48 = the page's side padding (2 × --space-6).
-const stackBelow = Math.ceil((D_WIDTH * MIN_LABEL_PX) / D_FONT) + 48;
-
-// --- Mobile: stacked top to bottom, arrows pointing down -----------------
-const M_WIDTH = 300;
-const M_BOX_H = 44;
-const M_BOX_W = M_WIDTH - 48;
-const M_GAP = 34;
-const M_MARGIN = 24;
-const M_LINE_H = 15;
-
-let cursorY = M_MARGIN;
-const mobileBoxes = nodes.map((n) => {
-	const h = M_BOX_H + (n.mobileLines.length - 1) * M_LINE_H;
-	const box = { node: n, x: (M_WIDTH - M_BOX_W) / 2, y: cursorY, w: M_BOX_W, h };
-	cursorY += h + M_GAP;
-	return box;
-});
+// --- Mobile ---------------------------------------------------------------
+const { boxes: mobileBoxes, bottom: stackBottom } = layoutStack(nodes, (n) => n.mobileLines);
 
 const mobileEdges = mobileBoxes.slice(1).map((box, i) => ({
 	y1: mobileBoxes[i].y + mobileBoxes[i].h,
@@ -158,7 +110,7 @@ const M_CF_H = 54;
 const mViewerBox = mobileBoxes[mobileBoxes.length - 1];
 const cfBoxMobile = {
 	x: mViewerBox.x + mViewerBox.w - M_CF_W,
-	y: cursorY - M_GAP + 44,
+	y: stackBottom - M_GAP + 44,
 	w: M_CF_W,
 	h: M_CF_H,
 };
@@ -176,7 +128,7 @@ const desc =
 	id="deploy-pipeline"
 	viewBox={desktopViewBox}
 	mobileViewBox={mobileViewBox}
-	stackBelow={stackBelow}
+	stackBelow={STACK_BELOW}
 	title="How a push to master reaches a viewer, with no stored AWS credentials"
 	desc={desc}
 >
@@ -220,7 +172,7 @@ const desc =
 			/>
 			<text
 				x={box.x + box.w / 2}
-				y={box.y + box.h / 2 - ((box.node.deskLines.length - 1) * D_LINE_H) / 2}
+				y={textY(box, box.node.deskLines.length, D_LINE_H)}
 				font-size={D_FONT}
 				class="label"
 			>
@@ -239,7 +191,7 @@ const desc =
 		<rect x={cfBoxDesktop.x} y={cfBoxDesktop.y} width={cfBoxDesktop.w} height={cfBoxDesktop.h} rx="4" class="box box--satellite" />
 		<text
 			x={cfBoxDesktop.x + cfBoxDesktop.w / 2}
-			y={cfBoxDesktop.y + cfBoxDesktop.h / 2 - D_LINE_H / 2}
+			y={textY(cfBoxDesktop, 2, D_LINE_H)}
 			font-size={D_FONT}
 			class="label label--muted"
 		>
@@ -287,7 +239,7 @@ const desc =
 					rx="4"
 					class={`box ${box.node.accentIn ? 'box--accent' : ''}`}
 				/>
-				<text x={box.x + box.w / 2} y={box.y + box.h / 2 - ((box.node.mobileLines.length - 1) * M_LINE_H) / 2} class="label">
+				<text x={box.x + box.w / 2} y={textY(box, box.node.mobileLines.length, M_LINE_H)} class="label">
 					{box.node.mobileLines.map((line, i) => (
 						<tspan x={box.x + box.w / 2} dy={i === 0 ? 0 : M_LINE_H}>
 							{line.map((part) => (
@@ -301,7 +253,7 @@ const desc =
 
 		<g>
 			<rect x={cfBoxMobile.x} y={cfBoxMobile.y} width={cfBoxMobile.w} height={cfBoxMobile.h} rx="4" class="box box--satellite" />
-			<text x={cfBoxMobile.x + cfBoxMobile.w / 2} y={cfBoxMobile.y + cfBoxMobile.h / 2 - M_LINE_H / 2} class="label label--muted">
+			<text x={cfBoxMobile.x + cfBoxMobile.w / 2} y={textY(cfBoxMobile, 2, M_LINE_H)} class="label label--muted">
 				<tspan x={cfBoxMobile.x + cfBoxMobile.w / 2} dy="0">Cloudflare</tspan>
 				<tspan x={cfBoxMobile.x + cfBoxMobile.w / 2} dy={M_LINE_H}>resolves DNS</tspan>
 			</text>
@@ -313,60 +265,3 @@ const desc =
 		for temporary STS credentials, never stored.
 	</Fragment>
 </Diagram>
-
-<style>
-	.box {
-		fill: var(--diagram-fill);
-		stroke: var(--ink);
-		stroke-width: 1.5;
-	}
-
-	.box--accent {
-		stroke: var(--accent);
-	}
-
-	.box--satellite {
-		stroke: var(--rule);
-		stroke-dasharray: 3 3;
-	}
-
-	.edge {
-		stroke-width: 1.5;
-	}
-
-	.edge--ink {
-		stroke: var(--ink);
-	}
-
-	.edge--accent {
-		stroke: var(--accent);
-	}
-
-	.connector {
-		stroke: var(--rule);
-		stroke-width: 1;
-		stroke-dasharray: 4 4;
-	}
-
-	.arrow--ink {
-		fill: var(--ink);
-	}
-
-	.arrow--accent {
-		fill: var(--accent);
-	}
-
-	.label {
-		fill: var(--ink);
-		text-anchor: middle;
-		dominant-baseline: middle;
-	}
-
-	.label--muted {
-		fill: var(--muted);
-	}
-
-	.mono-part {
-		font-family: var(--font-mono);
-	}
-</style>

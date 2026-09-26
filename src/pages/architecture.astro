@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import DeployPipeline from '../components/diagrams/DeployPipeline.astro';
+import RequestPath from '../components/diagrams/RequestPath.astro';
 ---
 
 <BaseLayout
@@ -18,6 +19,14 @@ import DeployPipeline from '../components/diagrams/DeployPipeline.astro';
 			bucket policy only allows reads from this one distribution's ARN, not from
 			any CloudFront distribution in the account.
 		</p>
+		<p>
+			Because the bucket isn't an S3 website endpoint, S3 won't
+			serve <code>/architecture/index.html</code> for a request to <code>/architecture</code>.
+			A CloudFront Function does it instead. It runs on every viewer request, before
+			the cache lookup, and rewrites <code>/path</code> to <code>/path/index.html</code>.
+		</p>
+
+		<RequestPath />
 	</section>
 
 	<section aria-labelledby="deploys-heading">

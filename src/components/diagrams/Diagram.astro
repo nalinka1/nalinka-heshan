@@ -105,4 +105,61 @@ const hasCaption = Astro.slots.has('caption');
 		font-size: var(--text-sm);
 		color: var(--muted);
 	}
+
+	/* Shared element styles for every diagram's boxes, edges and labels. They're
+	   :global because the elements come from each diagram component's slot. */
+	.diagram :global(.box) {
+		fill: var(--diagram-fill);
+		stroke: var(--ink);
+		stroke-width: 1.5;
+	}
+
+	.diagram :global(.box--accent) {
+		stroke: var(--accent);
+	}
+
+	.diagram :global(.box--satellite) {
+		stroke: var(--rule);
+		stroke-dasharray: 3 3;
+	}
+
+	.diagram :global(.edge) {
+		stroke-width: 1.5;
+	}
+
+	.diagram :global(.edge--ink) {
+		stroke: var(--ink);
+	}
+
+	.diagram :global(.edge--accent) {
+		stroke: var(--accent);
+	}
+
+	.diagram :global(.connector) {
+		stroke: var(--rule);
+		stroke-width: 1;
+		stroke-dasharray: 4 4;
+	}
+
+	.diagram :global(.arrow--ink) {
+		fill: var(--ink);
+	}
+
+	.diagram :global(.arrow--accent) {
+		fill: var(--accent);
+	}
+
+	.diagram :global(.label) {
+		fill: var(--ink);
+		text-anchor: middle;
+		dominant-baseline: middle;
+	}
+
+	.diagram :global(.label--muted) {
+		fill: var(--muted);
+	}
+
+	.diagram :global(.mono-part) {
+		font-family: var(--font-mono);
+	}
 </style>
