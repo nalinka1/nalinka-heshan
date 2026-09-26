@@ -63,6 +63,7 @@ Y", "with a focus on". No hero-section slogans.
   it — budget is a few dollars a month.
 - Interactive CLI wizards hang in this terminal. Use non-interactive flags.
 
-## Open items — flag, don't silently resolve
-- CV headline is now "Senior Software Engineer"; the site intro still says "a software
-  engineer". Nobody has decided which the site should say. Ask before changing it.
+## Settled wording
+- Site intro says "a software engineer", even though the CV headline is "Senior Software
+  Engineer". Decided 2026-09-27 — the plain wording covers both. Don't change it or
+  re-raise it.
