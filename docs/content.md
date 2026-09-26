@@ -1,23 +1,21 @@
 # Site Content — source of truth for copy
 
-Everything here is drawn from the job-hunt knowledge base. Nothing is invented. Edit the
-wording freely; don't add facts that aren't here.
+Everything here is drawn from the CV (Sep 2026 version) and prior job-hunt knowledge.
+Nothing is invented. Edit the wording freely; don't add facts that aren't here.
 
 ---
 
 ## Meta
 
 - **Title:** Nalinka Heshan — Software Engineer
-- **Description:** Backend and cloud engineer in Geelong, Victoria. Java, Spring Boot,
+- **Description:** Backend and cloud engineer in Melbourne, Victoria. Java, Spring Boot,
   Kafka, AWS. Six years building payment, claims and clinical systems.
 
 ---
 
 ## Intro
 
-Draft — cut it further if it feels long:
-
-> I'm Nalinka, a software engineer in Geelong, Victoria.
+> I'm Nalinka, a software engineer in Melbourne, Victoria.
 >
 > I build backend systems where failure costs real money — insurance claims, banking,
 > payments, hospital billing. Mostly Java and Spring Boot, Kafka at transactional scale,
@@ -26,94 +24,129 @@ Draft — cut it further if it feels long:
 > integration layer for its replacement.
 >
 > Outside that I'm building cloud infrastructure projects to go deeper on AWS and Azure.
-> This site is one of them — [how it's deployed](/architecture).
+> This site is one of them.
 
-Availability line, only if you want it visible:
+Availability line:
 
-> My current contract ends in September 2026 and I'm open to backend, integration and
-> cloud engineering roles in Melbourne, Geelong, or remote across Australia.
+> Available from October 2026 — Melbourne, Geelong, or remote across Australia.
+
+> **Open item:** the CV headline is now "Senior Software Engineer". The intro above
+> still says "a software engineer". Nobody has decided whether to change it — ask before
+> touching it.
 
 ---
 
 ## Projects
 
-Three. Ordered by what you most want to be hired for.
+Three shown, ordered by what he most wants to be hired for. A fourth exists but isn't
+currently used.
 
 ### AWS Event-Driven Order Platform
 Serverless order flow built with API Gateway, Lambda, DynamoDB, SNS/SQS and S3,
-provisioned end to end with AWS CDK. Later added a DynamoDB to Aurora PostgreSQL
-migration with contract tests comparing behaviour before and after the move.
+provisioned end to end with AWS CDK across multiple stacks. Later migrated to Aurora
+PostgreSQL to demonstrate the same flow on a relational backend, with an idempotent,
+re-runnable upsert script and contract tests comparing API responses either side of the
+cutover.
 
 `AWS CDK · API Gateway · Lambda · DynamoDB · Aurora PostgreSQL · SNS · SQS · S3`
 
 https://github.com/nalinka1/aws-order-flow
 
+**Has a deep-dive page** at `/projects/aws-order-flow`. Decisions: multiple CDK stacks
+so the data layer could be replaced without touching the API or messaging stacks;
+idempotent, re-runnable migration script; contract tests comparing responses, not just
+row counts. What broke: the contract tests failed on representation, not data —
+timestamps stored as ISO strings in DynamoDB came back from Postgres as epoch numbers.
+Rows and counts matched; every consumer parsing those fields would still have broken.
+Caught before staging.
+
+> **Built for a client demo. Never name or refer to the client anywhere this project
+> appears — row, deep-dive page, or diagram.**
+
 ### Multi-Cloud Secure Platform, AWS and Azure
-Cross-cloud OIDC workload identity federation so a workload authenticates across clouds
-with no stored access keys, with negative tests proving expired tokens and wrong
-identities are denied. Terraform-provisioned landing zone with remote state and locking,
-custom RBAC roles, and managed identities pulling secrets with no credentials in code.
+Complete, not in progress. Cross-cloud OIDC workload identity federation so a workload
+authenticates across clouds with no stored access keys, with negative tests proving
+expired tokens and wrong identities are denied. Terraform-provisioned landing zone with
+remote state and locking, custom RBAC roles, and managed identities pulling secrets with
+no credentials in code. GitHub Actions deploys both clouds via federated credentials.
 
-`Terraform · Bicep · AWS CDK · AWS (S3, KMS, IAM) · Azure (Entra ID, RBAC, Key Vault) · GitHub Actions · OIDC`
+`Terraform · Bicep · AWS CDK · AWS (S3, KMS, IAM) · Azure (Entra ID, RBAC, Key Vault) ·
+GitHub Actions · OIDC`
 
-> Label this as a project, not production experience. Azure and Terraform are project-only.
+> Label as project work, not production experience, regardless of completion status —
+> Azure and Terraform are project-level.
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
 part wasn't the model — the first version failed on pieces with no clean training
-examples, and accuracy only moved once I stopped tuning the network and fixed the data
-pipeline.
+examples, and accuracy only moved once tuning the network stopped and the data pipeline
+got fixed instead.
 
 `Python · TensorFlow · OpenCV`
 
-### Alternate, if you want a fourth
-**99Yards** — React Native mobile app for a textile industry vendor-client platform, with
-Spring Boot backend and Firebase/GCP infrastructure. Built remotely for a US client, 2025.
+Not on the current CV, but the site can carry more than the CV — kept here deliberately.
+No deep-dive page yet (Phase 3, Stage 3.6). Needs decision/failure material from
+Nalinka before that page is written; don't invent it.
+
+### Alternate, not currently used
+**99Yards** — React Native mobile app for a textile industry vendor-client platform,
+with Spring Boot backend and Firebase/GCP infrastructure. Built remotely for a US
+client, 2025.
 
 ---
 
 ## Experience
 
-Compressed. One line each. The CV carries the detail.
+Compressed, one line each. The CV carries full detail. All dates and locations below
+are from the CV, not any earlier draft.
 
-**Software Engineer — Transport Accident Commission** · Melbourne, VIC · Dec 2025 – Present
-Claims and payments systems for Victoria's transport accident insurer. Integration design
-for a platform replacement, a recovery-payments consolidation moving 13,000+ records, and
-extensions to the Fineos claims platform.
+**Software Engineer — Transport Accident Commission** · Melbourne, VIC ·
+Dec 2025 – Present
+Claims and payments systems for Victoria's transport accident insurer. Reverse-
+engineering 50+ interconnected systems to design the integration layer for a platform
+replacement, migrating 13,000+ recovery-claims records with full reconciliation, and
+extending the Fineos claims platform.
 
-**Software Engineer — Cloud Solutions International** · Colombo, Sri Lanka · Jul 2023 – Dec 2025
-Designed and delivered an outpatient pharmacy billing and payments platform for a major
-Middle Eastern private healthcare group. Live two years, $100M+ in annual transactions.
-Also built a real-time drug interaction checking service against patient medical history.
+**Software Engineer — Cloud Solutions International** · Colombo, Sri Lanka ·
+Jul 2023 – Dec 2025 (remote from Australia from Jun 2025)
+Designed and owned the invoice, billing and payments platform for Dr. Sulaiman Al
+Habib Medical Group, the largest private healthcare network in the Middle East. Live
+two years, $100M+ in annual transactions, invoice failure rates cut to 0.1%. Also built
+a real-time drug interaction checking service against patient medical history.
 
-**Senior Software Engineer — Qbitum Solution** · Colombo, Sri Lanka · Oct 2022 – Jul 2023
-Migrated a Sri Lankan bank's core digital platform onto Red Hat OpenShift, with
+**Senior Software Engineer — Qbitum Solution** · Colombo, Sri Lanka ·
+Oct 2022 – Jul 2023
+Migrated Seylan Bank's core digital banking platform onto Red Hat OpenShift, with
 Prometheus and Grafana monitoring and load testing to support the production cutover.
 
 **Software Engineer — Zilingo** · Colombo, Sri Lanka · Mar 2020 – Sep 2022
-Backend services on Play Framework for an eCommerce marketplace, plus analytics and
-reporting systems and a major architectural migration.
+Backend services on Play Framework for a B2B eCommerce marketplace, plus analytics and
+reporting systems on Apache Druid and Flink, and a major architectural migration.
 
-> **TAC confidentiality:** keep this at the level already published on the CV. No internal
-> system detail beyond naming Fineos and Avanti, no data, no architecture diagrams, no
-> screenshots.
+> **TAC confidentiality:** keep this at the level already published on the CV. No
+> internal system detail beyond naming Fineos and Avanti, no data, no architecture
+> diagrams, no screenshots. This matters more than usual during Phase 3, which is
+> otherwise entirely about drawing architecture diagrams.
+>
+> **Client names for CSI and Qbitum are fine to use** — they're already public on the
+> CV. This is a different rule from the Order Platform project above, whose client
+> stays anonymous regardless.
 
 ---
 
 ## Skills
 
-Group them. Be honest about the second group.
+**Production:** Java, Spring Boot, Node.js, Angular, TypeScript, Apache Kafka,
+PostgreSQL, Oracle, MongoDB, Redis, Elasticsearch, Apache Druid, Apache Flink, Docker,
+Kubernetes, Red Hat OpenShift, Jenkins, JUnit, Mockito, Cypress, Selenium, REST and SOAP
+web services, MQ messaging, AWS (Lambda, EC2, S3, RDS, DynamoDB, Aurora PostgreSQL, SNS,
+SQS, API Gateway, CDK, CloudFormation, IoT, IAM, KMS, CloudWatch)
 
-**Production:** Java, Spring Boot, Node.js, Angular, TypeScript, Apache Kafka, PostgreSQL,
-Oracle, MongoDB, Docker, Kubernetes, Red Hat OpenShift, Jenkins, REST and SOAP web
-services, MQ messaging, AWS (Lambda, EC2, S3, RDS, DynamoDB, SNS, SQS, API Gateway, CDK,
-CloudFormation)
+**Project work:** Terraform, Bicep, Azure (Entra ID, Key Vault, RBAC, managed
+identities), GitHub Actions, OIDC workload identity federation, Python
 
-**Project work:** Terraform, Azure (Entra ID, Key Vault, RBAC, managed identities),
-GitHub Actions, OIDC workload identity federation, Python
-
-Leave React off unless you decide otherwise — it's rusty. Leave off anything unconfirmed:
-JUnit, Mockito, Jest, Cypress, SonarQube, Redis, Kinesis, Ionic, Graylog.
+Leave React off unless decided otherwise — it's rusty. Still unconfirmed, don't use:
+Jest, SonarQube, Ionic, Graylog.
 
 ---
 
@@ -124,6 +157,9 @@ JUnit, Mockito, Jest, Cypress, SonarQube, Redis, Kinesis, Ionic, Graylog.
 - AWS Certified AI Practitioner (August 2026) —
   https://www.credly.com/badges/9b57afd1-0cce-4883-bf64-7e09df3ddef7/linked_in_profile
 
+(AWS Solutions Architect – Associate: mock tests purchased, exam not yet booked — not
+listed on the site until it's actually earned.)
+
 ---
 
 ## Links
@@ -133,36 +169,15 @@ JUnit, Mockito, Jest, Cypress, SonarQube, Redis, Kinesis, Ionic, Graylog.
 - Email — nalinkaheshann@gmail.com
 - CV (PDF)
 
-Skip the phone number. Email and LinkedIn are enough on a public page.
+No phone number, no contact page/form. Email and LinkedIn are enough on a public page.
 
 ---
 
-## /architecture page — built, Stage 4
+## /architecture — content already live
 
-Live at `/architecture`, linked from the intro's "This site is one of them." Content
-matches what's actually deployed, not the rough draft below:
-
-> This site is a static Astro build — plain HTML and CSS, no client-side framework.
-> Pushing to `master` triggers a GitHub Actions workflow that builds the site and pushes
-> it live.
->
-> Infrastructure — S3, CloudFront, ACM, and the IAM role GitHub Actions assumes — is
-> defined in Terraform. DNS is Cloudflare, not Route 53: the domain is registered through
-> Cloudflare Registrar, whose registration agreement requires Cloudflare's own
-> nameservers, so there's no delegating to Route 53. The ACM validation record and the
-> apex record are both added by hand in Cloudflare with the proxy off.
->
-> There are no AWS access keys stored in the repository or in GitHub secrets. GitHub
-> Actions authenticates via a short-lived OIDC token exchanged for temporary credentials
-> scoped to one IAM role. The role's trust policy is scoped to this repository and this
-> branch — and, since this repo was created after GitHub's 2026-07-15 switch to immutable
-> subject claims, the trust policy's `sub` condition matches the ID-qualified form
-> (`repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master`), not the
-> plain-name format most OIDC tutorials assume.
->
-> The role's permissions cover writing to one S3 bucket and invalidating one CloudFront
-> distribution — nothing else.
-
-Links out to the `terraform/` directory and the deploy workflow file on GitHub.
-
-That paragraph is worth more in an interview than any amount of visual design.
+Covers: static Astro build in a private S3 bucket behind CloudFront with Origin Access
+Control; push-to-master → GitHub Actions → OIDC → S3 sync → CloudFront invalidation with
+no manual step; zero stored AWS access keys, trust policy scoped to repo and branch;
+Terraform-defined infrastructure, local state; Cloudflare DNS reasoning (see
+docs/architecture-decisions.md); the ID-qualified OIDC subject claim gotcha. Two
+diagrams live on the page (deploy pipeline, request path) — see docs/phase-3-plan.md.
