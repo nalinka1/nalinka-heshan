@@ -44,9 +44,21 @@ const projects = defineCollection({
 	}),
 });
 
+// Role deep-dive page content, same rules as projectBody: only overview is
+// required, the rest render when present, `draft: true` is dev-only.
+// TAC stays at CV level — no internal system names beyond Fineos and Avanti.
+const roleBody = z.object({
+	draft: z.boolean().optional(),
+	overview: z.string(),
+	work: z.array(z.string()).min(1).optional(),
+	technical: z.string().optional(),
+	stack: z.array(z.string()).min(1).optional(),
+});
+
 const roles = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/roles' }),
 	schema: z.object({
+		slug: z.string(),
 		company: z.string(),
 		title: z.string(),
 		location: z.string(),
@@ -54,6 +66,7 @@ const roles = defineCollection({
 		endDate: z.string().optional(),
 		summary: z.string(),
 		order: z.number(),
+		body: roleBody.optional(),
 	}),
 });
 

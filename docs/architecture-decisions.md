@@ -113,8 +113,12 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
     srcset, lazy) on deep-dive pages only. No project uses it yet.
   - 3.6 cancelled — LEGO deep-dive page. Someone else's startup project, not enough
     remembered detail to write it without inventing facts. Row stays on `/projects`.
-- **Next — not planned yet.** Nalinka wants to add more projects and give every project
-  and every role a deep-dive page like the order platform one (technical and
-  architectural detail). Waiting on content from him; plan it as its own phase when it
-  arrives. Role pages stay inside what the CV already says publicly. TAC in particular:
-  no internal systems beyond Fineos and Avanti, no architecture diagrams.
+- **Deep-dive templates — done, content pending.** Every project and role can have a
+  deep-dive page. Project pages: only "What it is" required; "What I built", Decisions
+  and What broke optional. Role pages (`/experience/[slug]`): only "The role"
+  required; "What I worked on", "Technical detail" and Stack optional. `body.draft:
+  true` builds a page under `astro dev` only (`src/lib/published.ts`), so placeholder
+  content never reaches the live site. Multi-Cloud and all four roles are drafts
+  waiting on Nalinka's content. Role pages stay inside what the CV already says
+  publicly. TAC in particular: no internal systems beyond Fineos and Avanti, no
+  architecture diagrams.

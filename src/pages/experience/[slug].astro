@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { isPublished } from '../../lib/published';
+
+export async function getStaticPaths() {
+	const roles = await getCollection('roles', ({ data }) => isPublished(data.body));
+	return roles.map((role) => ({
+		params: { slug: role.data.slug },
+		props: { role },
+	}));
+}
+
+interface Props {
+	role: CollectionEntry<'roles'>;
+}
+
+const { role } = Astro.props;
+const { company, title, location, startDate, endDate } = role.data;
+const body = role.data.body!;
+---
+
+<BaseLayout title={`${title}, ${company} — Nalinka Heshan`} description={body.overview}>
+	<p class="back"><a href="/experience">← Experience</a></p>
+	{body.draft && <p class="draft-note">Draft — only visible in local dev, not on the live site.</p>}
+	<h1>{title} — {company}</h1>
+	<p class="meta">{location} · {startDate} – {endDate ?? 'Present'}</p>
+
+	<section aria-labelledby="overview-heading">
+		<h2 id="overview-heading">The role</h2>
+		<p>{body.overview}</p>
+	</section>
+
+	{body.work && (
+		<section aria-labelledby="work-heading">
+			<h2 id="work-heading">What I worked on</h2>
+			<ul class="work">
+				{body.work.map((item) => <li>{item}</li>)}
+			</ul>
+		</section>
+	)}
+
+	{body.technical && (
+		<section aria-labelledby="technical-heading">
+			<h2 id="technical-heading">Technical detail</h2>
+			<p>{body.technical}</p>
+		</section>
+	)}
+
+	{body.stack && (
+		<section aria-labelledby="stack-heading">
+			<h2 id="stack-heading">Stack</h2>
+			<p class="mono">{body.stack.join(' · ')}</p>
+		</section>
+	)}
+</BaseLayout>
+
+<style>
+	.back {
+		margin-bottom: var(--space-8);
+	}
+
+	h1 {
+		margin-bottom: var(--space-2);
+	}
+
+	.meta {
+		color: var(--muted);
+		font-size: var(--text-sm);
+		margin-bottom: var(--space-8);
+	}
+
+	h2 {
+		margin-bottom: var(--space-2);
+	}
+
+	section + section {
+		margin-top: var(--space-8);
+		padding-top: var(--space-8);
+		border-top: var(--rule-width) solid var(--rule);
+	}
+
+	.draft-note {
+		font-size: var(--text-sm);
+		color: var(--accent);
+		border-left: 2px solid var(--accent);
+		padding-left: var(--space-3);
+	}
+
+	.work {
+		margin: 0;
+		padding-left: var(--space-6);
+		max-width: var(--measure);
+	}
+
+	.work li + li {
+		margin-top: var(--space-2);
+	}
+</style>

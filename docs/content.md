@@ -152,6 +152,11 @@ reporting systems on Apache Druid and Flink, and a major architectural migration
 > diagrams, no screenshots. This matters more than usual during Phase 3, which is
 > otherwise entirely about drawing architecture diagrams.
 >
+> **Role deep-dive pages** exist as drafts (`body.draft: true`, local dev only) for all
+> four roles, filled from the CV's bullets and stack lines. The TAC draft leaves out the
+> CV's Domino bullet — it names an internal system beyond Fineos and Avanti. The
+> optional "Technical detail" section is empty everywhere until Nalinka writes it.
+>
 > **Client names for CSI and Qbitum are fine to use** — they're already public on the
 > CV. This is a different rule from the Order Platform project above, whose client
 > stays anonymous regardless.

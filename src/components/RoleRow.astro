@@ -1,12 +1,13 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { isPublished } from '../lib/published';
 
 interface Props {
 	role: CollectionEntry<'roles'>;
 }
 
 const { role } = Astro.props;
-const { company, title, location, startDate, endDate, summary } = role.data;
+const { slug, company, title, location, startDate, endDate, summary, body } = role.data;
 ---
 
 <div class="role-row">
@@ -17,6 +18,7 @@ const { company, title, location, startDate, endDate, summary } = role.data;
 		<h3>{title} — {company}</h3>
 		<p class="meta">{location}</p>
 		<p>{summary}</p>
+		{isPublished(body) && <p><a href={`/experience/${slug}`}>Read more</a></p>}
 	</div>
 </div>
 
