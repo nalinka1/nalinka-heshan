@@ -2,10 +2,33 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectRow from '../components/ProjectRow.astro';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import developerBadge from '../assets/images/aws-certified-developer.png';
+import aiPractitionerBadge from '../assets/images/ai-practitioner.png';
 
 const projects = (await getCollection('projects'))
 	.sort((a, b) => a.data.order - b.data.order)
 	.slice(0, 3);
+
+// Details as Credly shows them. Only earned certifications go here.
+const certifications = [
+	{
+		name: 'AWS Certified Developer - Associate',
+		issuer: 'Amazon Web Services (AWS)',
+		dates: 'Issued Jul 2025 · Expires Jul 2028',
+		credentialId: '7ba4feca-7ce4-42b4-bd64-f7b2566c29ac',
+		url: 'https://www.credly.com/badges/7ba4feca-7ce4-42b4-bd64-f7b2566c29ac/linked_in_profile',
+		badge: developerBadge,
+	},
+	{
+		name: 'AWS Certified AI Practitioner',
+		issuer: 'Amazon Web Services (AWS)',
+		dates: 'Issued Aug 2026 · Expires Aug 2029',
+		credentialId: '9b57afd1-0cce-4883-bf64-7e09df3ddef7',
+		url: 'https://www.credly.com/badges/9b57afd1-0cce-4883-bf64-7e09df3ddef7/linked_in_profile',
+		badge: aiPractitionerBadge,
+	},
+];
 ---
 
 <BaseLayout
@@ -46,6 +69,33 @@ const projects = (await getCollection('projects'))
 		<h2 id="projects-heading">Projects</h2>
 		{projects.map((project) => <ProjectRow project={project} />)}
 	</section>
+
+	<hr />
+
+	<section id="certifications" aria-labelledby="certifications-heading">
+		<h2 id="certifications-heading">Certifications</h2>
+		{certifications.map((cert) => (
+			<div class="cert-row">
+				<div class="cert-body">
+					<h3>{cert.name}</h3>
+					<p>{cert.issuer}</p>
+					<p class="cert-dates">{cert.dates}</p>
+					<p class="cert-id">Credential ID <span class="mono">{cert.credentialId}</span></p>
+					<p><a href={cert.url}>Show credential</a></p>
+				</div>
+				<Image
+					class="cert-badge"
+					src={cert.badge}
+					alt={`${cert.name} badge`}
+					width={120}
+					height={120}
+					densities={[1, 2]}
+					format="webp"
+					loading="lazy"
+				/>
+			</div>
+		))}
+	</section>
 </BaseLayout>
 
 <style>
@@ -83,7 +133,55 @@ const projects = (await getCollection('projects'))
 		margin-bottom: 0;
 	}
 
+	.cert-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--space-8);
+		padding: var(--space-6) 0;
+	}
+
+	.cert-row + .cert-row {
+		border-top: var(--rule-width) solid var(--rule);
+	}
+
+	.cert-body h3 {
+		margin-bottom: var(--space-2);
+	}
+
+	.cert-body p {
+		margin-bottom: var(--space-1);
+	}
+
+	.cert-body p:last-child {
+		margin: var(--space-2) 0 0;
+	}
+
+	.cert-dates,
+	.cert-id {
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	.cert-id .mono {
+		overflow-wrap: anywhere;
+	}
+
+	.cert-badge {
+		flex: none;
+		width: 120px;
+		height: auto;
+	}
+
 	@media (max-width: 700px) {
+		.cert-row {
+			gap: var(--space-4);
+		}
+
+		.cert-badge {
+			width: 80px;
+		}
+
 		.intro {
 			grid-template-columns: 1fr;
 			gap: var(--space-8);

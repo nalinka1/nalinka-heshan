@@ -189,9 +189,13 @@ Jest, SonarQube, Ionic, Graylog.
 
 ## Certifications
 
-- AWS Certified Developer - Associate (July 2025) -
-  https://www.credly.com/badges/7ba4feca-7ce4-42b4-bd64-f7b2566c29ac/public_url
-- AWS Certified AI Practitioner (August 2026) -
+On the home page, after Projects (added 2026-10-10): details on the left, the Credly
+badge image on the right, from `src/assets/images/`. Credly's per-badge skill lists
+are left off - Bedrock and SageMaker aren't on the CV.
+
+- AWS Certified Developer - Associate - issued Jul 2025, expires Jul 2028 -
+  https://www.credly.com/badges/7ba4feca-7ce4-42b4-bd64-f7b2566c29ac/linked_in_profile
+- AWS Certified AI Practitioner - issued Aug 2026, expires Aug 2029 -
   https://www.credly.com/badges/9b57afd1-0cce-4883-bf64-7e09df3ddef7/linked_in_profile
 
 (AWS Solutions Architect - Associate: mock tests purchased, exam not yet booked - not
