@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1596" role="img" aria-labelledby="mcd-title mcd-desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1622" role="img" aria-labelledby="mcd-title mcd-desc">
 <title id="mcd-title">Multi-cloud secure document platform: Azure identity and API tiers federating into an encrypted AWS document store</title>
 <desc id="mcd-desc">A Terraform control plane deploys into an Azure subscription and an AWS account from a single configuration. On the Azure side, Entra ID issues tokens, a user-assigned managed identity holds Key Vault access, and two API Management tiers sit in a virtual network: an external tier that validates JWTs and an internal VNet-injected tier that proxies Key Vault using its own managed identity. On the AWS side, an OIDC provider trusts the Entra issuer and an IAM role accepts AssumeRoleWithWebIdentity when the audience and subject claims match, granting read access scoped to one S3 prefix and decrypt on one customer-managed KMS key. Four negative tests confirm that a wrong identity, an expired token, an out-of-scope prefix and a missing KMS grant are all denied.</desc>
 
@@ -56,7 +56,7 @@
 <symbol id="mcd-sym-check" viewBox="0 0 18 18"><path class="mcd-ico" d="M3 9.4 7 13.4 15 4.8"/></symbol>
 </defs>
 
-<rect class="mcd-bg" x="0" y="0" width="960" height="1596"/>
+<rect class="mcd-bg" x="0" y="0" width="960" height="1622"/>
 
 <text class="mcd-h1" x="24" y="40">Multi-cloud secure document platform</text>
 <text class="mcd-sub" x="24" y="62">Azure identity and API tiers federating into an encrypted AWS document store - no stored access keys on either side</text>
@@ -285,7 +285,7 @@
 <circle class="mcd-num" cx="35" cy="1572" r="11"/>
 <text class="mcd-numt" x="35" y="1576" text-anchor="middle">5</text>
 <text class="mcd-s" x="56" y="1576">Those credentials read objects under the inbound prefix only; listing is scoped by an s3:prefix condition.</text>
-<circle class="mcd-num" cx="500" cy="1572" r="11"/>
-<text class="mcd-numt" x="500" y="1576" text-anchor="middle">6</text>
-<text class="mcd-s" x="521" y="1576">S3 asks KMS to unwrap the data key - a second, independent grant.</text>
+<circle class="mcd-num" cx="35" cy="1598" r="11"/>
+<text class="mcd-numt" x="35" y="1602" text-anchor="middle">6</text>
+<text class="mcd-s" x="56" y="1602">S3 asks KMS to unwrap the data key - a second, independent grant.</text>
 </svg>
