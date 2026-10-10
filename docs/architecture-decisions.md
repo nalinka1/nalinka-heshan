@@ -116,6 +116,11 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
     (trust policy, role permissions, bucket policy, cache-control, sync order). All
     diagrams now go through `InlineDiagram.astro`; `Diagram.astro`, `layout.ts` and
     the `--diagram-*` tokens are gone.
+  - Multi-cloud diagrams added 2026-10-10 on
+    `/projects/multi-cloud-secure-document-platform`, via `MultiCloud.astro`. Project
+    copy rewritten the same day from a review of the repo: GitHub Actions, Bicep, AWS
+    CDK and "landing zone" came out because they aren't in the repo, even though the CV
+    still lists them.
   - 3.5 done - optional `images` on projects, rendered with Astro `<Image />` (WebP,
     srcset, lazy) on deep-dive pages only. No project uses it yet.
   - 3.6 cancelled - LEGO deep-dive page. Someone else's startup project, not enough
@@ -151,6 +156,10 @@ Not started. One at a time, in roughly this order.
   AWS CLI; Nalinka to decide the wording.
 - **Content from Nalinka.** "Technical detail" for each role page; what broke,
   decisions and repo URL for Multi-Cloud.
+- **CV entry for Multi-Cloud.** It still lists Bicep, AWS CDK, GitHub Actions, a
+  "landing zone" and custom RBAC roles, none of which are in the repo. Nalinka to
+  correct the CV and replace `public/cv.pdf`. The site's stack line also names STS, API
+  Management and VNet, which the CV doesn't list yet.
 - **`claims-lakehouse` row?** It's a project on the CV (github.com/nalinka1/
   claims-lakehouse) but not on the site. Review the repo the same way as the claims
   assistant - only claim what's built - and draft a row if Nalinka wants it.

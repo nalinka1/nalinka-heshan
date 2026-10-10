@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 868" role="img" aria-labelledby="mch-title mch-desc">
+<title id="mch-title">Multi-cloud secure document platform at a glance</title>
+<desc id="mch-desc">One Terraform configuration deploys into both an Azure subscription and an AWS account. Azure holds the identity layer, a Key Vault reached by managed identity, and two API Management tiers. AWS holds the federation trust, an encrypted S3 document store and the customer-managed key that protects it. A token issued by Entra ID is exchanged for short-lived AWS credentials, so no access key is stored on the Azure side.</desc>
+
+<defs>
+<style>
+.mch-bg{fill:#FBFBF9}
+.mch-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.mch-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.mch-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.mch-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.mch-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.mch-lbl{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#5C626E}
+.mch-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.mch-al{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#17505C}
+.mch-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.mch-acct{fill:none;stroke:#DFE0DC;stroke-width:1}
+.mch-out{fill:none;stroke:#B9BCB5;stroke-width:1;stroke-dasharray:5 4}
+.mch-rule{stroke:#DFE0DC;stroke-width:1}
+.mch-arr{fill:none;stroke:#5C626E;stroke-width:1.5}
+.mch-arrd{fill:none;stroke:#5C626E;stroke-width:1.5;stroke-dasharray:5 4}
+.mch-tok{fill:none;stroke:#17505C;stroke-width:1.5}
+.mch-num{fill:#17505C}
+.mch-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF}
+.mch-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mch-ti-id{fill:#E9EAF3}
+.mch-ic-id{stroke:#4A5578}
+.mch-ti-da{fill:#E6EEF3}
+.mch-ic-da{stroke:#2E5E7E}
+.mch-ti-se{fill:#E8F0E6}
+.mch-ic-se{stroke:#4A6B45}
+.mch-ti-ed{fill:#E3EEEF}
+.mch-ic-ed{stroke:#17505C}
+.mch-ti-ou{fill:#EFF0EC}
+.mch-ic-ou{stroke:#5C626E}
+</style>
+
+<marker id="mch-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="mch-aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#17505C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+
+<symbol id="mch-sym-id" viewBox="0 0 18 18"><circle class="mch-ico" cx="9" cy="6" r="3.2"/><path class="mch-ico" d="M3 15.2c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2"/></symbol>
+<symbol id="mch-sym-key" viewBox="0 0 18 18"><circle class="mch-ico" cx="5.8" cy="9" r="3"/><path class="mch-ico" d="M8.8 9H16M13.4 9v3M16 9v3.4"/></symbol>
+<symbol id="mch-sym-api" viewBox="0 0 18 18"><path class="mch-ico" d="M6.6 4.4 2.6 9l4 4.6M11.4 4.4 15.4 9l-4 4.6"/></symbol>
+<symbol id="mch-sym-lock" viewBox="0 0 18 18"><rect class="mch-ico" x="3.6" y="7.6" width="10.8" height="7.4" rx="1.6"/><path class="mch-ico" d="M6.2 7.6V5.6a2.8 2.8 0 0 1 5.6 0v2"/></symbol>
+<symbol id="mch-sym-bucket" viewBox="0 0 18 18"><ellipse class="mch-ico" cx="9" cy="4.6" rx="6" ry="2.3"/><path class="mch-ico" d="M3 4.6v8.8c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V4.6"/></symbol>
+<symbol id="mch-sym-term" viewBox="0 0 18 18"><rect class="mch-ico" x="2" y="4" width="14" height="10" rx="1.4"/><path class="mch-ico" d="M5.4 7.6 7.9 9.6l-2.5 2M10.2 11.6H13"/></symbol>
+</defs>
+
+<rect class="mch-bg" x="0" y="0" width="960" height="868"/>
+
+<text class="mch-h1" x="24" y="40">Multi-cloud secure document platform</text>
+<text class="mch-sub" x="24" y="62">An Azure workload reads an encrypted AWS document store with no stored access key</text>
+
+<rect class="mch-out" x="20" y="84" width="920" height="92" rx="14"/>
+<rect class="mch-card" x="36" y="98" width="400" height="64" rx="10"/>
+<rect class="mch-ti-ou" x="48" y="112" width="30" height="30" rx="7"/>
+<use class="mch-ic-ou" href="#mch-sym-term" x="54" y="118" width="18" height="18"/>
+<text class="mch-t" x="88" y="126">Terraform</text>
+<text class="mch-s" x="88" y="144">One configuration, two providers, one state file</text>
+<text class="mch-s" x="460" y="126">Remote state in an Azure Storage blob, leased on write.</text>
+<text class="mch-s" x="460" y="144">Hand-built resources brought under management by import.</text>
+<text class="mch-lbl" x="36" y="170">Operator workstation</text>
+
+<path class="mch-arr" d="M235 176 V214" marker-end="url(#mch-ah)"/>
+<path class="mch-arr" d="M725 176 V214" marker-end="url(#mch-ah)"/>
+
+<rect class="mch-acct" x="20" y="214" width="430" height="416" rx="14"/>
+<text class="mch-lbl" x="36" y="616">Azure subscription</text>
+
+<rect class="mch-card" x="36" y="232" width="398" height="100" rx="10"/>
+<rect class="mch-ti-id" x="48" y="246" width="30" height="30" rx="7"/>
+<use class="mch-ic-id" href="#mch-sym-id" x="54" y="252" width="18" height="18"/>
+<text class="mch-t" x="88" y="260">Entra ID and managed identity</text>
+<text class="mch-s" x="88" y="278">App roles, signed tokens, no client secret</text>
+<text class="mch-m" x="48" y="304">id-mcdp-reader</text>
+<text class="mch-s" x="48" y="322">Subject of the AWS trust policy</text>
+
+<rect class="mch-card" x="36" y="352" width="398" height="100" rx="10"/>
+<rect class="mch-ti-se" x="48" y="366" width="30" height="30" rx="7"/>
+<use class="mch-ic-se" href="#mch-sym-key" x="54" y="372" width="18" height="18"/>
+<text class="mch-t" x="88" y="380">Key Vault</text>
+<text class="mch-s" x="88" y="398">RBAC authorisation, not legacy access policies</text>
+<text class="mch-m" x="48" y="424">kv-mcdp-dev-nh01</text>
+<text class="mch-s" x="48" y="442">Reached by managed identity, nothing on disk</text>
+
+<rect class="mch-card" x="36" y="472" width="398" height="100" rx="10"/>
+<rect class="mch-ti-ed" x="48" y="486" width="30" height="30" rx="7"/>
+<use class="mch-ic-ed" href="#mch-sym-api" x="54" y="492" width="18" height="18"/>
+<text class="mch-t" x="88" y="500">API Management, two tiers</text>
+<text class="mch-s" x="88" y="518">External validates JWTs; internal is VNet-injected</text>
+<text class="mch-m" x="48" y="544">apim-mcdp-ext-dev-aue · apim-mcdp-int-dev-aue</text>
+<text class="mch-s" x="48" y="562">Different threat models, different auth</text>
+
+<path class="mch-arrd" d="M24 522 H12 V402 H32" marker-end="url(#mch-ah)"/>
+
+<rect class="mch-acct" x="510" y="214" width="430" height="416" rx="14"/>
+<text class="mch-lbl" x="526" y="616">AWS account</text>
+
+<rect class="mch-card" x="526" y="232" width="398" height="100" rx="10"/>
+<rect class="mch-ti-se" x="538" y="246" width="30" height="30" rx="7"/>
+<use class="mch-ic-se" href="#mch-sym-lock" x="544" y="252" width="18" height="18"/>
+<text class="mch-t" x="578" y="260">Federation trust</text>
+<text class="mch-s" x="578" y="278">OIDC provider pinned to the Entra issuer</text>
+<text class="mch-m" x="538" y="304">mcdp-databricks-federated-role</text>
+<text class="mch-s" x="538" y="322">Audience and subject claims must both match</text>
+
+<rect class="mch-card" x="526" y="352" width="398" height="100" rx="10"/>
+<rect class="mch-ti-da" x="538" y="366" width="30" height="30" rx="7"/>
+<use class="mch-ic-da" href="#mch-sym-bucket" x="544" y="372" width="18" height="18"/>
+<text class="mch-t" x="578" y="380">Encrypted document store</text>
+<text class="mch-s" x="578" y="398">Versioned, public access blocked, three denies</text>
+<text class="mch-m" x="538" y="424">mcdp-documents-nh01/inbound/</text>
+<text class="mch-s" x="538" y="442">Role reads one prefix and nothing else</text>
+
+<rect class="mch-card" x="526" y="472" width="398" height="100" rx="10"/>
+<rect class="mch-ti-se" x="538" y="486" width="30" height="30" rx="7"/>
+<use class="mch-ic-se" href="#mch-sym-key" x="544" y="492" width="18" height="18"/>
+<text class="mch-t" x="578" y="500">Customer-managed key</text>
+<text class="mch-s" x="578" y="518">SSE-KMS by default, annual rotation</text>
+<text class="mch-m" x="538" y="544">alias/mcdp-documents</text>
+<text class="mch-s" x="538" y="562">A second grant, independent of the bucket policy</text>
+
+<path class="mch-tok" d="M434 282 H526" marker-end="url(#mch-aht)"/>
+<circle class="mch-num" cx="480" cy="282" r="11"/>
+<text class="mch-numt" x="480" y="286" text-anchor="middle">1</text>
+
+<path class="mch-tok" d="M725 332 V352" marker-end="url(#mch-aht)"/>
+<circle class="mch-num" cx="860" cy="342" r="11"/>
+<text class="mch-numt" x="860" y="346" text-anchor="middle">2</text>
+
+<path class="mch-arr" d="M725 452 V472" marker-end="url(#mch-ah)"/>
+<circle class="mch-num" cx="860" cy="462" r="11"/>
+<text class="mch-numt" x="860" y="466" text-anchor="middle">3</text>
+
+<text class="mch-al" x="100" y="592">Internal tier reads a secret using its own managed identity</text>
+
+<line class="mch-rule" x1="20" y1="652" x2="940" y2="652"/>
+
+<text class="mch-hd" x="24" y="682">Legend</text>
+<rect class="mch-ti-id" x="24" y="696" width="16" height="16" rx="4"/>
+<text class="mch-s" x="48" y="708">Identity</text>
+<rect class="mch-ti-da" x="120" y="696" width="16" height="16" rx="4"/>
+<text class="mch-s" x="144" y="708">Data</text>
+<rect class="mch-ti-se" x="204" y="696" width="16" height="16" rx="4"/>
+<text class="mch-s" x="228" y="708">Security</text>
+<rect class="mch-ti-ed" x="300" y="696" width="16" height="16" rx="4"/>
+<text class="mch-s" x="324" y="708">Edge and API</text>
+<rect class="mch-ti-ou" x="424" y="696" width="16" height="16" rx="4"/>
+<text class="mch-s" x="448" y="708">Outside both clouds</text>
+<path class="mch-tok" d="M596 704h30" marker-end="url(#mch-aht)"/>
+<text class="mch-s" x="634" y="708">Token or credential path</text>
+<path class="mch-arr" d="M784 704h30" marker-end="url(#mch-ah)"/>
+<text class="mch-s" x="822" y="708">Synchronous</text>
+<path class="mch-arrd" d="M24 736h30" marker-end="url(#mch-ah)"/>
+<text class="mch-s" x="62" y="740">Asynchronous or out-of-band</text>
+
+<text class="mch-hd" x="24" y="780">Flow</text>
+<circle class="mch-num" cx="35" cy="804" r="11"/>
+<text class="mch-numt" x="35" y="808" text-anchor="middle">1</text>
+<text class="mch-s" x="56" y="808">A token issued to the managed identity is presented to AWS; the trust policy checks its audience and subject.</text>
+<circle class="mch-num" cx="35" cy="830" r="11"/>
+<text class="mch-numt" x="35" y="834" text-anchor="middle">2</text>
+<text class="mch-s" x="56" y="834">Short-lived credentials come back, scoped to read one S3 prefix and decrypt one key.</text>
+<circle class="mch-num" cx="35" cy="856" r="11"/>
+<text class="mch-numt" x="35" y="860" text-anchor="middle">3</text>
+<text class="mch-s" x="56" y="860">S3 asks KMS to unwrap the data key - a separate grant, so a correct bucket policy alone is not enough.</text>
+</svg>

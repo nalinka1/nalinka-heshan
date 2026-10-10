@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1008" role="img" aria-labelledby="mcg-title mcg-desc">
+<title id="mcg-title">Two independent authorisation gates guard every encrypted object read</title>
+<desc id="mcg-desc">A read request from the federated role is checked twice, in parallel-reading side-by-side gates: the S3 bucket policy decides whether the role may touch that prefix, and the KMS key policy decides whether it may decrypt. Both must allow for the object to be returned. Removing either one denies the read, and when the KMS grant is the missing piece the error still surfaces as an S3 AccessDenied.</desc>
+
+<defs>
+<style>
+.mcg-bg{fill:#FBFBF9}
+.mcg-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.mcg-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.mcg-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.mcg-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.mcg-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.mcg-mk{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#16181D}
+.mcg-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.mcg-lbl{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#5C626E}
+.mcg-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.mcg-band{fill:#EDF2F2;stroke:#DFE0DC;stroke-width:1}
+.mcg-grp{fill:#F4F7F6;stroke:#C5D6D9;stroke-width:1}
+.mcg-rule{stroke:#DFE0DC;stroke-width:1}
+.mcg-arr{fill:none;stroke:#5C626E;stroke-width:1.5}
+.mcg-arrd{fill:none;stroke:#5C626E;stroke-width:1.5;stroke-dasharray:5 4}
+.mcg-tok{fill:none;stroke:#17505C;stroke-width:1.5}
+.mcg-num{fill:#17505C}
+.mcg-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF}
+.mcg-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mcg-ti-da{fill:#E6EEF3}
+.mcg-ic-da{stroke:#2E5E7E}
+.mcg-ti-se{fill:#E8F0E6}
+.mcg-ic-se{stroke:#4A6B45}
+.mcg-ti-id{fill:#E9EAF3}
+.mcg-ic-id{stroke:#4A5578}
+</style>
+
+<marker id="mcg-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="mcg-aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#17505C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+
+<symbol id="mcg-sym-lock" viewBox="0 0 18 18"><rect class="mcg-ico" x="3.6" y="7.6" width="10.8" height="7.4" rx="1.6"/><path class="mcg-ico" d="M6.2 7.6V5.6a2.8 2.8 0 0 1 5.6 0v2"/></symbol>
+<symbol id="mcg-sym-shield" viewBox="0 0 18 18"><path class="mcg-ico" d="M9 2.2 15 4.6V9c0 4-3 6.3-6 7.1-3-0.8-6-3.1-6-7.1V4.6Z"/></symbol>
+<symbol id="mcg-sym-key" viewBox="0 0 18 18"><circle class="mcg-ico" cx="5.8" cy="9" r="3"/><path class="mcg-ico" d="M8.8 9H16M13.4 9v3M16 9v3.4"/></symbol>
+<symbol id="mcg-sym-bucket" viewBox="0 0 18 18"><ellipse class="mcg-ico" cx="9" cy="4.6" rx="6" ry="2.3"/><path class="mcg-ico" d="M3 4.6v8.8c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V4.6"/></symbol>
+<symbol id="mcg-sym-stop" viewBox="0 0 18 18"><circle class="mcg-ico" cx="9" cy="9" r="6.4"/><path class="mcg-ico" d="M4.6 13.4 13.4 4.6"/></symbol>
+</defs>
+
+<rect class="mcg-bg" x="0" y="0" width="360" height="1008"/>
+
+<text class="mcg-h1" x="24" y="40">Two independent gates</text>
+<text class="mcg-sub" x="24" y="62">A correct bucket policy is not enough on its own</text>
+
+<rect class="mcg-card" x="30" y="86" width="300" height="86" rx="10"/>
+<rect class="mcg-ti-id" x="42" y="98" width="30" height="30" rx="7"/>
+<use class="mcg-ic-id" href="#mcg-sym-lock" x="48" y="104" width="18" height="18"/>
+<text class="mcg-t" x="82" y="117">Federated role</text>
+<text class="mcg-s" x="42" y="145">Reading an SSE-KMS encrypted object</text>
+<text class="mcg-m" x="42" y="163">s3:GetObject</text>
+
+<path class="mcg-tok" d="M180 172 V206" marker-end="url(#mcg-aht)"/>
+<circle class="mcg-num" cx="180" cy="189" r="11"/>
+<text class="mcg-numt" x="180" y="193" text-anchor="middle">1</text>
+
+<rect class="mcg-grp" x="18" y="196" width="324" height="164" rx="12"/>
+<text class="mcg-lbl" x="30" y="350">Both must allow</text>
+
+<rect class="mcg-card" x="30" y="208" width="144" height="118" rx="10"/>
+<rect class="mcg-ti-da" x="42" y="220" width="30" height="30" rx="7"/>
+<use class="mcg-ic-da" href="#mcg-sym-bucket" x="48" y="226" width="18" height="18"/>
+<text class="mcg-t" x="42" y="268">Bucket policy</text>
+<text class="mcg-s" x="42" y="288">Prefix scoped</text>
+<text class="mcg-m" x="42" y="308">inbound/* only</text>
+
+<rect class="mcg-card" x="186" y="208" width="144" height="118" rx="10"/>
+<rect class="mcg-ti-se" x="198" y="220" width="30" height="30" rx="7"/>
+<use class="mcg-ic-se" href="#mcg-sym-key" x="204" y="226" width="18" height="18"/>
+<text class="mcg-t" x="198" y="268">KMS key policy</text>
+<text class="mcg-s" x="198" y="288">Decrypt grant</text>
+<text class="mcg-m" x="198" y="308">one key ARN</text>
+
+<path class="mcg-arr" d="M102 360 V380 H176 V398" marker-end="url(#mcg-ah)"/>
+<circle class="mcg-num" cx="102" cy="344" r="11"/>
+<text class="mcg-numt" x="102" y="348" text-anchor="middle">2</text>
+<path class="mcg-arr" d="M258 360 V380 H184 V398" marker-end="url(#mcg-ah)"/>
+<circle class="mcg-num" cx="258" cy="344" r="11"/>
+<text class="mcg-numt" x="258" y="348" text-anchor="middle">3</text>
+
+<rect class="mcg-card" x="30" y="398" width="300" height="86" rx="10"/>
+<rect class="mcg-ti-se" x="42" y="410" width="30" height="30" rx="7"/>
+<use class="mcg-ic-se" href="#mcg-sym-shield" x="48" y="416" width="18" height="18"/>
+<text class="mcg-t" x="82" y="429">Object returned</text>
+<text class="mcg-s" x="42" y="457">Data key unwrapped, bytes decrypted</text>
+<text class="mcg-m" x="42" y="475">bucket key enabled</text>
+
+<path class="mcg-arrd" d="M180 484 V516" marker-end="url(#mcg-ah)"/>
+
+<rect class="mcg-card" x="18" y="516" width="324" height="128" rx="10"/>
+<path class="mcg-band" d="M18 516h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="mcg-hd" x="32" y="537">Remove either gate</text>
+<use class="mcg-ic-se" href="#mcg-sym-stop" x="32" y="560" width="18" height="18"/>
+<text class="mcg-s" x="60" y="566">Key disabled, bucket policy untouched</text>
+<text class="mcg-m" x="60" y="584">KMS.DisabledException</text>
+<use class="mcg-ic-se" href="#mcg-sym-stop" x="32" y="600" width="18" height="18"/>
+<text class="mcg-s" x="60" y="606">kms:Decrypt removed from the role</text>
+<text class="mcg-m" x="60" y="624">AccessDenied, cause is KMS</text>
+
+<rect class="mcg-card" x="18" y="668" width="324" height="144" rx="10"/>
+<path class="mcg-band" d="M18 668h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="mcg-hd" x="32" y="689">Bucket policy - three explicit denies</text>
+<text class="mcg-s" x="32" y="722">Not SSE-KMS</text>
+<text class="mcg-mk" x="172" y="722">PutObject denied</text>
+<text class="mcg-s" x="32" y="746">Not this key ARN</text>
+<text class="mcg-mk" x="172" y="746">PutObject denied</text>
+<text class="mcg-s" x="32" y="770">Plain HTTP</text>
+<text class="mcg-mk" x="172" y="770">all actions denied</text>
+<text class="mcg-s" x="32" y="796">Explicit deny beats any IAM allow.</text>
+
+<line class="mcg-rule" x1="18" y1="844" x2="342" y2="844"/>
+
+<text class="mcg-hd" x="24" y="872">Legend</text>
+<rect class="mcg-ti-id" x="24" y="886" width="16" height="16" rx="4"/>
+<text class="mcg-s" x="48" y="898">Identity</text>
+<rect class="mcg-ti-da" x="130" y="886" width="16" height="16" rx="4"/>
+<text class="mcg-s" x="154" y="898">Data</text>
+<rect class="mcg-ti-se" x="226" y="886" width="16" height="16" rx="4"/>
+<text class="mcg-s" x="250" y="898">Security</text>
+<path class="mcg-tok" d="M24 922h26" marker-end="url(#mcg-aht)"/>
+<text class="mcg-s" x="58" y="926">Credential path</text>
+<path class="mcg-arrd" d="M196 922h26" marker-end="url(#mcg-ah)"/>
+<text class="mcg-s" x="230" y="926">Failure path</text>
+
+<text class="mcg-hd" x="24" y="956">Flow</text>
+<circle class="mcg-num" cx="35" cy="976" r="11"/>
+<text class="mcg-numt" x="35" y="980" text-anchor="middle">1</text>
+<text class="mcg-s" x="56" y="980">A read arrives with temporary credentials</text>
+<circle class="mcg-num" cx="35" cy="1000" r="11"/>
+<text class="mcg-numt" x="35" y="1004" text-anchor="middle">2</text>
+<text class="mcg-s" x="56" y="1000">S3 checks prefix</text>
+<circle class="mcg-num" cx="187" cy="1000" r="11"/>
+<text class="mcg-numt" x="187" y="1004" text-anchor="middle">3</text>
+<text class="mcg-s" x="208" y="1000">KMS checks decrypt</text>
+</svg>

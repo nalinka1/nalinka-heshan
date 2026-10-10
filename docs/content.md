@@ -63,23 +63,31 @@ Caught before staging.
 > **Built for a client demo. Never name or refer to the client anywhere this project
 > appears - row, deep-dive page, or diagram.**
 
-### Multi-Cloud Secure Platform, AWS and Azure
-In progress - the CV lists it as "2026, in build". Cross-cloud OIDC workload identity federation so a workload
-authenticates across clouds with no stored access keys, with negative tests proving
-expired tokens and wrong identities are denied. Terraform-provisioned landing zone with
-remote state and locking, custom RBAC roles, and managed identities pulling secrets with
-no credentials in code. GitHub Actions deploys both clouds via federated credentials.
+### Multi-Cloud Secure Document Platform, AWS and Azure
+In progress - the CV lists it as "2026, in build". Cross-cloud OIDC workload identity
+federation, so a workload in Azure reads an encrypted S3 bucket with no AWS access key
+anywhere on the Azure side. Four negative tests prove the boundaries hold: a wrong
+identity, an expired token, an out-of-scope prefix and a missing KMS grant are each
+denied. Both clouds provisioned from one Terraform configuration with remote state and
+blob-lease locking.
 
-`Terraform · Bicep · AWS CDK · AWS (S3, KMS, IAM) · Azure (Entra ID, RBAC, Key Vault) ·
-GitHub Actions · OIDC`
+`Terraform · AWS (S3, KMS, IAM, STS) · Azure (Entra ID, RBAC, Key Vault, API Management,
+VNet) · OIDC`
 
 > Label as project work, not production experience, regardless of completion status -
 > Azure and Terraform are project-level.
 
-**Has a deep-dive page** (published 2026-09-27). Hands-on project, so it uses "What I
-built" (taken from the facts above) instead of Decisions. Still to add from Nalinka:
-what broke, any decisions worth recording, and the repo URL once the code is pushed
-(currently local only).
+> **Copy rewritten 2026-10-10 from a review of the repo, and here the repo wins over
+> the CV.** The CV entry still lists Bicep, AWS CDK and GitHub Actions and calls it a
+> "landing zone" with custom RBAC roles. None of that is in the repo (no `.github/`, no
+> workflow, no second OIDC provider), so none of it goes on the site. Don't add it back
+> from the CV - the CV entry is what needs correcting.
+
+**Has a deep-dive page** (published 2026-09-27, rewritten 2026-10-10). Hands-on
+project, so it uses "What I built" instead of Decisions. Diagrams via
+`MultiCloud.astro` - see docs/phase-3-plan.md. Still to add from Nalinka: what broke,
+any decisions worth recording, and the repo URL once the code is pushed (currently
+local only).
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting

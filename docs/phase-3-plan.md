@@ -84,6 +84,16 @@ linear path (API Gateway → Lambda → data layer), and separately the fanout. 
 cleanly alone, and it lets the data-layer swap - the actual story on that page - be the
 diagram shown twice, DynamoDB then Aurora.
 
+### 4. Multi-cloud document platform - `/projects/multi-cloud-secure-document-platform` - done
+
+Added 2026-10-10, same pattern as the order platform. `MultiCloud.astro` inlines
+`mcdp-architecture-detailed.svg` at 960 wide, and below that two 360-wide files: the
+federation path (`mcdp-federation-mobile.svg`) and the two authorisation gates
+(`mcdp-two-gates-mobile.svg`), the bucket policy and KMS key policy drawn side by side
+because both must allow. No GitHub Actions deploy path is drawn - it isn't in the repo.
+`mcdp-architecture-overview.svg` (the same architecture without the detail tables) is in
+the folder but not used on any page.
+
 ---
 
 ## What gets a photo

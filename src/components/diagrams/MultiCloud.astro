@@ -1,0 +1,17 @@
+---
+// Multi-cloud document platform diagrams for
+// /projects/multi-cloud-secure-document-platform. On narrow screens the federation
+// path and the two authorisation gates are separate files, the gates drawn side by
+// side so the bucket policy and the KMS key policy read as parallel
+// (docs/phase-3-plan.md).
+import InlineDiagram from './InlineDiagram.astro';
+import desktop from '../../assets/diagrams/mcdp-architecture-detailed.svg?raw';
+import mobileFederation from '../../assets/diagrams/mcdp-federation-mobile.svg?raw';
+import mobileTwoGates from '../../assets/diagrams/mcdp-two-gates-mobile.svg?raw';
+---
+
+<InlineDiagram desktop={desktop} mobile={[mobileFederation, mobileTwoGates]}>
+	One Terraform configuration, two clouds, and a token exchange that leaves no access
+	key on either side. Every read has to pass the bucket policy and the KMS key policy.
+	Four negative tests check that the boundaries hold.
+</InlineDiagram>

@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { isPublished } from '../../lib/published';
 import OrderPlatform from '../../components/diagrams/OrderPlatform.astro';
+import MultiCloud from '../../components/diagrams/MultiCloud.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects', ({ data }) => isPublished(data.body));
@@ -20,22 +21,25 @@ interface Props {
 const { project } = Astro.props;
 const { title, stack, repo, images = [] } = project.data;
 const body = project.data.body!;
+// A blank line in whatItIs starts a new paragraph. The first one is the meta description.
+const whatItIs = body.whatItIs.split(/\n\s*\n/);
 
 // Diagrams are components, not content, so they're attached by slug here.
 const diagrams: Record<string, typeof OrderPlatform> = {
 	'aws-order-flow': OrderPlatform,
+	'multi-cloud-secure-document-platform': MultiCloud,
 };
 const ProjectDiagram = diagrams[project.data.slug];
 ---
 
-<BaseLayout title={`${title} - Nalinka Heshan`} description={body.whatItIs}>
+<BaseLayout title={`${title} - Nalinka Heshan`} description={whatItIs[0]}>
 	<p class="back"><a href="/projects">← Projects</a></p>
 	{body.draft && <p class="draft-note">Draft - only visible in local dev, not on the live site.</p>}
 	<h1>{title}</h1>
 
 	<section aria-labelledby="what-it-is-heading">
 		<h2 id="what-it-is-heading">What it is</h2>
-		<p>{body.whatItIs}</p>
+		{whatItIs.map((paragraph) => <p>{paragraph}</p>)}
 		{ProjectDiagram && <ProjectDiagram />}
 		{images.map((img) => (
 			<figure class="project-image">
