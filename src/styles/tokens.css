@@ -1,11 +1,11 @@
-/* Design tokens — nalinkaheshan.dev
+/* Design tokens - nalinkaheshan.dev
    Phase 2. Everything visual resolves to a value in this file.
    If a component needs a number that isn't here, add it here first. */
 
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400&display=swap');
 
 :root {
-  /* Colour — five values. No sixth without a reason. */
+  /* Colour - five values. No sixth without a reason. */
   --paper:  #FBFBF9;
   --ink:    #16181D;
   --muted:  #5C626E;
@@ -16,17 +16,17 @@
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
 
-  --text-sm:   0.875rem;   /* 14 — captions, stack lines, footer */
-  --text-base: 1rem;       /* 16 — body */
-  --text-md:   1.25rem;    /* 20 — section leads */
-  --text-lg:   1.5rem;     /* 24 — page titles */
-  --text-xl:   1.875rem;   /* 30 — the intro line on / only */
+  --text-sm:   0.875rem;   /* 14 - captions, stack lines, footer */
+  --text-base: 1rem;       /* 16 - body */
+  --text-md:   1.25rem;    /* 20 - section leads */
+  --text-lg:   1.5rem;     /* 24 - page titles */
+  --text-xl:   1.875rem;   /* 30 - the intro line on / only */
 
   --leading-body:    1.7;
   --leading-tight:   1.25;
   --tracking-tight: -0.015em;
 
-  /* Space — 4px base. Use these, never arbitrary values. */
+  /* Space - 4px base. Use these, never arbitrary values. */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -42,14 +42,14 @@
   --page-max: 60rem;    /* the content column on wide screens */
   --rule-width: 1px;
 
-  /* Diagrams — Phase 3. Hand-written SVG only, no Mermaid or exported images.
-     Colour stays within --ink / --rule / --accent / --muted / --paper — nothing new. */
-  --diagram-stroke-width:      1.5;   /* box outlines, arrows — unitless SVG user units */
+  /* Diagrams - Phase 3. Hand-written SVG only, no Mermaid or exported images.
+     Colour stays within --ink / --rule / --accent / --muted / --paper - nothing new. */
+  --diagram-stroke-width:      1.5;   /* box outlines, arrows - unitless SVG user units */
   --diagram-stroke-width-thin: 1;     /* secondary lines, paired with --rule */
   --diagram-fill:      var(--paper);  /* the only fill a box may use, to occlude a line behind it; default is none */
   --diagram-corner-radius: 4;         /* user units; matches the site's 4px border-radius cap */
   --diagram-arrow-size: 8;            /* arrowhead marker width/height, user units */
-  --diagram-label-size: 0.75rem;      /* 12px — minimum label size, mobile included */
+  --diagram-label-size: 0.75rem;      /* 12px - minimum label size, mobile included */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -109,7 +109,7 @@ code, .mono {
 
 /* Rules the stylesheet can't enforce, so read them:
    - Two weights only: 400 and 600. No 300, no 700.
-   - Mono appears only on literal infrastructure strings —
+   - Mono appears only on literal infrastructure strings -
      ARNs, bucket names, stack lines, commit SHAs. Never as a label style.
    - Accent appears on links, the active nav item, and nothing else.
    - Separate sections with a rule and space, not a box or a card.

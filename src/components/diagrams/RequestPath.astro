@@ -1,7 +1,7 @@
 ---
 // Request path diagram for /architecture, under "Hosting".
 //
-// Layout is computed, not hand-plotted — see layout.ts.
+// Layout is computed, not hand-plotted - see layout.ts.
 import Diagram from './Diagram.astro';
 import {
 	type Lines,
@@ -23,7 +23,7 @@ interface NodeDef {
 	id: string;
 	/** Desktop label, possibly wrapped across lines. */
 	deskLines: Lines;
-	/** Mobile label — one line where the narrow stacked boxes are wide enough for it. */
+	/** Mobile label - one line where the narrow stacked boxes are wide enough for it. */
 	mobileLines: Lines;
 	/** True if this box is on the trust path from viewer to bucket and gets an
 	 * --accent outline. An arrow is --accent if either end is. */
@@ -39,7 +39,7 @@ const nodes: NodeDef[] = [
 	},
 	{
 		// Viewer-request function, so the rewrite happens before the cache lookup.
-		// A rewrite step the request passes through, not part of the trust path —
+		// A rewrite step the request passes through, not part of the trust path -
 		// so --ink, though the arrows either side of it stay --accent.
 		id: 'function',
 		deskLines: [
@@ -200,7 +200,7 @@ const desc =
 	</Fragment>
 
 	<Fragment slot="caption">
-		The accent path is the only route from a viewer to the bucket — through CloudFront and
+		The accent path is the only route from a viewer to the bucket - through CloudFront and
 		Origin Access Control, never directly.
 	</Fragment>
 </Diagram>

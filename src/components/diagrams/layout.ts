@@ -1,6 +1,6 @@
 // Shared layout maths for the linear diagrams (deploy pipeline, request path).
 // Box widths come from an estimated text width per label, so changing a label
-// reflows the boxes — no measuring text at build time, no client JS.
+// reflows the boxes - no measuring text at build time, no client JS.
 
 export interface Part {
 	text: string;
@@ -9,7 +9,7 @@ export interface Part {
 
 export type Lines = Part[][];
 
-// Rough glyph widths at 12px IBM Plex Sans/Mono — good enough to size boxes
+// Rough glyph widths at 12px IBM Plex Sans/Mono - good enough to size boxes
 // that fit their labels.
 const CHAR_W = 6.3;
 const MONO_CHAR_W = 6.8;

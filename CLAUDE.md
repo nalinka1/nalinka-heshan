@@ -1,22 +1,22 @@
-# CLAUDE.md — Portfolio Site
+# CLAUDE.md - Portfolio Site
 
 ## What this is
 Nalinka Heshan's personal portfolio site at nalinkaheshan.dev. Two jobs: (1) a link on
-his CV/LinkedIn that recruiters click, (2) a demonstration piece — the deploy pipeline is
+his CV/LinkedIn that recruiters click, (2) a demonstration piece - the deploy pipeline is
 as much the point as the content.
 
 ## Priority rule
 Job hunt comes first. Ship ugly, ship fast, keep every stage abandonable. No scope creep.
 
-## Stack (decided — do not relitigate)
+## Stack (decided - do not relitigate)
 - **Astro**, static output, minimal JS, TypeScript strict
-- **S3 + CloudFront + ACM** — not Amplify, not Vercel, not GitHub Pages
+- **S3 + CloudFront + ACM** - not Amplify, not Vercel, not GitHub Pages
 - **Terraform** for IaC, local state. Not CDK.
-- **Cloudflare** for DNS, not Route 53 — reasoning in docs/architecture-decisions.md
-- **GitHub Actions + OIDC role assumption** — zero long-lived AWS credentials, anywhere
-- **Plain CSS with custom properties** (`src/styles/tokens.css`) — no Tailwind
-- **Astro Content Collections** for project/role copy — no CMS
-- **Diagrams are hand-written SVG** using the site's own tokens — not Mermaid, not
+- **Cloudflare** for DNS, not Route 53 - reasoning in docs/architecture-decisions.md
+- **GitHub Actions + OIDC role assumption** - zero long-lived AWS credentials, anywhere
+- **Plain CSS with custom properties** (`src/styles/tokens.css`) - no Tailwind
+- **Astro Content Collections** for project/role copy - no CMS
+- **Diagrams are hand-written SVG** using the site's own tokens - not Mermaid, not
   exported images. Detail in docs/phase-3-plan.md.
 
 ## Detailed context (loaded every session)
@@ -24,13 +24,13 @@ Job hunt comes first. Ship ugly, ship fast, keep every stage abandonable. No sco
 
 The Backlog section at the end of that file is the to-do list. Start there.
 
-## Read on demand — not auto-loaded
-- docs/content.md — site copy and per-item rules (the CV wins on facts; see below).
+## Read on demand - not auto-loaded
+- docs/content.md - site copy and per-item rules (the CV wins on facts; see below).
   Read before writing or changing any copy.
-- docs/phase-3-plan.md — Phase 3, done. Diagram rules (tokens, 12px minimum labels,
-  mobile stacking) and the deferred Stage 3.4 — read before touching any diagram.
-- docs/build-plan.md — Phase 1, done
-- docs/phase-2-plan.md — Phase 2, done
+- docs/phase-3-plan.md - Phase 3, done. Diagram rules (tokens, 12px minimum labels,
+  mobile stacking) and the deferred Stage 3.4 - read before touching any diagram.
+- docs/build-plan.md - Phase 1, done
+- docs/phase-2-plan.md - Phase 2, done
 
 ## Content rules
 - **The CV (`public/cv.pdf`) is the source of truth** for work experience, projects and
@@ -62,15 +62,15 @@ Y", "with a focus on". No hero-section slogans.
   applied.
 - Commit at each checkpoint, not one giant commit.
 - Flag anything that touches cost (NAT gateways, always-on compute, RDS) before creating
-  it — budget is a few dollars a month.
+  it - budget is a few dollars a month.
 - Interactive CLI wizards hang in this terminal. Use non-interactive flags.
-- Pushing to `master` deploys. Ask before every push. `gh` isn't installed — check
+- Pushing to `master` deploys. Ask before every push. `gh` isn't installed - check
   Actions runs through the public GitHub API with curl.
 - Nalinka usually has `astro dev` running on port 4321. A second dev server can't be
   started from here (Astro's lock file). Verify with `npm run build` and dist/, or
-  against 4321 — a new route needs his dev server restarted.
+  against 4321 - a new route needs his dev server restarted.
 
 ## Settled wording
 - Site intro says "a software engineer", even though the CV headline is "Full Stack
-  Developer" and the Qbitum title was Senior. Decided 2026-09-27 — the plain wording
+  Developer" and the Qbitum title was Senior. Decided 2026-09-27 - the plain wording
   covers it. Don't change it or re-raise it.

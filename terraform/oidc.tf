@@ -1,5 +1,5 @@
 # GitHub Actions OIDC deploy role. GitHub exchanges a short-lived OIDC token for
-# temporary AWS credentials at workflow run time — no long-lived AWS access keys
+# temporary AWS credentials at workflow run time - no long-lived AWS access keys
 # are stored anywhere (not in the repo, not in repo secrets).
 
 variable "github_repo" {
@@ -75,7 +75,7 @@ resource "aws_iam_role" "github_actions_deploy" {
 }
 
 # Permissions policy: sync dist/ to the bucket and invalidate the distribution.
-# Nothing else — no read access, no other buckets, no other distributions.
+# Nothing else - no read access, no other buckets, no other distributions.
 data "aws_iam_policy_document" "github_actions_deploy" {
   statement {
     sid       = "SyncSiteObjects"

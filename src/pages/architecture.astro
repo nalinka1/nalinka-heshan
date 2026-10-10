@@ -5,7 +5,7 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 ---
 
 <BaseLayout
-	title="Architecture — Nalinka Heshan"
+	title="Architecture - Nalinka Heshan"
 	description="How nalinkaheshan.dev deploys itself: static Astro on S3 and CloudFront via Terraform, Cloudflare DNS, and GitHub Actions assuming an IAM role over OIDC with no stored AWS keys."
 >
 	<h1>How this site deploys itself</h1>
@@ -13,7 +13,7 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 	<section aria-labelledby="hosting-heading">
 		<h2 id="hosting-heading">Hosting</h2>
 		<p>
-			This site is a static Astro build — plain HTML and CSS, no client-side
+			This site is a static Astro build - plain HTML and CSS, no client-side
 			framework. It sits in a private S3 bucket, not using S3's static website
 			hosting feature. CloudFront reads it through Origin Access Control, and the
 			bucket policy only allows reads from this one distribution's ARN, not from
@@ -42,7 +42,7 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 			GitHub's own token endpoint and exchanging it for temporary credentials
 			scoped to one IAM role. The role's trust policy only accepts that token for
 			this exact repository and branch, and its permissions cover writing to one
-			S3 bucket and invalidating one CloudFront distribution — nothing else.
+			S3 bucket and invalidating one CloudFront distribution - nothing else.
 		</p>
 
 		<DeployPipeline />
@@ -51,8 +51,8 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 	<section aria-labelledby="infrastructure-heading">
 		<h2 id="infrastructure-heading">Infrastructure</h2>
 		<p>
-			The infrastructure — the S3 bucket, the CloudFront distribution, the ACM
-			certificate, and the IAM role itself — is defined in Terraform, not clicked
+			The infrastructure - the S3 bucket, the CloudFront distribution, the ACM
+			certificate, and the IAM role itself - is defined in Terraform, not clicked
 			together by hand in the AWS console. State is local, not remote.
 		</p>
 	</section>
@@ -62,7 +62,7 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 		<p>
 			DNS is Cloudflare, not Route 53. The domain is registered through Cloudflare
 			Registrar, and its registration agreement requires Cloudflare's own
-			nameservers at every plan tier — there's no delegating to Route 53. The ACM
+			nameservers at every plan tier - there's no delegating to Route 53. The ACM
 			validation record and the apex record pointing at CloudFront are both added
 			by hand in Cloudflare, with the proxy switched off. With the proxy on,
 			Cloudflare would terminate TLS with its own certificate in front of
@@ -75,7 +75,7 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 		<p>
 			GitHub changed how it writes identity into the OIDC token: for repositories
 			created after 15 July 2026, the subject claim embeds the numeric owner and
-			repository IDs, not just their names — <code>repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master</code>,
+			repository IDs, not just their names - <code>repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master</code>,
 			not the plain <code>repo:nalinka1/nalinka-heshan:ref:refs/heads/master</code> that
 			most OIDC tutorials still assume. I found this out by decoding the
 			token from a live workflow run after role assumption kept failing against a

@@ -1,7 +1,7 @@
 ---
 // Deploy pipeline diagram for /architecture, under "Deploys".
 //
-// Layout is computed, not hand-plotted — see layout.ts.
+// Layout is computed, not hand-plotted - see layout.ts.
 import Diagram from './Diagram.astro';
 import {
 	type Lines,
@@ -24,7 +24,7 @@ interface NodeDef {
 	id: string;
 	/** Desktop label, possibly wrapped across lines. */
 	deskLines: Lines;
-	/** Mobile label — one line where the narrow stacked boxes are wide enough for it. */
+	/** Mobile label - one line where the narrow stacked boxes are wide enough for it. */
 	mobileLines: Lines;
 	/** True if the arrow (and box outline) leading INTO this node is part of the
 	 * token-exchange path and gets --accent instead of --ink. */
@@ -81,7 +81,7 @@ const desktopEdges = desktopBoxes.slice(1).map((box, i) => ({
 	accent: !!box.node.accentIn,
 }));
 
-// Cloudflare sits below the row, near the viewer end — connected by a thin
+// Cloudflare sits below the row, near the viewer end - connected by a thin
 // dashed line with no arrowhead, since it's not a step in the request path.
 const D_CF_W = lineWidth([{ text: 'resolves DNS' }], D_FONT) + D_PAD_X * 2;
 const D_CF_H = D_LINE_H * 2 + 24;
@@ -261,7 +261,7 @@ const desc =
 	</Fragment>
 
 	<Fragment slot="caption">
-		The accent path is the only place a credential exists — a short-lived token exchanged
+		The accent path is the only place a credential exists - a short-lived token exchanged
 		for temporary STS credentials, never stored.
 	</Fragment>
 </Diagram>

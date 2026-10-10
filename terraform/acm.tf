@@ -1,6 +1,6 @@
 # DNS is Cloudflare's, not Terraform's (see CLAUDE.md). This resource only
 # creates the certificate request and exposes the validation CNAME as an
-# output — it does NOT create any DNS record.
+# output - it does NOT create any DNS record.
 resource "aws_acm_certificate" "site" {
   domain_name       = var.domain_name
   validation_method = "DNS"
@@ -11,7 +11,7 @@ resource "aws_acm_certificate" "site" {
 }
 
 # Polls the ACM API until the cert shows ISSUED. It does not create or depend
-# on a Route 53 record — it just waits. In practice this means `terraform
+# on a Route 53 record - it just waits. In practice this means `terraform
 # apply` will block here after the certificate resource is created, until
 # the validation CNAME (see outputs.tf) is added by hand in Cloudflare with
 # the proxy off and has propagated. That's expected, not a hang to work

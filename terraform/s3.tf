@@ -1,4 +1,4 @@
-# Private origin bucket. No website hosting endpoint — CloudFront reads it as
+# Private origin bucket. No website hosting endpoint - CloudFront reads it as
 # a regular S3 origin over OAC, not as an S3 static website endpoint. This is
 # what lets the bucket policy restrict access to "this one distribution" only;
 # the website-hosting endpoint has no equivalent restriction.
@@ -17,7 +17,7 @@ resource "aws_s3_bucket_public_access_block" "site" {
 }
 
 # Allows reads only from the CloudFront distribution defined in cloudfront.tf,
-# scoped further by the exact distribution ARN via the SourceArn condition —
+# scoped further by the exact distribution ARN via the SourceArn condition -
 # not just "any CloudFront distribution in this account".
 data "aws_iam_policy_document" "site" {
   statement {

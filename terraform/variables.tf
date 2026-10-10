@@ -19,7 +19,7 @@ variable "price_class" {
   description = <<-EOT
     CloudFront price class. PriceClass_100 = North America + Europe edge
     locations only, cheapest option. A portfolio site for recruiters doesn't
-    need global edge coverage. Flagging this as a cost-relevant default —
+    need global edge coverage. Flagging this as a cost-relevant default -
     change to PriceClass_All if that assumption is wrong.
   EOT
   type        = string

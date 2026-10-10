@@ -1,4 +1,4 @@
-# Phase 2 — Design and structure
+# Phase 2 - Design and structure
 
 Phase 1 is done: site is live on `nalinkaheshan.dev`, deployed by push to `master` via
 GitHub Actions with OIDC, no stored AWS credentials.
@@ -9,13 +9,13 @@ site working and linkable, abandon at any point.
 
 ---
 
-## Decisions (made — do not reopen)
+## Decisions (made - do not reopen)
 
 - **Plain CSS with custom properties.** No Tailwind, no CSS framework. `src/styles/tokens.css`
   is the source of truth for every visual value, plus per-component styles.
 - **No contact page.** Contact is three links. Footer on every page, plus the links rail
   on `/`.
-- **Content lives in Astro Content Collections** — markdown files with Zod schemas. No
+- **Content lives in Astro Content Collections** - markdown files with Zod schemas. No
   CMS, no runtime, nothing new to host.
 - **No JS framework.** Astro islands only if something genuinely needs state. Nothing
   currently does.
@@ -35,13 +35,13 @@ Five. Adding a sixth means removing one.
 | `/experience` | Roles, compressed, one line each. Link to CV PDF. |
 | `/architecture` | How this site deploys. Terraform and workflow linked. |
 
-The existing single page becomes `/cv` — everything on one scrollable page, styled for
+The existing single page becomes `/cv` - everything on one scrollable page, styled for
 print. That's the URL to paste into applications when a site with tabs is more than the
 situation calls for.
 
 ---
 
-## Design direction — confirmed
+## Design direction - confirmed
 
 `src/styles/tokens.css` holds the values. This section holds the intent behind them.
 
@@ -52,7 +52,7 @@ most common signature of an AI-generated page right now. Same for: terracotta ac
 tracked-out ALL-CAPS eyebrow labels above every heading, meta strings joined with middle
 dots, and identical rounded cards with the same soft grey shadow.
 
-The `PROJECTS` label above the projects section is one of these. Dropped — a rule and
+The `PROJECTS` label above the projects section is one of these. Dropped - a rule and
 spacing carry the same information.
 
 ### Palette
@@ -64,7 +64,7 @@ near-black.
 ### Type
 
 **IBM Plex Sans**, weights 400 and 600 only. **IBM Plex Mono** appears only where the
-content is literally infrastructure — ARNs, bucket names, stack lines, the workflow
+content is literally infrastructure - ARNs, bucket names, stack lines, the workflow
 snippet on `/architecture`, the footer commit SHA. Mono as generic small-label styling is
 a tell; mono for actual infrastructure is just correct.
 
@@ -77,7 +77,7 @@ Body measure 68ch, line-height 1.7. Left-aligned throughout, no centred columns.
 - **Projects are rows, not cards.** Fixed-width label column on the left (name, stack in
   mono, status tag if any), prose on the right. Reads as a reference table rather than a
   marketing page. Hairline rules between rows, no boxes.
-- **Deep-dive links read "Read the decisions"** — sets the expectation that the page
+- **Deep-dive links read "Read the decisions"** - sets the expectation that the page
   contains trade-offs, not a feature list.
 - **Footer carries the build SHA and date**, injected at build time, linking to the
   commit. The site's pitch is the pipeline; this is the one line that makes it visible.
@@ -88,9 +88,9 @@ Body measure 68ch, line-height 1.7. Left-aligned throughout, no centred columns.
 Spend it on the project deep-dive pages, not on visual effect. Each one is structured as
 a decision record:
 
-- **What it is** — two sentences
-- **Decisions** — each with the alternative that was rejected and why
-- **What broke** — the failure that was actually interesting
+- **What it is** - two sentences
+- **Decisions** - each with the alternative that was rejected and why
+- **What broke** - the failure that was actually interesting
 - **Stack** and links
 
 Almost no portfolio has this. It's the part that generates a conversation in an
@@ -109,23 +109,23 @@ CMS, contact form, analytics, visitor counter.
 
 ## Stages
 
-### Stage 2.0 — Update the context files (do first)
+### Stage 2.0 - Update the context files (do first)
 
 `BUILD_PLAN.md` still shows Stage 1.3 and the apex CNAME as unchecked; `CLAUDE.md` stops
-at Stage 1.2. Both are stale — the pipeline works and the apex resolves. Fix them before
+at Stage 1.2. Both are stale - the pipeline works and the apex resolves. Fix them before
 the next build session or the agent will try to redo settled work. Commit on its own.
 
-### Stage 2.1 — Design system, single page restyled
+### Stage 2.1 - Design system, single page restyled
 
-- `src/styles/tokens.css` in place (already written — don't regenerate it)
-- `src/layouts/BaseLayout.astro` — head, skip link, nav, footer with build SHA
+- `src/styles/tokens.css` in place (already written - don't regenerate it)
+- `src/layouts/BaseLayout.astro` - head, skip link, nav, footer with build SHA
 - Restyle the existing page against the tokens
 - Focus states visible, `prefers-reduced-motion` respected
 
 Still one page at the end of this. Ship it. Don't split routes in the same commit as
-styling — if something looks wrong you want to know which change caused it.
+styling - if something looks wrong you want to know which change caused it.
 
-### Stage 2.2 — Content collections and the route split
+### Stage 2.2 - Content collections and the route split
 
 - `src/content/config.ts` with Zod schemas for `projects` and `roles`
 - Move copy from `CONTENT.md` into markdown files
@@ -134,20 +134,20 @@ styling — if something looks wrong you want to know which change caused it.
 
 No visual changes in this stage. Tokens are settled.
 
-### Stage 2.3 — Project deep-dives
+### Stage 2.3 - Project deep-dives
 
 - `/projects/[slug]` from the collection
 - Write one page properly before writing three. AWS Event-Driven Order Platform first.
 - Projects without a deep-dive just don't link to one. Don't write thin pages to fill the
   pattern.
 
-### Stage 2.4 — `/architecture`
+### Stage 2.4 - `/architecture`
 
 Content sketch is already in `CONTENT.md`. Link the Terraform and the workflow file.
-Keep it accurate to what's actually deployed — this is the page most likely to be read
+Keep it accurate to what's actually deployed - this is the page most likely to be read
 closely by someone who knows the stack.
 
-### Stage 2.5 — Polish and pipeline
+### Stage 2.5 - Polish and pipeline
 
 - Mobile check on a real phone
 - Astro View Transitions between routes
@@ -155,7 +155,7 @@ closely by someone who knows the stack.
   the S3 sync
 - `aws s3 sync --delete` so removed pages actually disappear
 - Invalidation scoped to HTML paths rather than `/*`
-- Lighthouse — 100 on performance is free with static Astro; anything less means
+- Lighthouse - 100 on performance is free with static Astro; anything less means
   something got added that shouldn't have been
 
 ---

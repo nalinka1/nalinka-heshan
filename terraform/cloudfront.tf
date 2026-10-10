@@ -7,7 +7,7 @@ resource "aws_cloudfront_origin_access_control" "site" {
 
 # Appends index.html to URIs ending in "/" or with no file extension. Needed
 # because the S3 origin is private and reached through OAC, not S3 website
-# hosting (see s3.tf) — so there's no automatic directory-index resolution for
+# hosting (see s3.tf) - so there's no automatic directory-index resolution for
 # anything but the bare "/" request. See functions/append-index-html.js.
 resource "aws_cloudfront_function" "append_index_html" {
   name    = "${replace(var.domain_name, ".", "-")}-append-index-html"
@@ -51,7 +51,7 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   # SPA-style fallback: both a missing object (403 from a private bucket via
-  # OAC — S3 doesn't return 404 for objects it won't even confirm exist) and
+  # OAC - S3 doesn't return 404 for objects it won't even confirm exist) and
   # a genuinely absent path resolve to index.html, so client-side routing
   # (added later, if ever) doesn't 404 on refresh. Served with a real 200 so
   # search engines don't index every path as "not found".

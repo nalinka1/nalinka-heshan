@@ -20,11 +20,11 @@ const { company, title, location, startDate, endDate } = role.data;
 const body = role.data.body!;
 ---
 
-<BaseLayout title={`${title}, ${company} — Nalinka Heshan`} description={body.overview}>
+<BaseLayout title={`${title}, ${company} - Nalinka Heshan`} description={body.overview}>
 	<p class="back"><a href="/experience">← Experience</a></p>
-	{body.draft && <p class="draft-note">Draft — only visible in local dev, not on the live site.</p>}
-	<h1>{title} — {company}</h1>
-	<p class="meta">{location} · {startDate} – {endDate ?? 'Present'}</p>
+	{body.draft && <p class="draft-note">Draft - only visible in local dev, not on the live site.</p>}
+	<h1>{title} - {company}</h1>
+	<p class="meta">{location} · {startDate} - {endDate ?? 'Present'}</p>
 
 	<section aria-labelledby="overview-heading">
 		<h2 id="overview-heading">The role</h2>

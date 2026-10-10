@@ -8,7 +8,7 @@ output "acm_validation_record" {
 }
 
 output "cloudfront_domain_name" {
-  description = "CloudFront distribution domain — CNAME the apex to this in Cloudflare (proxy OFF / grey cloud, CNAME flattening handles the apex)."
+  description = "CloudFront distribution domain - CNAME the apex to this in Cloudflare (proxy OFF / grey cloud, CNAME flattening handles the apex)."
   value       = aws_cloudfront_distribution.site.domain_name
 }
 

@@ -24,7 +24,7 @@ pnpm-debug.log*
 .idea/
 
 # terraform
-# .terraform.lock.hcl is intentionally NOT ignored — it pins provider
+# .terraform.lock.hcl is intentionally NOT ignored - it pins provider
 # versions and should be committed for a root module like this one.
 terraform/.terraform/
 terraform/*.tfstate

@@ -1,12 +1,12 @@
 ---
 // Shared wrapper for hand-written SVG diagrams. Handles the accessible
-// scaffolding (role, title, desc), the caption, and responsive sizing —
+// scaffolding (role, title, desc), the caption, and responsive sizing -
 // each diagram component only supplies the boxes/lines/labels as its
 // default slot (and an optional "mobile" slot for the stacked variant
 // below `stackBelow`, 700px by default, per docs/phase-3-plan.md's mobile rules).
 
 interface Props {
-	/** Unique slug for this diagram instance — becomes the id prefix for title/desc. */
+	/** Unique slug for this diagram instance - becomes the id prefix for title/desc. */
 	id: string;
 	/** SVG viewBox for the default (desktop) layout, e.g. "0 0 800 300". */
 	viewBox: string;
@@ -16,9 +16,9 @@ interface Props {
 	/** Viewport width in px below which the stacked layout replaces the desktop one.
 	 * Set it where the desktop layout would scale its labels under 12px. */
 	stackBelow?: number;
-	/** Accessible name — becomes the SVG <title>. */
+	/** Accessible name - becomes the SVG <title>. */
 	title: string;
-	/** Accessible long description — becomes the SVG <desc>. Should carry the same
+	/** Accessible long description - becomes the SVG <desc>. Should carry the same
 	 * facts as the surrounding prose, never a fact that exists only in the picture. */
 	desc: string;
 }
@@ -34,7 +34,7 @@ const aspectRatio = (vb: string) => {
 	return `${w} / ${h}`;
 };
 
-// Per-diagram breakpoint — media queries can't read a prop, so the rule is
+// Per-diagram breakpoint - media queries can't read a prop, so the rule is
 // generated and scoped to this figure's id.
 const stackRule =
 	`@media (max-width: ${stackBelow}px) {` +

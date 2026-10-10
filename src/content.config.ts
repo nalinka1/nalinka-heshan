@@ -9,7 +9,7 @@ const decision = z.object({
 
 // Deep-dive page content. Only whatItIs is required; each other section renders
 // only when present, so a hands-on project and a decision-record project share
-// one template. `draft: true` builds the page in `astro dev` only — see
+// one template. `draft: true` builds the page in `astro dev` only - see
 // src/lib/published.ts.
 const projectBody = z.object({
 	draft: z.boolean().optional(),
@@ -46,7 +46,7 @@ const projects = defineCollection({
 
 // Role deep-dive page content, same rules as projectBody: only overview is
 // required, the rest render when present, `draft: true` is dev-only.
-// TAC stays at CV level — system names only as the CV names them.
+// TAC stays at CV level - system names only as the CV names them.
 const roleBody = z.object({
 	draft: z.boolean().optional(),
 	overview: z.string(),
