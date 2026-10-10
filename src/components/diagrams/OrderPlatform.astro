@@ -1,78 +1,16 @@
 ---
-// Order platform diagrams for /projects/aws-order-flow. Unlike the other diagrams
-// these are complete SVG files (src/assets/diagrams/), inlined as-is so their
-// text picks up the page's IBM Plex fonts. Each file carries its own
-// <title>/<desc> and prefixed ids.
-//
-// The desktop file is drawn at 960 units wide with 12px labels, so it only
-// shows where it can render at full size. Below that the two 360-wide files
-// take over: the linear path, and the queue's success/dead-letter split drawn
-// side by side so the two outcomes read as parallel (docs/phase-3-plan.md).
+// Order platform diagrams for /projects/aws-order-flow. On narrow screens the
+// linear path and the queue's success/dead-letter split are separate files, the
+// split drawn side by side so the two outcomes read as parallel
+// (docs/phase-3-plan.md).
+import InlineDiagram from './InlineDiagram.astro';
 import desktop from '../../assets/diagrams/order-platform-desktop.svg?raw';
 import mobilePath from '../../assets/diagrams/order-platform-mobile-path.svg?raw';
 import mobileFanout from '../../assets/diagrams/order-platform-mobile-fanout.svg?raw';
 ---
 
-<figure class="order-platform">
-	<div class="order-platform-desktop" set:html={desktop} />
-	<div class="order-platform-mobile">
-		<div set:html={mobilePath} />
-		<div set:html={mobileFanout} />
-	</div>
-	<figcaption>
-		An order goes from API Gateway to a stored receipt in S3. A message that fails three
-		times moves to a dead-letter queue. Aurora sits outside the CDK app and is filled by a
-		re-runnable migration script.
-	</figcaption>
-</figure>
-
-<style>
-	.order-platform {
-		margin: var(--space-8) 0;
-	}
-
-	.order-platform :global(svg) {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
-
-	.order-platform-desktop {
-		display: none;
-	}
-
-	.order-platform-mobile {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		gap: var(--space-6);
-	}
-
-	.order-platform-mobile > div {
-		flex: 1 1 100%;
-		max-width: 360px;
-	}
-
-	figcaption {
-		margin-top: var(--space-2);
-		font-size: var(--text-sm);
-		color: var(--muted);
-	}
-
-	/* 63rem = --page-max plus its side padding: the narrowest viewport where the
-	   desktop file gets its full 960px. It breaks out of the column padding to do so. */
-	@media (min-width: 63rem) {
-		.order-platform-desktop {
-			display: block;
-			margin: 0 calc(var(--space-6) * -1);
-		}
-
-		.order-platform-mobile {
-			display: none;
-		}
-
-		figcaption {
-			margin-top: var(--space-4);
-		}
-	}
-</style>
+<InlineDiagram desktop={desktop} mobile={[mobilePath, mobileFanout]}>
+	An order goes from API Gateway to a stored receipt in S3. A message that fails three
+	times moves to a dead-letter queue. Aurora sits outside the CDK app and is filled by a
+	re-runnable migration script.
+</InlineDiagram>

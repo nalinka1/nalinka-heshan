@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1000" role="img" aria-labelledby="rqm-title rqm-desc">
+  <title id="rqm-title">Request path: from a viewer to the private S3 bucket</title>
+  <desc id="rqm-desc">A viewer looks up the domain at Cloudflare DNS, which has its proxy off, then sends an HTTPS request to CloudFront. A viewer-request CloudFront Function rewrites /path to /path/index.html, the edge cache is checked, and on a miss Origin Access Control signs a request to a private S3 bucket that only this distribution can read.</desc>
+  <defs>
+    <style>
+      .rqm-t{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-weight:600}
+      .rqm-h{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:14px;font-weight:600}
+      .rqm-nt{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:13px;font-weight:600}
+      .rqm-s{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px}
+      .rqm-x{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:12px}
+      .rqm-m{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px}
+      .rqm-mm{font-family:'IBM Plex Mono',monospace;fill:#5C626E;font-size:12px}
+      .rqm-mb{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px;font-weight:600}
+      .rqm-k{font-family:'IBM Plex Mono',monospace;fill:#17505C;font-size:12px;font-weight:600}
+      .rqm-b{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px;font-weight:600}
+      .rqm-ba{font-family:'IBM Plex Sans',sans-serif;fill:#17505C;font-size:12px;font-weight:600}
+      .rqm-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+      .rqm-note{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1;stroke-dasharray:4 3}
+      .rqm-out{fill:#FFFFFF;stroke:#B9BCB5;stroke-width:1;stroke-dasharray:4 3}
+      .rqm-ln{fill:none;stroke:#5C626E;stroke-width:1.5}
+      .rqm-dash{stroke-dasharray:5 4}
+      .rqm-plain{fill:none;stroke:#B9BCB5;stroke-width:1.25;stroke-dasharray:4 3}
+      .rqm-cfg{fill:none;stroke:#17505C;stroke-width:1.75;stroke-dasharray:0.5 5;stroke-linecap:round}
+      .rqm-cred{fill:none;stroke:#17505C;stroke-width:1.75}
+      .rqm-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+      .rqm-num{fill:#17505C}
+      .rqm-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF;text-anchor:middle}
+    </style>
+    <marker id="rqm-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 1L9 5L0 9z" fill="#5C626E"/></marker>
+    <marker id="rqm-arr-t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1L9 5L0 9z" fill="#17505C"/></marker>
+  </defs>
+  <rect width="360" height="1000" fill="#FBFBF9"/>
+  <text x="16" y="32" class="rqm-t" font-size="18">Request path</text>
+  <text x="16" y="52" class="rqm-s">From a viewer to a private S3 bucket</text>
+  <rect x="8" y="208" width="344" height="656" rx="14" fill="none" stroke="#DFE0DC" stroke-width="1.5"/>
+  <text x="22" y="230" class="rqm-b">AWS account</text>
+  <text x="338" y="230" class="rqm-mm" text-anchor="end">us-east-1</text>
+  <rect x="18" y="242" width="324" height="610" rx="12" fill="#F4F7F6" stroke="#C5D6D9"/>
+  <text x="30" y="262" class="rqm-ba">Defined in Terraform</text>
+  <path d="M180 176V269" class="rqm-ln" marker-end="url(#rqm-arr)"/>
+  <path d="M180 376V413" class="rqm-ln" marker-end="url(#rqm-arr)"/>
+  <path d="M180 480V517" class="rqm-ln" marker-end="url(#rqm-arr)"/>
+  <path d="M180 584V621" class="rqm-ln" marker-end="url(#rqm-arr)"/>
+  <path d="M180 688V725" class="rqm-ln" marker-end="url(#rqm-arr)"/>
+  <rect x="30" y="72" width="300" height="104" rx="10" class="rqm-out"/>
+  <rect x="42" y="89" width="30" height="30" rx="7" fill="#EFF0EC"/>
+  <g transform="translate(57 104)" class="rqm-ico" stroke="#5C626E"><path d="M-9 -7h18v12h-18zM-4 9h8M0 5v4"/></g>
+  <text x="84" y="99" class="rqm-h">Viewer</text>
+  <text x="318" y="99" class="rqm-s" text-anchor="end">Browser</text>
+  <text x="84" y="119" class="rqm-m">nalinkaheshan.dev</text>
+  <rect x="42" y="132" width="276" height="32" rx="7" fill="#EFF0EC"/>
+  <circle cx="58" cy="148" r="10" class="rqm-num"/>
+  <text x="58" y="152" class="rqm-numt">1</text>
+  <text x="76" y="152" class="rqm-x">DNS lookup at Cloudflare, proxy off</text>
+  <circle cx="180" cy="192" r="11" class="rqm-num"/>
+  <text x="180" y="196" class="rqm-numt">2</text>
+  <text x="198" y="196" class="rqm-s">HTTPS</text>
+  <rect x="30" y="272" width="300" height="104" rx="10" class="rqm-card"/>
+  <rect x="42" y="289" width="30" height="30" rx="7" fill="#E3EEEF"/>
+  <g transform="translate(57 304)" class="rqm-ico" stroke="#17505C"><circle r="8.5"/><path d="M-8.5 0h17M0 -8.5c-4.5 4.5 -4.5 12.5 0 17M0 -8.5c4.5 4.5 4.5 12.5 0 17"/></g>
+  <text x="84" y="299" class="rqm-h">CloudFront</text>
+  <text x="318" y="299" class="rqm-s" text-anchor="end">Distribution</text>
+  <text x="84" y="319" class="rqm-m">nalinkaheshan.dev</text>
+  <rect x="42" y="332" width="276" height="32" rx="7" fill="#E8F0E6"/>
+  <text x="54" y="352" class="rqm-x">ACM certificate · TLS 1.2 minimum</text>
+  <circle cx="180" cy="396" r="11" class="rqm-num"/>
+  <text x="180" y="400" class="rqm-numt">3</text>
+  <text x="198" y="400" class="rqm-s">viewer request</text>
+  <rect x="30" y="416" width="300" height="64" rx="10" class="rqm-card"/>
+  <rect x="42" y="433" width="30" height="30" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(57 448)" class="rqm-ico" stroke="#9A6A2E"><path d="M-3.5 -6l-5.5 6l5.5 6M3.5 -6l5.5 6l-5.5 6"/></g>
+  <text x="84" y="443" class="rqm-h">Function</text>
+  <text x="318" y="443" class="rqm-s" text-anchor="end">URI rewrite</text>
+  <text x="84" y="463" class="rqm-m">/cv → /cv/index.html</text>
+  <circle cx="180" cy="500" r="11" class="rqm-num"/>
+  <text x="180" y="504" class="rqm-numt">4</text>
+  <text x="198" y="504" class="rqm-s">rewritten URI</text>
+  <rect x="30" y="520" width="300" height="64" rx="10" class="rqm-card"/>
+  <rect x="42" y="537" width="30" height="30" rx="7" fill="#E3EEEF"/>
+  <g transform="translate(57 552)" class="rqm-ico" stroke="#17505C"><path d="M2 -9l-7 10h5l-2 8l7 -10h-5z"/></g>
+  <text x="84" y="547" class="rqm-h">Edge cache</text>
+  <text x="318" y="547" class="rqm-s" text-anchor="end">Cache lookup</text>
+  <text x="84" y="567" class="rqm-m">Managed-CachingOptimized</text>
+  <circle cx="180" cy="604" r="11" class="rqm-num"/>
+  <text x="180" y="608" class="rqm-numt">5</text>
+  <text x="198" y="608" class="rqm-s">cache miss</text>
+  <rect x="30" y="624" width="300" height="64" rx="10" class="rqm-card"/>
+  <rect x="42" y="641" width="30" height="30" rx="7" fill="#E8F0E6"/>
+  <g transform="translate(57 656)" class="rqm-ico" stroke="#4A6B45"><path d="M-6 -1h12v9h-12zM-3.5 -1v-3a3.5 3.5 0 0 1 7 0v3"/></g>
+  <text x="84" y="651" class="rqm-h">OAC</text>
+  <text x="318" y="651" class="rqm-s" text-anchor="end">Origin access control</text>
+  <text x="84" y="671" class="rqm-m">sigv4 · always signs</text>
+  <circle cx="180" cy="708" r="11" class="rqm-num"/>
+  <text x="180" y="712" class="rqm-numt">6</text>
+  <text x="198" y="712" class="rqm-s">signed GET</text>
+  <rect x="30" y="728" width="300" height="104" rx="10" class="rqm-card"/>
+  <rect x="42" y="745" width="30" height="30" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(57 760)" class="rqm-ico" stroke="#2E5E7E"><path d="M-9 -6h18l-2 15h-14zM-9 -6c0 -2.5 18 -2.5 18 0"/></g>
+  <text x="84" y="755" class="rqm-h">S3</text>
+  <text x="318" y="755" class="rqm-s" text-anchor="end">Private bucket</text>
+  <text x="84" y="775" class="rqm-m">nalinkaheshan.dev</text>
+  <rect x="42" y="788" width="276" height="32" rx="7" fill="#E6EEF3"/>
+  <text x="54" y="808" class="rqm-x">Only this distribution can read it</text>
+  <text x="16" y="894" class="rqm-b">Legend</text>
+  <rect x="16" y="906" width="14" height="14" rx="3" fill="#E3EEEF" stroke="#17505C"/>
+  <text x="38" y="917" class="rqm-s">Edge</text>
+  <rect x="16" y="928" width="14" height="14" rx="3" fill="#F5EDE1" stroke="#9A6A2E"/>
+  <text x="38" y="939" class="rqm-s">Compute</text>
+  <rect x="16" y="950" width="14" height="14" rx="3" fill="#E6EEF3" stroke="#2E5E7E"/>
+  <text x="38" y="961" class="rqm-s">Data</text>
+  <rect x="16" y="972" width="14" height="14" rx="3" fill="#E8F0E6" stroke="#4A6B45"/>
+  <text x="38" y="983" class="rqm-s">Security</text>
+  <path d="M160 913H188" class="rqm-ln" marker-end="url(#rqm-arr)"/>
+  <text x="198" y="917" class="rqm-s">Request</text>
+  <rect x="160" y="928" width="28" height="14" rx="3" class="rqm-out"/>
+  <text x="198" y="939" class="rqm-s">Outside AWS</text>
+</svg>

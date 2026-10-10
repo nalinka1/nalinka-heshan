@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1212" role="img" aria-labelledby="dpm-title dpm-desc">
+  <title id="dpm-title">Deploy pipeline: from a push to master to a live site, with no stored AWS keys</title>
+  <desc id="dpm-desc">A push to master starts a GitHub Actions workflow that builds the site and requests a short-lived OIDC token. AWS STS exchanges the token for temporary credentials on a deploy role that trusts only this repository and branch. The workflow then syncs the build to S3, HTML last, and invalidates CloudFront.</desc>
+  <defs>
+    <style>
+      .dpm-t{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-weight:600}
+      .dpm-h{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:14px;font-weight:600}
+      .dpm-nt{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:13px;font-weight:600}
+      .dpm-s{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px}
+      .dpm-x{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:12px}
+      .dpm-m{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px}
+      .dpm-mm{font-family:'IBM Plex Mono',monospace;fill:#5C626E;font-size:12px}
+      .dpm-mb{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px;font-weight:600}
+      .dpm-k{font-family:'IBM Plex Mono',monospace;fill:#17505C;font-size:12px;font-weight:600}
+      .dpm-b{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px;font-weight:600}
+      .dpm-ba{font-family:'IBM Plex Sans',sans-serif;fill:#17505C;font-size:12px;font-weight:600}
+      .dpm-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+      .dpm-note{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1;stroke-dasharray:4 3}
+      .dpm-out{fill:#FFFFFF;stroke:#B9BCB5;stroke-width:1;stroke-dasharray:4 3}
+      .dpm-ln{fill:none;stroke:#5C626E;stroke-width:1.5}
+      .dpm-dash{stroke-dasharray:5 4}
+      .dpm-plain{fill:none;stroke:#B9BCB5;stroke-width:1.25;stroke-dasharray:4 3}
+      .dpm-cfg{fill:none;stroke:#17505C;stroke-width:1.75;stroke-dasharray:0.5 5;stroke-linecap:round}
+      .dpm-cred{fill:none;stroke:#17505C;stroke-width:1.75}
+      .dpm-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+      .dpm-num{fill:#17505C}
+      .dpm-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF;text-anchor:middle}
+    </style>
+    <marker id="dpm-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 1L9 5L0 9z" fill="#5C626E"/></marker>
+    <marker id="dpm-arr-t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1L9 5L0 9z" fill="#17505C"/></marker>
+  </defs>
+  <rect width="360" height="1212" fill="#FBFBF9"/>
+  <text x="16" y="32" class="dpm-t" font-size="18">Deploy pipeline</text>
+  <text x="16" y="52" class="dpm-s">From a push to a live site, no stored AWS keys</text>
+  <rect x="8" y="68" width="344" height="426" rx="14" fill="none" stroke="#B9BCB5" stroke-width="1.25" stroke-dasharray="6 4"/>
+  <text x="22" y="90" class="dpm-b">GitHub</text>
+  <text x="338" y="90" class="dpm-mm" text-anchor="end">nalinka1/nalinka-heshan</text>
+  <rect x="8" y="526" width="344" height="548" rx="14" fill="none" stroke="#DFE0DC" stroke-width="1.5"/>
+  <text x="22" y="548" class="dpm-b">AWS account</text>
+  <text x="338" y="548" class="dpm-mm" text-anchor="end">us-east-1</text>
+  <rect x="18" y="560" width="324" height="502" rx="12" fill="#F4F7F6" stroke="#C5D6D9"/>
+  <text x="30" y="580" class="dpm-ba">Defined in Terraform</text>
+  <path d="M180 166V203" class="dpm-ln" marker-end="url(#dpm-arr)"/>
+  <path d="M180 270V307" class="dpm-ln" marker-end="url(#dpm-arr)"/>
+  <path d="M180 374V411" class="dpm-cred" marker-end="url(#dpm-arr-t)"/>
+  <path d="M180 478V587" class="dpm-cred" marker-end="url(#dpm-arr-t)"/>
+  <path d="M180 654V691" class="dpm-cred" marker-end="url(#dpm-arr-t)"/>
+  <path d="M180 798V835" class="dpm-ln" marker-end="url(#dpm-arr)"/>
+  <path d="M180 942V979" class="dpm-ln" marker-end="url(#dpm-arr)"/>
+  <rect x="30" y="102" width="300" height="64" rx="10" class="dpm-card"/>
+  <rect x="42" y="119" width="30" height="30" rx="7" fill="#EFF0EC"/>
+  <g transform="translate(57 134)" class="dpm-ico" stroke="#5C626E"><circle r="3.5"/><path d="M-9.5 0h6M3.5 0h6"/></g>
+  <text x="84" y="129" class="dpm-h">git push</text>
+  <text x="318" y="129" class="dpm-s" text-anchor="end">Branch</text>
+  <text x="84" y="149" class="dpm-m">master</text>
+  <circle cx="180" cy="186" r="11" class="dpm-num"/>
+  <text x="180" y="190" class="dpm-numt">1</text>
+  <text x="198" y="190" class="dpm-s">starts the workflow</text>
+  <rect x="30" y="206" width="300" height="64" rx="10" class="dpm-card"/>
+  <rect x="42" y="223" width="30" height="30" rx="7" fill="#EFF0EC"/>
+  <g transform="translate(57 238)" class="dpm-ico" stroke="#5C626E"><circle r="8.5"/><path d="M-2.5 -4l6 4l-6 4z"/></g>
+  <text x="84" y="233" class="dpm-h">Actions</text>
+  <text x="318" y="233" class="dpm-s" text-anchor="end">ubuntu-latest</text>
+  <text x="84" y="253" class="dpm-m">deploy.yml</text>
+  <circle cx="180" cy="290" r="11" class="dpm-num"/>
+  <text x="180" y="294" class="dpm-numt">2</text>
+  <text x="198" y="294" class="dpm-s">build</text>
+  <rect x="30" y="310" width="300" height="64" rx="10" class="dpm-card"/>
+  <rect x="42" y="327" width="30" height="30" rx="7" fill="#EFF0EC"/>
+  <g transform="translate(57 342)" class="dpm-ico" stroke="#5C626E"><path d="M-8 -4.5l8 -4l8 4v9l-8 4l-8 -4zM-8 -4.5l8 4l8 -4M0 -0.5v9"/></g>
+  <text x="84" y="337" class="dpm-h">Build</text>
+  <text x="318" y="337" class="dpm-s" text-anchor="end">Astro, static</text>
+  <text x="84" y="357" class="dpm-m">npm run build</text>
+  <circle cx="180" cy="394" r="11" class="dpm-num"/>
+  <text x="180" y="398" class="dpm-numt">3</text>
+  <text x="198" y="398" class="dpm-s">request token</text>
+  <rect x="30" y="414" width="300" height="64" rx="10" class="dpm-card"/>
+  <rect x="42" y="431" width="30" height="30" rx="7" fill="#E8F0E6"/>
+  <g transform="translate(57 446)" class="dpm-ico" stroke="#4A6B45"><path d="M-9 -5.5h18v11h-18zM-5.5 -1.5h5M-5.5 2h9"/></g>
+  <text x="84" y="441" class="dpm-h">OIDC token</text>
+  <text x="318" y="441" class="dpm-s" text-anchor="end">Short-lived JWT</text>
+  <text x="84" y="461" class="dpm-m">id-token: write</text>
+  <circle cx="180" cy="510" r="11" class="dpm-num"/>
+  <text x="180" y="514" class="dpm-numt">4</text>
+  <text x="198" y="514" class="dpm-s">signed JWT</text>
+  <rect x="30" y="590" width="300" height="64" rx="10" class="dpm-card"/>
+  <rect x="42" y="607" width="30" height="30" rx="7" fill="#E8F0E6"/>
+  <g transform="translate(57 622)" class="dpm-ico" stroke="#4A6B45"><circle cx="-4.5" cy="0" r="4"/><path d="M-0.5 0h9.5M6 0v3.5M9 0v3"/></g>
+  <text x="84" y="617" class="dpm-h">STS</text>
+  <text x="318" y="617" class="dpm-s" text-anchor="end">Token exchange</text>
+  <text x="84" y="637" class="dpm-m">AssumeRoleWithWebIdentity</text>
+  <circle cx="180" cy="674" r="11" class="dpm-num"/>
+  <text x="180" y="678" class="dpm-numt">5</text>
+  <text x="198" y="678" class="dpm-s">assume role</text>
+  <rect x="30" y="694" width="300" height="104" rx="10" class="dpm-card"/>
+  <rect x="42" y="711" width="30" height="30" rx="7" fill="#E8F0E6"/>
+  <g transform="translate(57 726)" class="dpm-ico" stroke="#4A6B45"><circle cx="0" cy="-4" r="3.5"/><path d="M-7 8c0 -5 3 -7 7 -7s7 2 7 7"/></g>
+  <text x="84" y="721" class="dpm-h">IAM role</text>
+  <text x="318" y="721" class="dpm-s" text-anchor="end">Deploy role</text>
+  <text x="84" y="741" class="dpm-m">gha-deploy-nalinkaheshan-dev</text>
+  <rect x="42" y="754" width="276" height="32" rx="7" fill="#E8F0E6"/>
+  <text x="54" y="774" class="dpm-x">Trusts this repo and branch only</text>
+  <circle cx="180" cy="818" r="11" class="dpm-num"/>
+  <text x="180" y="822" class="dpm-numt">6</text>
+  <text x="198" y="822" class="dpm-s"><tspan class="dpm-m">aws s3 sync</tspan></text>
+  <rect x="30" y="838" width="300" height="104" rx="10" class="dpm-card"/>
+  <rect x="42" y="855" width="30" height="30" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(57 870)" class="dpm-ico" stroke="#2E5E7E"><path d="M-9 -6h18l-2 15h-14zM-9 -6c0 -2.5 18 -2.5 18 0"/></g>
+  <text x="84" y="865" class="dpm-h">S3</text>
+  <text x="318" y="865" class="dpm-s" text-anchor="end">Site bucket</text>
+  <text x="84" y="885" class="dpm-m">nalinkaheshan.dev</text>
+  <rect x="42" y="898" width="276" height="32" rx="7" fill="#E6EEF3"/>
+  <text x="54" y="918" class="dpm-x">HTML is synced last, after its assets</text>
+  <circle cx="180" cy="962" r="11" class="dpm-num"/>
+  <text x="180" y="966" class="dpm-numt">7</text>
+  <text x="198" y="966" class="dpm-s">invalidate</text>
+  <rect x="30" y="982" width="300" height="64" rx="10" class="dpm-card"/>
+  <rect x="42" y="999" width="30" height="30" rx="7" fill="#E3EEEF"/>
+  <g transform="translate(57 1014)" class="dpm-ico" stroke="#17505C"><path d="M7.5 -2a8 8 0 1 0 0.5 5M8.5 -8v6h-6"/></g>
+  <text x="84" y="1009" class="dpm-h">CloudFront</text>
+  <text x="318" y="1009" class="dpm-s" text-anchor="end">Invalidation</text>
+  <text x="84" y="1029" class="dpm-m">--paths &quot;/*&quot;</text>
+  <text x="16" y="1104" class="dpm-b">Legend</text>
+  <rect x="16" y="1116" width="14" height="14" rx="3" fill="#EFF0EC" stroke="#5C626E"/>
+  <text x="38" y="1127" class="dpm-s">CI</text>
+  <rect x="16" y="1138" width="14" height="14" rx="3" fill="#E8F0E6" stroke="#4A6B45"/>
+  <text x="38" y="1149" class="dpm-s">Security</text>
+  <rect x="16" y="1160" width="14" height="14" rx="3" fill="#E6EEF3" stroke="#2E5E7E"/>
+  <text x="38" y="1171" class="dpm-s">Data</text>
+  <rect x="16" y="1182" width="14" height="14" rx="3" fill="#E3EEEF" stroke="#17505C"/>
+  <text x="38" y="1193" class="dpm-s">Edge</text>
+  <path d="M160 1123H188" class="dpm-ln" marker-end="url(#dpm-arr)"/>
+  <text x="198" y="1127" class="dpm-s">Deploy step</text>
+  <path d="M160 1145H188" class="dpm-cred" marker-end="url(#dpm-arr-t)"/>
+  <text x="198" y="1149" class="dpm-s">Credential exchange</text>
+  <rect x="160" y="1160" width="28" height="14" rx="3" class="dpm-out"/>
+  <text x="198" y="1171" class="dpm-s">Outside AWS</text>
+</svg>

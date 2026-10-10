@@ -112,6 +112,10 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
     richer style than the `/architecture` diagrams (category colours, filled cards)
     at Nalinka's request. Facts checked against the public repo: one SQS queue plus
     a DLQ, not three queues as this log used to say.
+  - `/architecture` diagrams redrawn 2026-10-10 in the same style, with more detail
+    (trust policy, role permissions, bucket policy, cache-control, sync order). All
+    diagrams now go through `InlineDiagram.astro`; `Diagram.astro`, `layout.ts` and
+    the `--diagram-*` tokens are gone.
   - 3.5 done - optional `images` on projects, rendered with Astro `<Image />` (WebP,
     srcset, lazy) on deep-dive pages only. No project uses it yet.
   - 3.6 cancelled - LEGO deep-dive page. Someone else's startup project, not enough
@@ -144,8 +148,7 @@ Not started. One at a time, in roughly this order.
 - **Order platform diagram follow-ups.** Draw the three CDK stacks (data, messaging,
   compute) as boundaries - the page's main decision isn't in the picture yet. The
   page says "provisioned end to end with AWS CDK" but Aurora was created through the
-  AWS CLI; Nalinka to decide the wording. Restyle the two `/architecture` diagrams
-  to match if the new style stays.
+  AWS CLI; Nalinka to decide the wording.
 - **Content from Nalinka.** "Technical detail" for each role page; what broke,
   decisions and repo URL for Multi-Cloud.
 - **`claims-lakehouse` row?** It's a project on the CV (github.com/nalinka1/

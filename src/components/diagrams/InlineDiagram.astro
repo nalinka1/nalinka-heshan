@@ -1,0 +1,79 @@
+---
+// Shared wrapper for the diagrams in src/assets/diagrams/. Those are complete
+// SVG files, inlined as-is so their text picks up the page's IBM Plex fonts.
+// Each file carries its own <title>/<desc> and prefixed ids.
+//
+// A desktop file is drawn at 960 units wide with 12px labels, so it only shows
+// where it can render at full size. Below that the 360-wide mobile files take
+// over, stacked on phones and side by side where there's room.
+
+interface Props {
+	/** Raw SVG source of the 960-wide layout. */
+	desktop: string;
+	/** Raw SVG source of each 360-wide layout shown on narrower screens. */
+	mobile: string[];
+}
+
+const { desktop, mobile } = Astro.props;
+---
+
+<figure class="inline-diagram">
+	<div class="inline-diagram-desktop" set:html={desktop} />
+	<div class="inline-diagram-mobile">
+		{mobile.map((svg) => <div set:html={svg} />)}
+	</div>
+	<figcaption>
+		<slot />
+	</figcaption>
+</figure>
+
+<style>
+	.inline-diagram {
+		margin: var(--space-8) 0;
+	}
+
+	.inline-diagram :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.inline-diagram-desktop {
+		display: none;
+	}
+
+	.inline-diagram-mobile {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: var(--space-6);
+	}
+
+	.inline-diagram-mobile > div {
+		flex: 1 1 100%;
+		max-width: 360px;
+	}
+
+	figcaption {
+		margin-top: var(--space-2);
+		font-size: var(--text-sm);
+		color: var(--muted);
+	}
+
+	/* 63rem = --page-max plus its side padding: the narrowest viewport where the
+	   desktop file gets its full 960px. It breaks out of the column padding to do so. */
+	@media (min-width: 63rem) {
+		.inline-diagram-desktop {
+			display: block;
+			margin: 0 calc(var(--space-6) * -1);
+		}
+
+		.inline-diagram-mobile {
+			display: none;
+		}
+
+		figcaption {
+			margin-top: var(--space-4);
+		}
+	}
+</style>

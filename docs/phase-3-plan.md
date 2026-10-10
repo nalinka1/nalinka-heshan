@@ -121,7 +121,14 @@ earns its place; a screenshot of `terraform apply` scrolling past does not.
 - Diagram tokens added to `tokens.css` where needed - box fill, stroke weight, arrow
   head.
 
-Constraints in force for every diagram: `--ink` for strokes and labels, `--rule` for
+**Superseded 2026-10-10.** Every diagram is now a complete SVG file in
+`src/assets/diagrams/` (a 960-wide desktop layout plus 360-wide mobile layouts), inlined
+by `InlineDiagram.astro`, in the richer style first used for the order platform: muted
+category colours, filled cards, numbered steps, a legend. The desktop file shows only
+where it gets its full 960px. Still in force: IBM Plex Sans for labels, IBM Plex Mono
+for resource names, 12px minimum labels, a `<title>` and `<desc>` in every file.
+
+The original constraints, for the record: `--ink` for strokes and labels, `--rule` for
 secondary lines, `--accent` for the one path that matters, `--muted` for annotations. No
 fills beyond `--paper`. No shadows, no gradients, no rounded corners above 4px. Labels in
 IBM Plex Sans; AWS resource names and ARNs in IBM Plex Mono. **Minimum 12px labels** -
