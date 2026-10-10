@@ -64,7 +64,8 @@ Caught before staging.
 > appears - row, deep-dive page, or diagram.**
 
 ### Multi-Cloud Secure Document Platform, AWS and Azure
-In progress - the CV lists it as "2026, in build". Cross-cloud OIDC workload identity
+Done - no "In progress" tag (Nalinka, 2026-10-10). The CV still lists it as "2026, in
+build"; that's the CV to correct. Cross-cloud OIDC workload identity
 federation, so a workload in Azure reads an encrypted S3 bucket with no AWS access key
 anywhere on the Azure side. Four negative tests prove the boundaries hold: a wrong
 identity, an expired token, an out-of-scope prefix and a missing KMS grant are each

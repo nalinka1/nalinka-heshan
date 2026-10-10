@@ -8,7 +8,6 @@ stack:
   - "Azure (Entra ID, RBAC, Key Vault, API Management, VNet)"
   - "OIDC"
 repo: "https://github.com/nalinka1/multi-cloud-secure-document-platform"
-status: "in progress"
 order: 2
 body:
   whatItIs: "A build that answers one question: how does a workload in one cloud authenticate to storage in another without an access key sitting in a config file?\n\nThe answer is OIDC workload identity federation. Everything else in the project exists to make that answer defensible - a storage layer worth protecting, two API tiers with genuinely different threat models, and negative tests that prove the boundaries rather than assuming them."

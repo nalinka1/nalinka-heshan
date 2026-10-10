@@ -157,7 +157,8 @@ Not started. One at a time, in roughly this order.
 - **Content from Nalinka.** "Technical detail" for each role page; what broke
   and decisions for Multi-Cloud.
 - **CV entry for Multi-Cloud.** It still lists Bicep, AWS CDK, GitHub Actions, a
-  "landing zone" and custom RBAC roles, none of which are in the repo. Nalinka to
+  "landing zone" and custom RBAC roles, none of which are in the repo. It also still
+  says "2026, in build" - the project is done and the site no longer tags it. Nalinka to
   correct the CV and replace `public/cv.pdf`. The site's stack line also names STS, API
   Management and VNet, which the CV doesn't list yet.
 - **`claims-lakehouse` row?** It's a project on the CV (github.com/nalinka1/
