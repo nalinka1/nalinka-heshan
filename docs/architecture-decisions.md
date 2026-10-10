@@ -154,8 +154,8 @@ Not started. One at a time, in roughly this order.
   compute) as boundaries - the page's main decision isn't in the picture yet. The
   page says "provisioned end to end with AWS CDK" but Aurora was created through the
   AWS CLI; Nalinka to decide the wording.
-- **Content from Nalinka.** "Technical detail" for each role page; what broke,
-  decisions and repo URL for Multi-Cloud.
+- **Content from Nalinka.** "Technical detail" for each role page; what broke
+  and decisions for Multi-Cloud.
 - **CV entry for Multi-Cloud.** It still lists Bicep, AWS CDK, GitHub Actions, a
   "landing zone" and custom RBAC roles, none of which are in the repo. Nalinka to
   correct the CV and replace `public/cv.pdf`. The site's stack line also names STS, API

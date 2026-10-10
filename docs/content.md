@@ -74,6 +74,8 @@ blob-lease locking.
 `Terraform · AWS (S3, KMS, IAM, STS) · Azure (Entra ID, RBAC, Key Vault, API Management,
 VNet) · OIDC`
 
+https://github.com/nalinka1/multi-cloud-secure-document-platform
+
 > Label as project work, not production experience, regardless of completion status -
 > Azure and Terraform are project-level.
 
@@ -85,9 +87,8 @@ VNet) · OIDC`
 
 **Has a deep-dive page** (published 2026-09-27, rewritten 2026-10-10). Hands-on
 project, so it uses "What I built" instead of Decisions. Diagrams via
-`MultiCloud.astro` - see docs/phase-3-plan.md. Still to add from Nalinka: what broke,
-any decisions worth recording, and the repo URL once the code is pushed (currently
-local only).
+`MultiCloud.astro` - see docs/phase-3-plan.md. Still to add from Nalinka: what broke
+and any decisions worth recording.
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting

@@ -7,6 +7,7 @@ stack:
   - "AWS (S3, KMS, IAM, STS)"
   - "Azure (Entra ID, RBAC, Key Vault, API Management, VNet)"
   - "OIDC"
+repo: "https://github.com/nalinka1/multi-cloud-secure-document-platform"
 status: "in progress"
 order: 2
 body:
