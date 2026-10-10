@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 852" role="img" aria-labelledby="eod-title eod-desc">
+  <title id="eod-title">Event-driven order platform on AWS: architecture overview</title>
+  <desc id="eod-desc">A client sends POST /order to API Gateway, which invokes the CreateOrderFunction Lambda; it writes the order to a DynamoDB table and publishes an event to an SNS topic. SNS delivers to an SQS queue that a second Lambda polls to write a JSON receipt to S3, and messages that fail three times move to a dead-letter queue. Separately, a local migration script scans DynamoDB and upserts the data into a normalized Aurora PostgreSQL schema.</desc>
+  <defs>
+    <style>
+      .eod-t{font-family:'IBM Plex Sans',sans-serif;fill:#16181D}
+      .eod-h{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:14px;font-weight:600}
+      .eod-s{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px}
+      .eod-m{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px}
+      .eod-k{font-family:'IBM Plex Mono',monospace;fill:#17505C;font-size:12px;font-weight:600}
+      .eod-b{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600}
+      .eod-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+      .eod-out{fill:#FFFFFF;stroke:#B9BCB5;stroke-width:1;stroke-dasharray:4 3}
+      .eod-ln{fill:none;stroke:#5C626E;stroke-width:1.5}
+      .eod-dash{stroke-dasharray:5 4}
+      .eod-mig{fill:none;stroke:#17505C;stroke-width:1.75;stroke-dasharray:0.5 5;stroke-linecap:round}
+      .eod-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+      .eod-num{fill:#17505C}
+      .eod-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF;text-anchor:middle}
+    </style>
+    <marker id="eod-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 1L9 5L0 9z" fill="#5C626E"/></marker>
+    <marker id="eod-arr-t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 1L9 5L0 9z" fill="#17505C"/></marker>
+  </defs>
+
+  <rect width="960" height="852" fill="#FBFBF9"/>
+
+  <!-- Header -->
+  <text x="24" y="40" class="eod-t" font-size="22" font-weight="600">Event-driven order platform on AWS</text>
+  <text x="24" y="62" class="eod-s" font-size="13">Serverless order intake, asynchronous receipt processing, and an idempotent DynamoDB-to-Aurora PostgreSQL migration</text>
+
+  <!-- Outside AWS: client -->
+  <rect x="60" y="80" width="168" height="52" rx="10" class="eod-out"/>
+  <rect x="72" y="91" width="30" height="30" rx="7" fill="#EFF0EC"/>
+  <g transform="translate(87 106)" class="eod-ico" stroke="#5C626E"><path d="M-9 -7h18v12h-18zM-4 9h8M0 5v4"/></g>
+  <text x="112" y="102" class="eod-h">Client</text>
+  <text x="112" y="120" class="eod-s">Any HTTP caller</text>
+
+  <!-- Outside AWS: migration script -->
+  <rect x="724" y="76" width="176" height="72" rx="10" class="eod-out"/>
+  <rect x="734" y="87" width="28" height="28" rx="7" fill="#E3EEEF"/>
+  <g transform="translate(748 101)" class="eod-ico" stroke="#17505C"><path d="M-9 -7h18v14h-18zM-5 -2l3 2.5-3 2.5M0 3h4"/></g>
+  <text x="770" y="99" class="eod-h">Migration script</text>
+  <text x="770" y="116" class="eod-s">Local · boto3</text>
+  <text x="736" y="138" class="eod-m">ON CONFLICT DO UPDATE</text>
+
+  <!-- AWS account / region boundaries -->
+  <rect x="16" y="164" width="928" height="524" rx="14" fill="none" stroke="#DFE0DC" stroke-width="1.5"/>
+  <text x="32" y="680" class="eod-b" fill="#5C626E">AWS account</text>
+  <rect x="30" y="192" width="900" height="472" rx="12" fill="none" stroke="#DFE0DC" stroke-width="1.25" stroke-dasharray="6 4"/>
+  <text x="46" y="656" class="eod-s">Region · <tspan class="eod-m">ap-southeast-2</tspan></text>
+
+  <!-- CDK app group -->
+  <rect x="44" y="208" width="652" height="432" rx="12" fill="#F4F7F6" stroke="#C5D6D9"/>
+  <text x="60" y="628" class="eod-b" fill="#17505C">AWS CDK app <tspan class="eod-s" font-weight="400">· order pipeline, Python</tspan></text>
+
+  <!-- Aurora group -->
+  <rect x="708" y="208" width="208" height="432" rx="12" fill="#F4F7F6" stroke="#C5D6D9"/>
+  <text x="724" y="628" class="eod-b" fill="#17505C">Aurora <tspan class="eod-s" font-weight="400">· AWS CLI, express config</tspan></text>
+
+  <!-- ===== Connectors (drawn under cards) ===== -->
+  <path d="M144 132V246" class="eod-ln" marker-end="url(#eod-arr)"/>
+  <path d="M228 288H284" class="eod-ln" marker-end="url(#eod-arr)"/>
+  <path d="M454 288H510" class="eod-ln" marker-end="url(#eod-arr)"/>
+  <path d="M370 328V382" class="eod-ln" marker-end="url(#eod-arr)"/>
+  <path d="M370 464V518" class="eod-ln eod-dash" marker-end="url(#eod-arr)"/>
+  <path d="M454 560H510" class="eod-ln eod-dash" marker-end="url(#eod-arr)"/>
+  <path d="M596 520V466" class="eod-ln" marker-end="url(#eod-arr)"/>
+  <path d="M286 560H230" class="eod-ln eod-dash" marker-end="url(#eod-arr)"/>
+  <path d="M596 248V112H721" class="eod-mig" marker-end="url(#eod-arr-t)"/>
+  <path d="M812 148V245" class="eod-mig" marker-end="url(#eod-arr-t)"/>
+
+  <!-- ===== Cards ===== -->
+  <!-- API Gateway -->
+  <rect x="60" y="248" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="72" y="260" width="30" height="30" rx="7" fill="#E3EEEF"/>
+  <g transform="translate(87 275)" class="eod-ico" stroke="#17505C"><path d="M-9 -8v16M9 -8v16M-5 0h9M1.5 -3.5L5 0l-3.5 3.5"/></g>
+  <text x="112" y="276" class="eod-h">API Gateway</text>
+  <text x="112" y="293" class="eod-s">Lambda proxy</text>
+  <text x="72" y="316" class="eod-m">POST /order</text>
+
+  <!-- CreateOrderFunction -->
+  <rect x="286" y="248" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="298" y="260" width="30" height="30" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(313 275)" class="eod-ico" stroke="#9A6A2E"><path d="M-7 -9h3.5L6 9h3M-1 1.5L-6.5 9"/></g>
+  <text x="338" y="276" class="eod-h">Lambda</text>
+  <text x="338" y="293" class="eod-s">Sync handler</text>
+  <text x="298" y="316" class="eod-m">CreateOrderFunction</text>
+
+  <!-- DynamoDB -->
+  <rect x="512" y="248" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="524" y="260" width="30" height="30" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(539 275)" class="eod-ico" stroke="#2E5E7E"><path d="M-8 -6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0M-8 -6v12a8 3 0 0 0 16 0v-12M-8 0a8 3 0 0 0 16 0"/></g>
+  <text x="564" y="276" class="eod-h">DynamoDB</text>
+  <text x="564" y="293" class="eod-s">On-demand table</text>
+  <text x="524" y="316" class="eod-m">Orders</text>
+
+  <!-- Failure note -->
+  <rect x="60" y="384" width="168" height="80" rx="10" fill="#FFFFFF" stroke="#DFE0DC" stroke-dasharray="4 3"/>
+  <text x="72" y="405" class="eod-t" font-size="13" font-weight="600">Failure handling</text>
+  <text x="72" y="424" class="eod-s">Invalid amount: raise error</text>
+  <text x="72" y="441" class="eod-s">Not deleted, retried</text>
+  <text x="72" y="458" class="eod-s">After 3 failed receives: DLQ</text>
+
+  <!-- SNS -->
+  <rect x="286" y="384" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="298" y="396" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(313 411)" class="eod-ico" stroke="#7A4F78"><circle r="2" fill="#7A4F78"/><path d="M-5 -5a7 7 0 0 0 0 10M5 -5a7 7 0 0 1 0 10M-8.5 -8.5a12 12 0 0 0 0 17M8.5 -8.5a12 12 0 0 1 0 17"/></g>
+  <text x="338" y="412" class="eod-h">SNS</text>
+  <text x="338" y="429" class="eod-s">Pub/sub topic</text>
+  <text x="298" y="452" class="eod-m">OrderCreatedTopic</text>
+
+  <!-- S3 -->
+  <rect x="512" y="384" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="524" y="396" width="30" height="30" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(539 411)" class="eod-ico" stroke="#2E5E7E"><path d="M-9 -6h18l-2 15h-14zM-9 -6c0 -2.5 18 -2.5 18 0"/></g>
+  <text x="564" y="412" class="eod-h">S3</text>
+  <text x="564" y="429" class="eod-s">Order receipts</text>
+  <text x="524" y="452" class="eod-m">receipts/</text>
+
+  <!-- DLQ -->
+  <rect x="60" y="520" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="72" y="532" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(87 547)" class="eod-ico" stroke="#7A4F78"><path d="M-10 -4h5.5v8h-5.5zM-2.75 -4h5.5v8h-5.5zM5 -3l5 6M10 -3l-5 6"/></g>
+  <text x="112" y="548" class="eod-h">SQS</text>
+  <text x="112" y="565" class="eod-s">Dead-letter queue</text>
+  <text x="72" y="588" class="eod-m">OrderQueueDLQ</text>
+
+  <!-- SQS -->
+  <rect x="286" y="520" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="298" y="532" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(313 547)" class="eod-ico" stroke="#7A4F78"><path d="M-10 -4h5.5v8h-5.5zM-2.75 -4h5.5v8h-5.5zM4.5 -4h5.5v8h-5.5z"/></g>
+  <text x="338" y="548" class="eod-h">SQS</text>
+  <text x="338" y="565" class="eod-s">Message queue</text>
+  <text x="298" y="588" class="eod-m">OrderQueue</text>
+
+  <!-- ProcessOrderFunction -->
+  <rect x="512" y="520" width="168" height="80" rx="10" class="eod-card"/>
+  <rect x="524" y="532" width="30" height="30" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(539 547)" class="eod-ico" stroke="#9A6A2E"><path d="M-7 -9h3.5L6 9h3M-1 1.5L-6.5 9"/></g>
+  <text x="564" y="548" class="eod-h">Lambda</text>
+  <text x="564" y="565" class="eod-s">Async worker</text>
+  <text x="524" y="588" class="eod-m">ProcessOrderFunction</text>
+
+  <!-- Aurora -->
+  <rect x="724" y="248" width="176" height="92" rx="10" class="eod-card"/>
+  <rect x="736" y="260" width="30" height="30" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(751 275)" class="eod-ico" stroke="#2E5E7E"><path d="M-8 -6a8 3 0 1 0 16 0a8 3 0 1 0 -16 0M-8 -6v12a8 3 0 0 0 16 0v-12M-8 0a8 3 0 0 0 16 0M-8 3a8 3 0 0 0 16 0"/></g>
+  <text x="776" y="276" class="eod-h">Aurora</text>
+  <text x="776" y="293" class="eod-s">PostgreSQL</text>
+  <text x="736" y="316" class="eod-m">orderflow-aurora</text>
+  <text x="736" y="332" class="eod-s">IAM auth · no VPC</text>
+
+  <!-- Schema: customers -->
+  <text x="724" y="362" class="eod-s">Normalized schema</text>
+  <rect x="724" y="372" width="176" height="58" rx="8" class="eod-card"/>
+  <path d="M724 394V380a8 8 0 0 1 8 -8h160a8 8 0 0 1 8 8V394z" fill="#E6EEF3"/>
+  <text x="734" y="387" class="eod-m" font-weight="600">customers</text>
+  <text x="734" y="408" class="eod-m">customer_id</text><text x="890" y="408" class="eod-k" text-anchor="end">UUID PK</text>
+  <text x="734" y="425" class="eod-m">name</text><text x="890" y="425" class="eod-m" text-anchor="end">TEXT UNIQUE</text>
+
+  <!-- relation -->
+  <path d="M812 430V464M805 464L812 455L819 464" fill="none" stroke="#5C626E" stroke-width="1.25"/>
+  <text x="826" y="451" class="eod-s">1 to many</text>
+
+  <!-- Schema: orders -->
+  <rect x="724" y="464" width="176" height="112" rx="8" class="eod-card"/>
+  <path d="M724 486V472a8 8 0 0 1 8 -8h160a8 8 0 0 1 8 8V486z" fill="#E6EEF3"/>
+  <text x="734" y="479" class="eod-m" font-weight="600">orders</text>
+  <text x="734" y="500" class="eod-m">order_id</text><text x="890" y="500" class="eod-k" text-anchor="end">UUID PK</text>
+  <text x="734" y="518" class="eod-m">customer_id</text><text x="890" y="518" class="eod-k" text-anchor="end">UUID FK</text>
+  <text x="734" y="536" class="eod-m">item</text><text x="890" y="536" class="eod-m" text-anchor="end">TEXT</text>
+  <text x="734" y="554" class="eod-m">amount</text><text x="890" y="554" class="eod-m" text-anchor="end">NUMERIC(10,2)</text>
+  <text x="734" y="572" class="eod-m">created_at</text><text x="890" y="572" class="eod-m" text-anchor="end">TIMESTAMPTZ</text>
+
+  <!-- ===== Step markers ===== -->
+  <circle cx="144" cy="148" r="11" class="eod-num"/><text x="144" y="152" class="eod-numt">1</text>
+  <text x="162" y="152" class="eod-m">POST /order</text>
+  <circle cx="256" cy="288" r="11" class="eod-num"/><text x="256" y="292" class="eod-numt">2</text>
+  <circle cx="482" cy="288" r="11" class="eod-num"/><text x="482" y="292" class="eod-numt">3</text>
+  <circle cx="370" cy="355" r="11" class="eod-num"/><text x="370" y="359" class="eod-numt">4</text>
+  <text x="388" y="359" class="eod-s">publish</text>
+  <circle cx="370" cy="491" r="11" class="eod-num"/><text x="370" y="495" class="eod-numt">5</text>
+  <text x="388" y="495" class="eod-s">push</text>
+  <circle cx="482" cy="560" r="11" class="eod-num"/><text x="482" y="564" class="eod-numt">6</text>
+  <circle cx="596" cy="493" r="11" class="eod-num"/><text x="596" y="497" class="eod-numt">7</text>
+  <text x="614" y="497" class="eod-s">put</text>
+  <circle cx="258" cy="560" r="11" class="eod-num"/><text x="258" y="564" class="eod-numt">R</text>
+  <circle cx="596" cy="228" r="12" class="eod-num"/><text x="596" y="232" class="eod-numt">M1</text>
+  <circle cx="812" cy="228" r="12" class="eod-num"/><text x="812" y="232" class="eod-numt">M2</text>
+
+  <!-- ===== Legend ===== -->
+  <text x="24" y="724" class="eod-b" fill="#5C626E">Legend</text>
+  <rect x="24" y="735" width="14" height="14" rx="3" fill="#F5EDE1" stroke="#9A6A2E"/><text x="46" y="746" class="eod-s">Compute · Lambda</text>
+  <rect x="24" y="757" width="14" height="14" rx="3" fill="#F1EAF0" stroke="#7A4F78"/><text x="46" y="768" class="eod-s">Messaging · SNS, SQS</text>
+  <rect x="24" y="779" width="14" height="14" rx="3" fill="#E6EEF3" stroke="#2E5E7E"/><text x="46" y="790" class="eod-s">Data · DynamoDB, S3, Aurora</text>
+  <rect x="24" y="801" width="14" height="14" rx="3" fill="#E3EEEF" stroke="#17505C"/><text x="46" y="812" class="eod-s">API · API Gateway</text>
+
+  <path d="M224 742H252" class="eod-ln" marker-end="url(#eod-arr)"/><text x="262" y="746" class="eod-s">Synchronous</text>
+  <path d="M224 764H252" class="eod-ln eod-dash" marker-end="url(#eod-arr)"/><text x="262" y="768" class="eod-s">Asynchronous</text>
+  <path d="M224 786H252" class="eod-mig" marker-end="url(#eod-arr-t)"/><text x="262" y="790" class="eod-s">One-off migration</text>
+  <rect x="224" y="801" width="28" height="14" rx="3" fill="#FFFFFF" stroke="#B9BCB5" stroke-dasharray="4 3"/><text x="262" y="812" class="eod-s">Outside AWS</text>
+
+  <!-- ===== Flow key ===== -->
+  <text x="392" y="724" class="eod-b" fill="#5C626E">Flow</text>
+  <circle cx="402" cy="742" r="10" class="eod-num"/><text x="402" y="746" class="eod-numt">1</text>
+  <text x="420" y="746" class="eod-s"><tspan class="eod-m">POST /order</tspan> over HTTPS</text>
+  <circle cx="402" cy="764" r="10" class="eod-num"/><text x="402" y="768" class="eod-numt">2</text>
+  <text x="420" y="768" class="eod-s">Invokes <tspan class="eod-m">CreateOrderFunction</tspan></text>
+  <circle cx="402" cy="786" r="10" class="eod-num"/><text x="402" y="790" class="eod-numt">3</text>
+  <text x="420" y="790" class="eod-s"><tspan class="eod-m">PutItem</tspan> · <tspan class="eod-m">grant_write_data</tspan></text>
+  <circle cx="402" cy="808" r="10" class="eod-num"/><text x="402" y="812" class="eod-numt">4</text>
+  <text x="420" y="812" class="eod-s">Publish · <tspan class="eod-m">grant_publish</tspan></text>
+  <circle cx="402" cy="830" r="10" class="eod-num"/><text x="402" y="834" class="eod-numt">5</text>
+  <text x="420" y="834" class="eod-s">SNS pushes to <tspan class="eod-m">OrderQueue</tspan></text>
+
+  <circle cx="678" cy="742" r="10" class="eod-num"/><text x="678" y="746" class="eod-numt">6</text>
+  <text x="696" y="746" class="eod-s">Event source mapping · <tspan class="eod-m">batch_size=5</tspan></text>
+  <circle cx="678" cy="764" r="10" class="eod-num"/><text x="678" y="768" class="eod-numt">7</text>
+  <text x="696" y="768" class="eod-s"><tspan class="eod-m">receipts/&lt;orderId&gt;.json</tspan> · <tspan class="eod-m">grant_put</tspan></text>
+  <circle cx="678" cy="786" r="10" class="eod-num"/><text x="678" y="790" class="eod-numt">R</text>
+  <text x="696" y="790" class="eod-s">After 3 failed receives, to <tspan class="eod-m">OrderQueueDLQ</tspan></text>
+  <circle cx="678" cy="808" r="10" class="eod-num"/><text x="678" y="812" class="eod-numt" font-size="12">M1</text>
+  <text x="696" y="812" class="eod-s">Paginated Scan · <tspan class="eod-m">LastEvaluatedKey</tspan></text>
+  <circle cx="678" cy="830" r="10" class="eod-num"/><text x="678" y="834" class="eod-numt">M2</text>
+  <text x="696" y="834" class="eod-s">Upsert customers, then orders</text>
+</svg>

@@ -17,7 +17,8 @@ Job hunt comes first. Ship ugly, ship fast, keep every stage abandonable. No sco
 - **Plain CSS with custom properties** (`src/styles/tokens.css`) - no Tailwind
 - **Astro Content Collections** for project/role copy - no CMS
 - **Diagrams are hand-written SVG** using the site's own tokens - not Mermaid, not
-  exported images. Detail in docs/phase-3-plan.md.
+  exported images. The order platform diagrams are the one exception in style (still
+  inline SVG). Detail in docs/phase-3-plan.md.
 
 ## Detailed context (loaded every session)
 @docs/architecture-decisions.md

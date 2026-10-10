@@ -95,7 +95,7 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
   `/architecture`, plus `/cv`), Astro Content Collections, one project deep-dive (AWS
   Event-Driven Order Platform), `/architecture` written up, cache-control split,
   `noindex` on `/cv`. See docs/phase-2-plan.md.
-- **Phase 3 - done** (3.4 deferred, 3.6 cancelled). See docs/phase-3-plan.md.
+- **Phase 3 - done** (3.6 cancelled). See docs/phase-3-plan.md.
   - 3.0 done - View Transitions removed (so "no client-side framework" on
     `/architecture` stays true), `cv.pdf` cache-control fixed, footer rule alignment
     fixed.
@@ -105,10 +105,13 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
   - 3.3 done - request path diagram on `/architecture` (CloudFront Function rewrite,
     OAC, private bucket), accent widened to match its caption (full viewer-to-bucket
     trust path).
-  - 3.4 deferred - order platform fanout diagram. SNS-to-three-SQS-queues is a
-    parallel relationship; stacking it vertically for mobile would make it read as
-    sequential, which is false. Split into two diagrams when it returns: the linear
-    path, then the fanout separately.
+  - 3.4 done 2026-10-10 - order platform diagrams on `/projects/aws-order-flow`.
+    Three complete SVG files in `src/assets/diagrams/`, inlined by
+    `OrderPlatform.astro`: a 960-wide desktop view, and for narrower screens the
+    linear path plus the queue's success/dead-letter split drawn side by side. A
+    richer style than the `/architecture` diagrams (category colours, filled cards)
+    at Nalinka's request. Facts checked against the public repo: one SQS queue plus
+    a DLQ, not three queues as this log used to say.
   - 3.5 done - optional `images` on projects, rendered with Astro `<Image />` (WebP,
     srcset, lazy) on deep-dive pages only. No project uses it yet.
   - 3.6 cancelled - LEGO deep-dive page. Someone else's startup project, not enough
@@ -138,7 +141,11 @@ Not started. One at a time, in roughly this order.
   the plan before apply. Check the CloudFront Function doesn't rewrite `/404.html`,
   and that `/404.html` gets `no-cache` like other HTML.
 - **`@astrojs/check` in CI.** Carried over from Stage 3.0. Workflow diff before change.
-- **Stage 3.4 - order platform diagrams.** Deferred; see docs/phase-3-plan.md.
+- **Order platform diagram follow-ups.** Draw the three CDK stacks (data, messaging,
+  compute) as boundaries - the page's main decision isn't in the picture yet. The
+  page says "provisioned end to end with AWS CDK" but Aurora was created through the
+  AWS CLI; Nalinka to decide the wording. Restyle the two `/architecture` diagrams
+  to match if the new style stays.
 - **Content from Nalinka.** "Technical detail" for each role page; what broke,
   decisions and repo URL for Multi-Cloud.
 - **`claims-lakehouse` row?** It's a project on the CV (github.com/nalinka1/

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { isPublished } from '../../lib/published';
+import OrderPlatform from '../../components/diagrams/OrderPlatform.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects', ({ data }) => isPublished(data.body));
@@ -19,6 +20,12 @@ interface Props {
 const { project } = Astro.props;
 const { title, stack, repo, images = [] } = project.data;
 const body = project.data.body!;
+
+// Diagrams are components, not content, so they're attached by slug here.
+const diagrams: Record<string, typeof OrderPlatform> = {
+	'aws-order-flow': OrderPlatform,
+};
+const ProjectDiagram = diagrams[project.data.slug];
 ---
 
 <BaseLayout title={`${title} - Nalinka Heshan`} description={body.whatItIs}>
@@ -29,6 +36,7 @@ const body = project.data.body!;
 	<section aria-labelledby="what-it-is-heading">
 		<h2 id="what-it-is-heading">What it is</h2>
 		<p>{body.whatItIs}</p>
+		{ProjectDiagram && <ProjectDiagram />}
 		{images.map((img) => (
 			<figure class="project-image">
 				<Image

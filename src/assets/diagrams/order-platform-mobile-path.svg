@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1010" role="img" aria-labelledby="mlp-title mlp-desc">
+  <title id="mlp-title">Order request path, from API call to stored receipt</title>
+  <desc id="mlp-desc">A client sends POST /order to API Gateway, which invokes the CreateOrderFunction Lambda. The Lambda writes the order to the DynamoDB Orders table and publishes to an SNS topic, which pushes the message to an SQS queue. A second Lambda polls the queue and writes a JSON receipt to S3.</desc>
+  <defs>
+    <style>
+      .mlp-h{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:14px;font-weight:600}
+      .mlp-s{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px}
+      .mlp-m{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px}
+      .mlp-b{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600}
+      .mlp-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+      .mlp-ln{fill:none;stroke:#5C626E;stroke-width:1.5}
+      .mlp-dash{stroke-dasharray:5 4}
+      .mlp-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+      .mlp-num{fill:#17505C}
+      .mlp-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF;text-anchor:middle}
+    </style>
+    <marker id="mlp-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 1L9 5L0 9z" fill="#5C626E"/></marker>
+  </defs>
+
+  <rect width="360" height="1010" fill="#FBFBF9"/>
+
+  <text x="16" y="32" font-family="'IBM Plex Sans',sans-serif" font-size="18" font-weight="600" fill="#16181D">Order request path</text>
+  <text x="16" y="52" class="mlp-s">From API call to stored receipt</text>
+
+  <!-- Client (outside AWS) -->
+  <rect x="30" y="72" width="300" height="56" rx="10" fill="#FFFFFF" stroke="#B9BCB5" stroke-dasharray="4 3"/>
+  <rect x="42" y="85" width="30" height="30" rx="7" fill="#EFF0EC"/>
+  <g transform="translate(57 100)" class="mlp-ico" stroke="#5C626E"><path d="M-9 -7h18v12h-18zM-4 9h8M0 5v4"/></g>
+  <text x="84" y="98" class="mlp-h">Client</text>
+  <text x="84" y="116" class="mlp-s">Any HTTP caller</text>
+
+  <!-- Boundaries -->
+  <rect x="8" y="160" width="344" height="720" rx="14" fill="none" stroke="#DFE0DC" stroke-width="1.5"/>
+  <text x="22" y="182" class="mlp-b" fill="#5C626E">AWS account</text>
+  <text x="338" y="182" class="mlp-m" fill="#5C626E" text-anchor="end">ap-southeast-2</text>
+  <rect x="18" y="194" width="324" height="674" rx="12" fill="#F4F7F6" stroke="#C5D6D9"/>
+  <text x="30" y="214" class="mlp-b" fill="#17505C">AWS CDK app</text>
+
+  <!-- Connectors -->
+  <path d="M180 128V221" class="mlp-ln" marker-end="url(#mlp-arr)"/>
+  <path d="M180 288V325" class="mlp-ln" marker-end="url(#mlp-arr)"/>
+  <path d="M180 432V469" class="mlp-ln" marker-end="url(#mlp-arr)"/>
+  <path d="M180 536V573" class="mlp-ln mlp-dash" marker-end="url(#mlp-arr)"/>
+  <path d="M180 640V677" class="mlp-ln mlp-dash" marker-end="url(#mlp-arr)"/>
+  <path d="M180 744V781" class="mlp-ln" marker-end="url(#mlp-arr)"/>
+
+  <!-- API Gateway -->
+  <rect x="30" y="224" width="300" height="64" rx="10" class="mlp-card"/>
+  <rect x="42" y="241" width="30" height="30" rx="7" fill="#E3EEEF"/>
+  <g transform="translate(57 256)" class="mlp-ico" stroke="#17505C"><path d="M-9 -8v16M9 -8v16M-5 0h9M1.5 -3.5L5 0l-3.5 3.5"/></g>
+  <text x="84" y="251" class="mlp-h">API Gateway</text>
+  <text x="318" y="251" class="mlp-s" text-anchor="end">Lambda proxy</text>
+  <text x="84" y="271" class="mlp-m">POST /order</text>
+
+  <!-- CreateOrderFunction with DynamoDB write -->
+  <rect x="30" y="328" width="300" height="104" rx="10" class="mlp-card"/>
+  <rect x="42" y="345" width="30" height="30" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(57 360)" class="mlp-ico" stroke="#9A6A2E"><path d="M-7 -9h3.5L6 9h3M-1 1.5L-6.5 9"/></g>
+  <text x="84" y="355" class="mlp-h">Lambda</text>
+  <text x="318" y="355" class="mlp-s" text-anchor="end">Sync handler</text>
+  <text x="84" y="375" class="mlp-m">CreateOrderFunction</text>
+  <rect x="42" y="388" width="276" height="32" rx="7" fill="#E6EEF3"/>
+  <circle cx="58" cy="404" r="10" class="mlp-num"/><text x="58" y="408" class="mlp-numt">3</text>
+  <text x="76" y="408" class="mlp-s" fill="#16181D">PutItem to DynamoDB <tspan class="mlp-m">Orders</tspan></text>
+
+  <!-- SNS -->
+  <rect x="30" y="472" width="300" height="64" rx="10" class="mlp-card"/>
+  <rect x="42" y="489" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(57 504)" class="mlp-ico" stroke="#7A4F78"><circle r="2" fill="#7A4F78"/><path d="M-5 -5a7 7 0 0 0 0 10M5 -5a7 7 0 0 1 0 10M-8.5 -8.5a12 12 0 0 0 0 17M8.5 -8.5a12 12 0 0 1 0 17"/></g>
+  <text x="84" y="499" class="mlp-h">SNS</text>
+  <text x="318" y="499" class="mlp-s" text-anchor="end">Pub/sub topic</text>
+  <text x="84" y="519" class="mlp-m">OrderCreatedTopic</text>
+
+  <!-- SQS -->
+  <rect x="30" y="576" width="300" height="64" rx="10" class="mlp-card"/>
+  <rect x="42" y="593" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(57 608)" class="mlp-ico" stroke="#7A4F78"><path d="M-10 -4h5.5v8h-5.5zM-2.75 -4h5.5v8h-5.5zM4.5 -4h5.5v8h-5.5z"/></g>
+  <text x="84" y="603" class="mlp-h">SQS</text>
+  <text x="318" y="603" class="mlp-s" text-anchor="end">Message queue</text>
+  <text x="84" y="623" class="mlp-m">OrderQueue</text>
+
+  <!-- ProcessOrderFunction -->
+  <rect x="30" y="680" width="300" height="64" rx="10" class="mlp-card"/>
+  <rect x="42" y="697" width="30" height="30" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(57 712)" class="mlp-ico" stroke="#9A6A2E"><path d="M-7 -9h3.5L6 9h3M-1 1.5L-6.5 9"/></g>
+  <text x="84" y="707" class="mlp-h">Lambda</text>
+  <text x="318" y="707" class="mlp-s" text-anchor="end">Async worker</text>
+  <text x="84" y="727" class="mlp-m">ProcessOrderFunction</text>
+
+  <!-- S3 -->
+  <rect x="30" y="784" width="300" height="64" rx="10" class="mlp-card"/>
+  <rect x="42" y="801" width="30" height="30" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(57 816)" class="mlp-ico" stroke="#2E5E7E"><path d="M-9 -6h18l-2 15h-14zM-9 -6c0 -2.5 18 -2.5 18 0"/></g>
+  <text x="84" y="811" class="mlp-h">S3</text>
+  <text x="318" y="811" class="mlp-s" text-anchor="end">Order receipts</text>
+  <text x="84" y="831" class="mlp-m">receipts/&lt;orderId&gt;.json</text>
+
+  <!-- Step markers -->
+  <circle cx="180" cy="144" r="11" class="mlp-num"/><text x="180" y="148" class="mlp-numt">1</text>
+  <text x="198" y="148" class="mlp-m">POST /order</text>
+  <circle cx="180" cy="306" r="11" class="mlp-num"/><text x="180" y="310" class="mlp-numt">2</text>
+  <text x="198" y="310" class="mlp-s">invoke</text>
+  <circle cx="180" cy="450" r="11" class="mlp-num"/><text x="180" y="454" class="mlp-numt">4</text>
+  <text x="198" y="454" class="mlp-s">publish</text>
+  <circle cx="180" cy="554" r="11" class="mlp-num"/><text x="180" y="558" class="mlp-numt">5</text>
+  <text x="198" y="558" class="mlp-s">push</text>
+  <circle cx="180" cy="658" r="11" class="mlp-num"/><text x="180" y="662" class="mlp-numt">6</text>
+  <text x="198" y="662" class="mlp-s">poll · <tspan class="mlp-m">batch_size=5</tspan></text>
+  <circle cx="180" cy="762" r="11" class="mlp-num"/><text x="180" y="766" class="mlp-numt">7</text>
+  <text x="198" y="766" class="mlp-s">put object</text>
+
+  <!-- Legend -->
+  <text x="16" y="910" class="mlp-b" fill="#5C626E">Legend</text>
+  <rect x="16" y="922" width="14" height="14" rx="3" fill="#F5EDE1" stroke="#9A6A2E"/><text x="38" y="933" class="mlp-s">Compute</text>
+  <rect x="16" y="944" width="14" height="14" rx="3" fill="#F1EAF0" stroke="#7A4F78"/><text x="38" y="955" class="mlp-s">Messaging</text>
+  <rect x="16" y="966" width="14" height="14" rx="3" fill="#E6EEF3" stroke="#2E5E7E"/><text x="38" y="977" class="mlp-s">Data</text>
+  <rect x="16" y="988" width="14" height="14" rx="3" fill="#E3EEEF" stroke="#17505C"/><text x="38" y="999" class="mlp-s">API</text>
+  <path d="M160 929H188" class="mlp-ln" marker-end="url(#mlp-arr)"/><text x="198" y="933" class="mlp-s">Synchronous</text>
+  <path d="M160 951H188" class="mlp-ln mlp-dash" marker-end="url(#mlp-arr)"/><text x="198" y="955" class="mlp-s">Asynchronous</text>
+  <rect x="160" y="966" width="28" height="14" rx="3" fill="#FFFFFF" stroke="#B9BCB5" stroke-dasharray="4 3"/><text x="198" y="977" class="mlp-s">Outside AWS</text>
+</svg>

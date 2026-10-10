@@ -59,7 +59,16 @@ Accent covers the full viewer-to-bucket trust path (viewer request, cache lookup
 bucket), matching the caption. The CloudFront Function box stays in `--ink` - it's the
 rewrite step, not part of the trust chain.
 
-### 3. Order platform - `/projects/aws-order-flow` - deferred (Stage 3.4)
+### 3. Order platform - `/projects/aws-order-flow` - done (Stage 3.4)
+
+Shipped 2026-10-10, differently from the plan below. The repo has one SQS queue plus a
+dead-letter queue, not three queues. Three complete SVG files live in
+`src/assets/diagrams/` and are inlined by `OrderPlatform.astro`: a desktop view shown
+only where it gets its full 960px, and two 360-wide files below that (the linear path,
+and the queue's success/dead-letter split side by side). They use their own muted
+category colours, filled cards and larger corner radii - an agreed exception to the
+Stage 3.1 constraints, which still apply to the `/architecture` diagrams. The original
+plan is kept below for the record.
 
 API Gateway → Lambda → DynamoDB, with SNS/SQS fanout. Then the same diagram with Aurora
 PostgreSQL substituted for DynamoDB, showing the swap the multi-stack CDK split made
@@ -126,10 +135,9 @@ Section 1 above. Shipped, reviewed, pushed.
 
 Section 2 above. Shipped, reviewed, accent widened to match its caption, pushed.
 
-### Stage 3.4 - Order platform diagram - deferred
+### Stage 3.4 - Order platform diagram - done
 
-Section 3 above. Do not attempt the vertical-stack version of the fanout - read the
-reasoning above first.
+Section 3 above.
 
 ### Stage 3.5 - Image support - done
 

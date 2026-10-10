@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 832" role="img" aria-labelledby="mfo-title mfo-desc">
+  <title id="mfo-title">SNS-to-SQS delivery with success and dead-letter paths</title>
+  <desc id="mfo-desc">CreateOrderFunction publishes to the OrderCreatedTopic SNS topic, which pushes each message to the OrderQueue SQS queue. From the queue, messages take one of two parallel paths: on success, ProcessOrderFunction polls the queue and writes a receipt to S3; after three failed receives, SQS moves the message to the OrderQueueDLQ dead-letter queue.</desc>
+  <defs>
+    <style>
+      .mfo-h{font-family:'IBM Plex Sans',sans-serif;fill:#16181D;font-size:14px;font-weight:600}
+      .mfo-s{font-family:'IBM Plex Sans',sans-serif;fill:#5C626E;font-size:12px}
+      .mfo-m{font-family:'IBM Plex Mono',monospace;fill:#16181D;font-size:12px}
+      .mfo-b{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600}
+      .mfo-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+      .mfo-ln{fill:none;stroke:#5C626E;stroke-width:1.5}
+      .mfo-dash{stroke-dasharray:5 4}
+      .mfo-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+      .mfo-num{fill:#17505C}
+      .mfo-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF;text-anchor:middle}
+    </style>
+    <marker id="mfo-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 1L9 5L0 9z" fill="#5C626E"/></marker>
+  </defs>
+
+  <rect width="360" height="832" fill="#FBFBF9"/>
+
+  <text x="16" y="32" font-family="'IBM Plex Sans',sans-serif" font-size="18" font-weight="600" fill="#16181D">SNS to SQS delivery</text>
+  <text x="16" y="52" class="mfo-s">One queue, two outcomes, side by side</text>
+
+  <!-- Boundaries -->
+  <rect x="8" y="68" width="344" height="636" rx="14" fill="none" stroke="#DFE0DC" stroke-width="1.5"/>
+  <text x="22" y="90" class="mfo-b" fill="#5C626E">AWS account <tspan font-weight="400">· </tspan><tspan class="mfo-m" fill="#5C626E">ap-southeast-2</tspan></text>
+  <rect x="18" y="102" width="324" height="590" rx="12" fill="#F4F7F6" stroke="#C5D6D9"/>
+  <text x="30" y="122" class="mfo-b" fill="#17505C">AWS CDK app</text>
+
+  <!-- Connectors -->
+  <path d="M180 186V221" class="mfo-ln" marker-end="url(#mfo-arr)"/>
+  <path d="M180 288V325" class="mfo-ln mfo-dash" marker-end="url(#mfo-arr)"/>
+  <path d="M180 408V428M96 428H264" class="mfo-ln mfo-dash"/>
+  <path d="M96 428V477" class="mfo-ln mfo-dash" marker-end="url(#mfo-arr)"/>
+  <path d="M264 428V477" class="mfo-ln mfo-dash" marker-end="url(#mfo-arr)"/>
+  <path d="M96 588V625" class="mfo-ln" marker-end="url(#mfo-arr)"/>
+  <path d="M264 588V625" class="mfo-ln mfo-dash"/>
+
+  <!-- Publisher -->
+  <rect x="30" y="134" width="300" height="52" rx="10" class="mfo-card"/>
+  <rect x="42" y="145" width="30" height="30" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(57 160)" class="mfo-ico" stroke="#9A6A2E"><path d="M-7 -9h3.5L6 9h3M-1 1.5L-6.5 9"/></g>
+  <text x="84" y="157" class="mfo-h">Lambda</text>
+  <text x="318" y="157" class="mfo-s" text-anchor="end">Publisher</text>
+  <text x="84" y="175" class="mfo-m">CreateOrderFunction</text>
+
+  <!-- SNS -->
+  <rect x="30" y="224" width="300" height="64" rx="10" class="mfo-card"/>
+  <rect x="42" y="241" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(57 256)" class="mfo-ico" stroke="#7A4F78"><circle r="2" fill="#7A4F78"/><path d="M-5 -5a7 7 0 0 0 0 10M5 -5a7 7 0 0 1 0 10M-8.5 -8.5a12 12 0 0 0 0 17M8.5 -8.5a12 12 0 0 1 0 17"/></g>
+  <text x="84" y="251" class="mfo-h">SNS</text>
+  <text x="318" y="251" class="mfo-s" text-anchor="end">Pub/sub topic</text>
+  <text x="84" y="271" class="mfo-m">OrderCreatedTopic</text>
+
+  <!-- SQS -->
+  <rect x="30" y="328" width="300" height="80" rx="10" class="mfo-card"/>
+  <rect x="42" y="345" width="30" height="30" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(57 360)" class="mfo-ico" stroke="#7A4F78"><path d="M-10 -4h5.5v8h-5.5zM-2.75 -4h5.5v8h-5.5zM4.5 -4h5.5v8h-5.5z"/></g>
+  <text x="84" y="355" class="mfo-h">SQS</text>
+  <text x="318" y="355" class="mfo-s" text-anchor="end">Message queue</text>
+  <text x="84" y="375" class="mfo-m">OrderQueue</text>
+  <text x="84" y="395" class="mfo-m" fill="#5C626E">maxReceiveCount=3</text>
+
+  <!-- Success column -->
+  <rect x="22" y="480" width="148" height="108" rx="10" class="mfo-card"/>
+  <path d="M22 504V490a10 10 0 0 1 10 -10h128a10 10 0 0 1 10 10V504z" fill="#E3EEEF"/>
+  <text x="34" y="497" class="mfo-b" fill="#17505C">Success path</text>
+  <rect x="34" y="514" width="28" height="28" rx="7" fill="#F5EDE1"/>
+  <g transform="translate(48 528)" class="mfo-ico" stroke="#9A6A2E"><path d="M-6.5 -8.5h3.2L5.5 8.5h3M-1 1.5L-6 8.5"/></g>
+  <text x="70" y="533" class="mfo-h">Lambda</text>
+  <text x="34" y="560" class="mfo-m">ProcessOrder</text>
+  <text x="34" y="577" class="mfo-m">Function</text>
+
+  <rect x="22" y="628" width="148" height="52" rx="10" class="mfo-card"/>
+  <rect x="34" y="640" width="28" height="28" rx="7" fill="#E6EEF3"/>
+  <g transform="translate(48 654)" class="mfo-ico" stroke="#2E5E7E"><path d="M-8 -5.5h16l-1.8 13.5h-12.4zM-8 -5.5c0 -2.3 16 -2.3 16 0"/></g>
+  <text x="70" y="652" class="mfo-h">S3</text>
+  <text x="70" y="669" class="mfo-m">receipts/</text>
+
+  <!-- Failure column -->
+  <rect x="190" y="480" width="148" height="108" rx="10" class="mfo-card"/>
+  <path d="M190 504V490a10 10 0 0 1 10 -10h128a10 10 0 0 1 10 10V504z" fill="#F1EAF0"/>
+  <text x="202" y="497" class="mfo-b" fill="#7A4F78">Failure path</text>
+  <rect x="202" y="514" width="28" height="28" rx="7" fill="#F1EAF0"/>
+  <g transform="translate(216 528)" class="mfo-ico" stroke="#7A4F78"><path d="M-9.5 -3.5h5v7h-5zM-2.5 -3.5h5v7h-5zM4.5 -3l5 6M9.5 -3l-5 6"/></g>
+  <text x="238" y="533" class="mfo-h">SQS DLQ</text>
+  <text x="202" y="560" class="mfo-m">OrderQueueDLQ</text>
+  <text x="202" y="577" class="mfo-s">Dead-letter queue</text>
+
+  <rect x="190" y="628" width="148" height="52" rx="10" fill="#FFFFFF" stroke="#DFE0DC" stroke-dasharray="4 3"/>
+  <text x="202" y="650" class="mfo-s">Failed message kept</text>
+  <text x="202" y="667" class="mfo-s">in the DLQ for review</text>
+
+  <!-- Step markers -->
+  <circle cx="180" cy="204" r="11" class="mfo-num"/><text x="180" y="208" class="mfo-numt">4</text>
+  <text x="198" y="208" class="mfo-s">publish</text>
+  <circle cx="180" cy="306" r="11" class="mfo-num"/><text x="180" y="310" class="mfo-numt">5</text>
+  <text x="198" y="310" class="mfo-s">push</text>
+  <circle cx="96" cy="452" r="11" class="mfo-num"/><text x="96" y="456" class="mfo-numt">6</text>
+  <text x="114" y="456" class="mfo-s">poll</text>
+  <circle cx="264" cy="452" r="11" class="mfo-num"/><text x="264" y="456" class="mfo-numt">R</text>
+  <text x="246" y="456" class="mfo-s" text-anchor="end">3 fails</text>
+  <circle cx="96" cy="606" r="11" class="mfo-num"/><text x="96" y="610" class="mfo-numt">7</text>
+  <text x="114" y="610" class="mfo-s">put</text>
+
+  <!-- Legend -->
+  <text x="16" y="734" class="mfo-b" fill="#5C626E">Legend</text>
+  <rect x="16" y="746" width="14" height="14" rx="3" fill="#F5EDE1" stroke="#9A6A2E"/><text x="38" y="757" class="mfo-s">Compute</text>
+  <rect x="16" y="768" width="14" height="14" rx="3" fill="#F1EAF0" stroke="#7A4F78"/><text x="38" y="779" class="mfo-s">Messaging</text>
+  <rect x="16" y="790" width="14" height="14" rx="3" fill="#E6EEF3" stroke="#2E5E7E"/><text x="38" y="801" class="mfo-s">Data</text>
+  <path d="M160 753H188" class="mfo-ln" marker-end="url(#mfo-arr)"/><text x="198" y="757" class="mfo-s">Synchronous</text>
+  <path d="M160 775H188" class="mfo-ln mfo-dash" marker-end="url(#mfo-arr)"/><text x="198" y="779" class="mfo-s">Asynchronous</text>
+  <text x="160" y="801" class="mfo-s"><tspan class="mfo-b" fill="#17505C">R</tspan> retry exhausted, to DLQ</text>
+</svg>
