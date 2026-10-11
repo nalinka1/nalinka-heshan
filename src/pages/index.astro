@@ -6,9 +6,10 @@ import { Image } from 'astro:assets';
 import developerBadge from '../assets/images/aws-certified-developer.png';
 import aiPractitionerBadge from '../assets/images/ai-practitioner.png';
 
-const projects = (await getCollection('projects'))
-	.sort((a, b) => a.data.order - b.data.order)
-	.slice(0, 3);
+const allProjects = (await getCollection('projects')).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+const projects = allProjects.slice(0, 3);
 
 // Details as Credly shows them. Only earned certifications go here.
 const certifications = [
@@ -68,6 +69,11 @@ const certifications = [
 	<section id="projects" aria-labelledby="projects-heading">
 		<h2 id="projects-heading">Projects</h2>
 		{projects.map((project) => <ProjectRow project={project} />)}
+		{allProjects.length > projects.length && (
+			<p class="more-projects">
+				<a href="/projects">See all {allProjects.length} projects</a>
+			</p>
+		)}
 	</section>
 
 	<hr />
@@ -131,6 +137,10 @@ const certifications = [
 
 	.rail-links li:last-child {
 		margin-bottom: 0;
+	}
+
+	.more-projects {
+		margin: var(--space-6) 0 0;
 	}
 
 	.cert-row {
