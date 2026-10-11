@@ -94,6 +94,21 @@ because both must allow. No GitHub Actions deploy path is drawn - it isn't in th
 `mcdp-architecture-overview.svg` (the same architecture without the detail tables) is in
 the folder but not used on any page.
 
+### 5. Invoice automation - `/projects/casual-services-invoice-automation` - done
+
+Added 2026-10-11, same pattern. `InvoiceAutomation.astro` inlines
+`invoice-automation-desktop.svg` at 960 wide: the two CloudFormation stacks as
+boundaries, Gmail and the human review outside AWS, the ledger states with the
+reconcile branch, and two tables (billable days, the five PDF fields). Below that, two
+360-wide files: the monthly run (`invoice-automation-mobile-run.svg`) and the ledger
+states and tables (`invoice-automation-mobile-state.svg`). The mobile run is drawn as
+steps, not components, so the vertical order is the real order. Compute and messaging
+colours are the order platform's; Monitoring reuses the multi-cloud Identity colour.
+
+Facts are from that repo's README, docs/ARCHITECTURE.md and the resource types in
+`infrastructure/storage.json` and `runtime.json`. No resource names, account IDs, site
+names or rates are drawn - the repo keeps those private and so does the site.
+
 ---
 
 ## What gets a photo

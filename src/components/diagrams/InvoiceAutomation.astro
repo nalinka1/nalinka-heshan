@@ -1,0 +1,17 @@
+---
+// Invoice automation diagrams for /projects/casual-services-invoice-automation.
+// On narrow screens the monthly run and the ledger states are separate files. The
+// run is drawn as steps, not components, so stacking it top to bottom stays true
+// (docs/phase-3-plan.md).
+import InlineDiagram from './InlineDiagram.astro';
+import desktop from '../../assets/diagrams/invoice-automation-desktop.svg?raw';
+import mobileRun from '../../assets/diagrams/invoice-automation-mobile-run.svg?raw';
+import mobileState from '../../assets/diagrams/invoice-automation-mobile-state.svg?raw';
+---
+
+<InlineDiagram desktop={desktop} mobile={[mobileRun, mobileState]}>
+	A scheduled Lambda reserves the invoice number, saves the PDF and the email, and
+	leaves one Gmail draft. I send it and confirm the send myself. If the Gmail request
+	has an unknown outcome, a retry looks for the existing draft before doing anything
+	else.
+</InlineDiagram>

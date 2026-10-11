@@ -104,6 +104,8 @@ Source: the repo's README.md and docs/ARCHITECTURE.md, pasted by Nalinka 2026-10
 (October 2026 acceptance milestone). Only claim what those say is implemented - the
 "Implemented versus proposed" table is the boundary.
 
+**Has diagrams** via `InvoiceAutomation.astro` - see docs/phase-3-plan.md.
+
 > Not an AI project - it's deterministic. Don't describe it as AI or an agent.
 > Repo is public since 2026-10-11: https://github.com/nalinka1/casual-invoice-automation
 > Don't say it has been running in production. At the milestone the schedules were

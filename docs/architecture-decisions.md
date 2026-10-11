@@ -121,6 +121,8 @@ Then `aws cloudfront create-invalidation --paths "/*"`.
     copy rewritten the same day from a review of the repo: GitHub Actions, Bicep, AWS
     CDK and "landing zone" came out because they aren't in the repo, even though the CV
     still lists them.
+  - Invoice automation diagrams added 2026-10-11 on
+    `/projects/casual-services-invoice-automation`, via `InvoiceAutomation.astro`.
   - 3.5 done - optional `images` on projects, rendered with Astro `<Image />` (WebP,
     srcset, lazy) on deep-dive pages only. No project uses it yet.
   - 3.6 cancelled - LEGO deep-dive page. Someone else's startup project, not enough

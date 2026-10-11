@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1164" role="img" aria-labelledby="cim-title cim-desc">
+<title id="cim-title">The monthly invoice run, step by step</title>
+<desc id="cim-desc">A vertical path of one monthly run. EventBridge Scheduler invokes a Lambda function on day three of the month. The Lambda works out the charges, reserves an invoice number in a DynamoDB transaction, saves the PDF and the complete email to S3 with a creating marker, and creates one Gmail draft. SNS emails the operator, who reads the draft and sends it by hand, then confirms the send from the command line so the ledger moves to sent confirmed.</desc>
+
+<defs>
+<style>
+.cim-bg{fill:#FBFBF9}
+.cim-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.cim-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.cim-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.cim-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.cim-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.cim-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.cim-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.cim-rule{stroke:#DFE0DC;stroke-width:1}
+.cim-arrd{fill:none;stroke:#5C626E;stroke-width:1.5;stroke-dasharray:5 4}
+.cim-tok{fill:none;stroke:#17505C;stroke-width:1.5}
+.cim-num{fill:#17505C}
+.cim-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF}
+.cim-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cim-ti-co{fill:#F5EDE1}
+.cim-ic-co{stroke:#9A6A2E}
+.cim-ti-ms{fill:#F1EAF0}
+.cim-ic-ms{stroke:#7A4F78}
+.cim-ti-da{fill:#E6EEF3}
+.cim-ic-da{stroke:#2E5E7E}
+.cim-ti-ou{fill:#EFF0EC}
+.cim-ic-ou{stroke:#5C626E}
+</style>
+
+<marker id="cim-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="cim-aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#17505C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+
+<symbol id="cim-sym-clock" viewBox="0 0 18 18"><circle class="cim-ico" cx="9" cy="9" r="6.4"/><path class="cim-ico" d="M9 5.2V9l2.6 1.8"/></symbol>
+<symbol id="cim-sym-fn" viewBox="0 0 18 18"><path class="cim-ico" d="M4.5 3.6h2l5 10.8h2M8.4 7.8 4.6 14.4"/></symbol>
+<symbol id="cim-sym-bell" viewBox="0 0 18 18"><path class="cim-ico" d="M5 12.6V8.2a4 4 0 0 1 8 0v4.4l1.4 1.4H3.6ZM7.6 15.8h2.8"/></symbol>
+<symbol id="cim-sym-bucket" viewBox="0 0 18 18"><ellipse class="cim-ico" cx="9" cy="4.6" rx="6" ry="2.3"/><path class="cim-ico" d="M3 4.6v8.8c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V4.6"/></symbol>
+<symbol id="cim-sym-table" viewBox="0 0 18 18"><rect class="cim-ico" x="2.6" y="3.6" width="12.8" height="10.8" rx="1.4"/><path class="cim-ico" d="M2.6 7.6h12.8M7.4 7.6v6.8"/></symbol>
+<symbol id="cim-sym-mail" viewBox="0 0 18 18"><rect class="cim-ico" x="2.4" y="4.4" width="13.2" height="9.2" rx="1.4"/><path class="cim-ico" d="M2.8 5.4 9 10l6.2-4.6"/></symbol>
+<symbol id="cim-sym-id" viewBox="0 0 18 18"><circle class="cim-ico" cx="9" cy="6" r="3.2"/><path class="cim-ico" d="M3 15.2c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2"/></symbol>
+</defs>
+
+<rect class="cim-bg" x="0" y="0" width="360" height="1164"/>
+
+<text class="cim-h1" x="24" y="40">The monthly run</text>
+<text class="cim-sub" x="24" y="62">Prepared on AWS, sent by me</text>
+
+<rect class="cim-card" x="30" y="96" width="300" height="86" rx="10"/>
+<rect class="cim-ti-ms" x="42" y="108" width="30" height="30" rx="7"/>
+<use class="cim-ic-ms" href="#cim-sym-clock" x="48" y="114" width="18" height="18"/>
+<text class="cim-t" x="82" y="127">EventBridge Scheduler</text>
+<text class="cim-s" x="42" y="155">Day three of the month, 21:00</text>
+<text class="cim-m" x="42" y="173">Australia/Melbourne</text>
+
+<path class="cim-tok" d="M180 182 V214" marker-end="url(#cim-aht)"/>
+<circle class="cim-num" cx="180" cy="198" r="11"/>
+<text class="cim-numt" x="180" y="202" text-anchor="middle">1</text>
+
+<rect class="cim-card" x="30" y="214" width="300" height="86" rx="10"/>
+<rect class="cim-ti-co" x="42" y="226" width="30" height="30" rx="7"/>
+<use class="cim-ic-co" href="#cim-sym-fn" x="48" y="232" width="18" height="18"/>
+<text class="cim-t" x="82" y="245">Lambda function</text>
+<text class="cim-s" x="42" y="273">Reads config, works out the charges</text>
+<text class="cim-m" x="42" y="291">Python 3.12 · 512 MB · 180 s</text>
+
+<path class="cim-tok" d="M180 300 V332" marker-end="url(#cim-aht)"/>
+<circle class="cim-num" cx="180" cy="316" r="11"/>
+<text class="cim-numt" x="180" y="320" text-anchor="middle">2</text>
+
+<rect class="cim-card" x="30" y="332" width="300" height="86" rx="10"/>
+<rect class="cim-ti-da" x="42" y="344" width="30" height="30" rx="7"/>
+<use class="cim-ic-da" href="#cim-sym-table" x="48" y="350" width="18" height="18"/>
+<text class="cim-t" x="82" y="363">Invoice number reserved</text>
+<text class="cim-s" x="42" y="391">DynamoDB, one conditional transaction</text>
+<text class="cim-m" x="42" y="409">counter + month#YYYY-MM</text>
+
+<path class="cim-tok" d="M180 418 V450" marker-end="url(#cim-aht)"/>
+<circle class="cim-num" cx="180" cy="434" r="11"/>
+<text class="cim-numt" x="180" y="438" text-anchor="middle">3</text>
+
+<rect class="cim-card" x="30" y="450" width="300" height="86" rx="10"/>
+<rect class="cim-ti-da" x="42" y="462" width="30" height="30" rx="7"/>
+<use class="cim-ic-da" href="#cim-sym-bucket" x="48" y="468" width="18" height="18"/>
+<text class="cim-t" x="82" y="481">PDF and email saved</text>
+<text class="cim-s" x="42" y="509">S3, then a creating marker in the ledger</text>
+<text class="cim-m" x="42" y="527">frozen MIME, operation ID</text>
+
+<path class="cim-tok" d="M180 536 V568" marker-end="url(#cim-aht)"/>
+<circle class="cim-num" cx="180" cy="552" r="11"/>
+<text class="cim-numt" x="180" y="556" text-anchor="middle">4</text>
+
+<rect class="cim-card" x="30" y="568" width="300" height="86" rx="10"/>
+<rect class="cim-ti-ou" x="42" y="580" width="30" height="30" rx="7"/>
+<use class="cim-ic-ou" href="#cim-sym-mail" x="48" y="586" width="18" height="18"/>
+<text class="cim-t" x="82" y="599">Gmail draft created</text>
+<text class="cim-s" x="42" y="627">One request, never retried blindly</text>
+<text class="cim-m" x="42" y="645">no send call in the code</text>
+
+<path class="cim-tok" d="M180 654 V686" marker-end="url(#cim-aht)"/>
+<circle class="cim-num" cx="180" cy="670" r="11"/>
+<text class="cim-numt" x="180" y="674" text-anchor="middle">5</text>
+
+<rect class="cim-card" x="30" y="686" width="300" height="86" rx="10"/>
+<rect class="cim-ti-ms" x="42" y="698" width="30" height="30" rx="7"/>
+<use class="cim-ic-ms" href="#cim-sym-bell" x="48" y="704" width="18" height="18"/>
+<text class="cim-t" x="82" y="717">SNS emails me</text>
+<text class="cim-s" x="42" y="745">Draft ID recorded, ready alert sent</text>
+<text class="cim-m" x="42" y="763">awaiting_approval</text>
+
+<path class="cim-tok" d="M180 772 V804" marker-end="url(#cim-aht)"/>
+<circle class="cim-num" cx="180" cy="788" r="11"/>
+<text class="cim-numt" x="180" y="792" text-anchor="middle">6</text>
+
+<rect class="cim-card" x="30" y="804" width="300" height="86" rx="10"/>
+<rect class="cim-ti-ou" x="42" y="816" width="30" height="30" rx="7"/>
+<use class="cim-ic-ou" href="#cim-sym-id" x="48" y="822" width="18" height="18"/>
+<text class="cim-t" x="82" y="835">I read it and send it</text>
+<text class="cim-s" x="42" y="863">In Gmail, by hand</text>
+<text class="cim-m" x="42" y="881">the only step that issues it</text>
+
+<path class="cim-arrd" d="M180 890 V922" marker-end="url(#cim-ah)"/>
+<circle class="cim-num" cx="180" cy="906" r="11"/>
+<text class="cim-numt" x="180" y="910" text-anchor="middle">7</text>
+
+<rect class="cim-card" x="30" y="922" width="300" height="86" rx="10"/>
+<rect class="cim-ti-da" x="42" y="934" width="30" height="30" rx="7"/>
+<use class="cim-ic-da" href="#cim-sym-table" x="48" y="940" width="18" height="18"/>
+<text class="cim-t" x="82" y="953">Send confirmed</text>
+<text class="cim-s" x="42" y="981">Entered by me from the command line</text>
+<text class="cim-m" x="42" y="999">sent_confirmed</text>
+
+<line class="cim-rule" x1="18" y1="1036" x2="342" y2="1036"/>
+
+<text class="cim-hd" x="24" y="1064">Legend</text>
+<rect class="cim-ti-co" x="24" y="1078" width="16" height="16" rx="4"/>
+<text class="cim-s" x="48" y="1090">Compute</text>
+<rect class="cim-ti-ms" x="130" y="1078" width="16" height="16" rx="4"/>
+<text class="cim-s" x="154" y="1090">Events and messaging</text>
+<rect class="cim-ti-da" x="24" y="1102" width="16" height="16" rx="4"/>
+<text class="cim-s" x="48" y="1114">Data</text>
+<rect class="cim-ti-ou" x="130" y="1102" width="16" height="16" rx="4"/>
+<text class="cim-s" x="154" y="1114">Outside AWS</text>
+<path class="cim-tok" d="M24 1138h26" marker-end="url(#cim-aht)"/>
+<text class="cim-s" x="58" y="1142">Invoice path</text>
+<path class="cim-arrd" d="M154 1138h26" marker-end="url(#cim-ah)"/>
+<text class="cim-s" x="188" y="1142">Manual step</text>
+</svg>

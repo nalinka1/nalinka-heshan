@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1236" role="img" aria-labelledby="cis-title cis-desc">
+<title id="cis-title">Invoice state in the ledger, and the rules behind the amount</title>
+<desc id="cis-desc">The ledger moves an invoice through five states: reserved, prepared, creating, done and sent confirmed. The creating marker is written before the Gmail request. If the outcome of that request is unknown, a retry looks for the operation ID in the existing drafts: one match is adopted, none or several stops the job for a person. Sent confirmed is set only by the operator. Billable days come from each site's working weekdays, regional public holidays and overrides, with amounts in Decimal rounded half-up to cents. Five fields of the PDF template are replaced: invoice number, issue date, two site amounts and the total.</desc>
+
+<defs>
+<style>
+.cis-bg{fill:#FBFBF9}
+.cis-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.cis-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.cis-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.cis-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.cis-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.cis-mk{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#16181D}
+.cis-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.cis-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.cis-band{fill:#EDF2F2;stroke:#DFE0DC;stroke-width:1}
+.cis-rule{stroke:#DFE0DC;stroke-width:1}
+.cis-arr{fill:none;stroke:#5C626E;stroke-width:1.5}
+.cis-arrd{fill:none;stroke:#5C626E;stroke-width:1.5;stroke-dasharray:5 4}
+</style>
+
+<marker id="cis-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<rect class="cis-bg" x="0" y="0" width="360" height="1236"/>
+
+<text class="cis-h1" x="24" y="40">Invoice state</text>
+<text class="cis-sub" x="24" y="62">What a repeated run finds in the ledger</text>
+
+<rect class="cis-card" x="30" y="84" width="300" height="74" rx="10"/>
+<text class="cis-t" x="42" y="110">Reserved</text>
+<text class="cis-s" x="42" y="130">Invoice number taken in one transaction</text>
+<text class="cis-m" x="42" y="148">counter + month row</text>
+<path class="cis-arr" d="M180 158 V186" marker-end="url(#cis-ah)"/>
+
+<rect class="cis-card" x="30" y="186" width="300" height="74" rx="10"/>
+<text class="cis-t" x="42" y="212">Prepared</text>
+<text class="cis-s" x="42" y="232">PDF and email saved under an operation ID</text>
+<text class="cis-m" x="42" y="250">frozen MIME in S3</text>
+<path class="cis-arr" d="M180 260 V288" marker-end="url(#cis-ah)"/>
+
+<rect class="cis-card" x="30" y="288" width="300" height="74" rx="10"/>
+<text class="cis-t" x="42" y="314">Creating</text>
+<text class="cis-s" x="42" y="334">Marker written before the Gmail request</text>
+<text class="cis-m" x="42" y="352">claim, then POST</text>
+<path class="cis-arr" d="M180 362 V390" marker-end="url(#cis-ah)"/>
+
+<rect class="cis-card" x="30" y="390" width="300" height="74" rx="10"/>
+<text class="cis-t" x="42" y="416">Done</text>
+<text class="cis-s" x="42" y="436">Draft ID recorded, ready alert published</text>
+<text class="cis-m" x="42" y="454">awaiting_approval</text>
+<path class="cis-arrd" d="M180 464 V492" marker-end="url(#cis-ah)"/>
+
+<rect class="cis-card" x="30" y="492" width="300" height="74" rx="10"/>
+<text class="cis-t" x="42" y="518">Sent confirmed</text>
+<text class="cis-s" x="42" y="538">Set only by me, never inferred from Gmail</text>
+<text class="cis-m" x="42" y="556">sent_confirmed</text>
+
+<rect class="cis-card" x="18" y="594" width="324" height="150" rx="10"/>
+<path class="cis-band" d="M18 604a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="cis-hd" x="32" y="615">If the Gmail outcome is unknown</text>
+<text class="cis-s" x="32" y="648">One matching draft</text>
+<text class="cis-mk" x="170" y="648">adopt it, then done</text>
+<text class="cis-s" x="32" y="672">No match</text>
+<text class="cis-mk" x="170" y="672">stop, wait for me</text>
+<text class="cis-s" x="32" y="696">Several matches</text>
+<text class="cis-mk" x="170" y="696">stop, wait for me</text>
+<text class="cis-s" x="32" y="724">A retry never sends a blind second request.</text>
+
+<rect class="cis-card" x="18" y="768" width="324" height="172" rx="10"/>
+<path class="cis-band" d="M18 778a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="cis-hd" x="32" y="789">Billable days</text>
+<text class="cis-s" x="32" y="822">Working weekdays</text>
+<text class="cis-mk" x="170" y="822">set per site</text>
+<text class="cis-s" x="32" y="846">Public holidays</text>
+<text class="cis-mk" x="170" y="846">regional, per year</text>
+<text class="cis-s" x="32" y="870">Leave and overrides</text>
+<text class="cis-mk" x="170" y="870">site beats global</text>
+<text class="cis-s" x="32" y="894">Money</text>
+<text class="cis-mk" x="170" y="894">Decimal, half-up</text>
+<text class="cis-s" x="32" y="922">A year with no holiday calendar stops it.</text>
+
+<rect class="cis-card" x="18" y="964" width="324" height="172" rx="10"/>
+<path class="cis-band" d="M18 974a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="cis-hd" x="32" y="985">PDF template - five fields replaced</text>
+<text class="cis-s" x="32" y="1018">Invoice number</text>
+<text class="cis-mk" x="170" y="1018">from the ledger</text>
+<text class="cis-s" x="32" y="1042">Issue date</text>
+<text class="cis-mk" x="170" y="1042">generation date</text>
+<text class="cis-s" x="32" y="1066">Two site amounts</text>
+<text class="cis-mk" x="170" y="1066">days × daily rate</text>
+<text class="cis-s" x="32" y="1090">Total</text>
+<text class="cis-mk" x="170" y="1090">sum of both</text>
+<text class="cis-s" x="32" y="1118">Nothing else on the page changes.</text>
+
+<line class="cis-rule" x1="18" y1="1164" x2="342" y2="1164"/>
+
+<text class="cis-hd" x="24" y="1192">Legend</text>
+<path class="cis-arr" d="M24 1212h26" marker-end="url(#cis-ah)"/>
+<text class="cis-s" x="58" y="1216">State change</text>
+<path class="cis-arrd" d="M170 1212h26" marker-end="url(#cis-ah)"/>
+<text class="cis-s" x="204" y="1216">Manual step</text>
+</svg>

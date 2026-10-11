@@ -1,0 +1,299 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1622" role="img" aria-labelledby="cia-title cia-desc">
+<title id="cia-title">Casual services invoice automation: a scheduled Lambda prepares an invoice and a Gmail draft, and a person sends it</title>
+<desc id="cia-desc">Two CloudFormation stacks in one AWS account. The storage stack holds a private S3 bucket, a DynamoDB ledger and a Secrets Manager secret, and is kept if the stack is deleted. The runtime stack holds EventBridge Scheduler, a Lambda function, an SNS topic, CloudWatch alarms and an SQS dead-letter queue. On day three of the month the scheduler invokes the Lambda. It reads the configuration and PDF template from S3, reserves an invoice number in a DynamoDB transaction, saves the PDF and the complete email to S3, writes a creating marker, and creates one Gmail draft. SNS emails the operator, who reads the draft, sends it by hand and confirms the send from a command line tool. The ledger moves through reserved, prepared, creating, done and sent confirmed. If the outcome of the Gmail request is unknown, a retry looks for the operation ID in the existing drafts and adopts a single match; with none or several it stops for a person. Billable days come from working weekdays, regional public holidays and overrides, and five fields of the PDF template are replaced.</desc>
+
+<defs>
+<style>
+.cia-bg{fill:#FBFBF9}
+.cia-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.cia-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.cia-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.cia-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.cia-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.cia-mk{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#16181D}
+.cia-lbl{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#5C626E}
+.cia-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.cia-al{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#17505C}
+.cia-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.cia-band{fill:#EDF2F2;stroke:#DFE0DC;stroke-width:1}
+.cia-acct{fill:none;stroke:#DFE0DC;stroke-width:1}
+.cia-grp{fill:#F4F7F6;stroke:#C5D6D9;stroke-width:1}
+.cia-out{fill:none;stroke:#B9BCB5;stroke-width:1;stroke-dasharray:5 4}
+.cia-rule{stroke:#DFE0DC;stroke-width:1}
+.cia-arr{fill:none;stroke:#5C626E;stroke-width:1.5}
+.cia-arrd{fill:none;stroke:#5C626E;stroke-width:1.5;stroke-dasharray:5 4}
+.cia-tok{fill:none;stroke:#17505C;stroke-width:1.5}
+.cia-num{fill:#17505C}
+.cia-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF}
+.cia-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cia-ti-co{fill:#F5EDE1}
+.cia-ic-co{stroke:#9A6A2E}
+.cia-ti-ms{fill:#F1EAF0}
+.cia-ic-ms{stroke:#7A4F78}
+.cia-ti-da{fill:#E6EEF3}
+.cia-ic-da{stroke:#2E5E7E}
+.cia-ti-se{fill:#E8F0E6}
+.cia-ic-se{stroke:#4A6B45}
+.cia-ti-mo{fill:#E9EAF3}
+.cia-ic-mo{stroke:#4A5578}
+.cia-ti-ou{fill:#EFF0EC}
+.cia-ic-ou{stroke:#5C626E}
+</style>
+
+<marker id="cia-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="cia-aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#17505C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+
+<symbol id="cia-sym-clock" viewBox="0 0 18 18"><circle class="cia-ico" cx="9" cy="9" r="6.4"/><path class="cia-ico" d="M9 5.2V9l2.6 1.8"/></symbol>
+<symbol id="cia-sym-fn" viewBox="0 0 18 18"><path class="cia-ico" d="M4.5 3.6h2l5 10.8h2M8.4 7.8 4.6 14.4"/></symbol>
+<symbol id="cia-sym-bell" viewBox="0 0 18 18"><path class="cia-ico" d="M5 12.6V8.2a4 4 0 0 1 8 0v4.4l1.4 1.4H3.6ZM7.6 15.8h2.8"/></symbol>
+<symbol id="cia-sym-chart" viewBox="0 0 18 18"><path class="cia-ico" d="M3 15h12M5.4 12.4V9M9 12.4V5M12.6 12.4V7.4"/></symbol>
+<symbol id="cia-sym-queue" viewBox="0 0 18 18"><rect class="cia-ico" x="2.6" y="5.4" width="3.4" height="7.2" rx="0.8"/><rect class="cia-ico" x="7.3" y="5.4" width="3.4" height="7.2" rx="0.8"/><rect class="cia-ico" x="12" y="5.4" width="3.4" height="7.2" rx="0.8"/></symbol>
+<symbol id="cia-sym-bucket" viewBox="0 0 18 18"><ellipse class="cia-ico" cx="9" cy="4.6" rx="6" ry="2.3"/><path class="cia-ico" d="M3 4.6v8.8c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V4.6"/></symbol>
+<symbol id="cia-sym-table" viewBox="0 0 18 18"><rect class="cia-ico" x="2.6" y="3.6" width="12.8" height="10.8" rx="1.4"/><path class="cia-ico" d="M2.6 7.6h12.8M7.4 7.6v6.8"/></symbol>
+<symbol id="cia-sym-key" viewBox="0 0 18 18"><circle class="cia-ico" cx="5.8" cy="9" r="3"/><path class="cia-ico" d="M8.8 9H16M13.4 9v3M16 9v3.4"/></symbol>
+<symbol id="cia-sym-mail" viewBox="0 0 18 18"><rect class="cia-ico" x="2.4" y="4.4" width="13.2" height="9.2" rx="1.4"/><path class="cia-ico" d="M2.8 5.4 9 10l6.2-4.6"/></symbol>
+<symbol id="cia-sym-id" viewBox="0 0 18 18"><circle class="cia-ico" cx="9" cy="6" r="3.2"/><path class="cia-ico" d="M3 15.2c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2"/></symbol>
+</defs>
+
+<rect class="cia-bg" x="0" y="0" width="960" height="1622"/>
+
+<text class="cia-h1" x="24" y="40">Casual services invoice automation</text>
+<text class="cia-sub" x="24" y="62">A scheduled Lambda prepares the invoice and a Gmail draft - sending it stays a human action</text>
+
+<rect class="cia-acct" x="20" y="84" width="624" height="650" rx="14"/>
+<text class="cia-lbl" x="36" y="724">AWS account</text>
+
+<rect class="cia-grp" x="36" y="100" width="270" height="602" rx="12"/>
+<rect class="cia-card" x="48" y="114" width="246" height="86" rx="10"/>
+<rect class="cia-ti-da" x="60" y="126" width="30" height="30" rx="7"/>
+<use class="cia-ic-da" href="#cia-sym-bucket" x="66" y="132" width="18" height="18"/>
+<text class="cia-t" x="100" y="145">S3 bucket</text>
+<text class="cia-s" x="60" y="173">Config, template, PDF, saved email</text>
+<text class="cia-m" x="60" y="191">private · versioned · TLS only</text>
+<rect class="cia-card" x="48" y="232" width="246" height="86" rx="10"/>
+<rect class="cia-ti-da" x="60" y="244" width="30" height="30" rx="7"/>
+<use class="cia-ic-da" href="#cia-sym-table" x="66" y="250" width="18" height="18"/>
+<text class="cia-t" x="100" y="263">DynamoDB ledger</text>
+<text class="cia-s" x="60" y="291">Numbers, month state, alert claims</text>
+<text class="cia-m" x="60" y="309">on-demand · conditional writes</text>
+<rect class="cia-card" x="48" y="350" width="246" height="86" rx="10"/>
+<rect class="cia-ti-se" x="60" y="362" width="30" height="30" rx="7"/>
+<use class="cia-ic-se" href="#cia-sym-key" x="66" y="368" width="18" height="18"/>
+<text class="cia-t" x="100" y="381">Secrets Manager</text>
+<text class="cia-s" x="60" y="409">Gmail OAuth credentials</text>
+<text class="cia-m" x="60" y="427">refreshed and written back</text>
+
+<rect class="cia-card" x="48" y="468" width="246" height="204" rx="10"/>
+<path class="cia-band" d="M48 478a10 10 0 0 1 10-10h226a10 10 0 0 1 10 10v22H48Z"/>
+<text class="cia-hd" x="62" y="489">Ledger - one table, three rows</text>
+<text class="cia-mk" x="62" y="524">counter</text>
+<text class="cia-s" x="170" y="524">highest reserved</text>
+<text class="cia-mk" x="62" y="548">month#YYYY-MM</text>
+<text class="cia-s" x="170" y="548">number, phase</text>
+<text class="cia-mk" x="62" y="572">event#&lt;key&gt;</text>
+<text class="cia-s" x="170" y="572">alert claim</text>
+<text class="cia-s" x="62" y="608">Counter and month row are written</text>
+<text class="cia-s" x="62" y="626">in one conditional transaction.</text>
+<text class="cia-s" x="62" y="652">A failed number is never reused.</text>
+<text class="cia-lbl" x="48" y="692">Storage stack - kept if deleted</text>
+
+<rect class="cia-grp" x="358" y="100" width="270" height="602" rx="12"/>
+<rect class="cia-card" x="370" y="114" width="246" height="86" rx="10"/>
+<rect class="cia-ti-ms" x="382" y="126" width="30" height="30" rx="7"/>
+<use class="cia-ic-ms" href="#cia-sym-clock" x="388" y="132" width="18" height="18"/>
+<text class="cia-t" x="422" y="145">EventBridge Scheduler</text>
+<text class="cia-s" x="382" y="173">Monthly generate, daily monitor</text>
+<text class="cia-m" x="382" y="191">Australia/Melbourne</text>
+<rect class="cia-card" x="370" y="232" width="246" height="86" rx="10"/>
+<rect class="cia-ti-co" x="382" y="244" width="30" height="30" rx="7"/>
+<use class="cia-ic-co" href="#cia-sym-fn" x="388" y="250" width="18" height="18"/>
+<text class="cia-t" x="422" y="263">Lambda function</text>
+<text class="cia-s" x="382" y="291">Calculates, renders, creates draft</text>
+<text class="cia-m" x="382" y="309">Python 3.12 · 512 MB · 180 s</text>
+<rect class="cia-card" x="370" y="350" width="246" height="86" rx="10"/>
+<rect class="cia-ti-ms" x="382" y="362" width="30" height="30" rx="7"/>
+<use class="cia-ic-ms" href="#cia-sym-bell" x="388" y="368" width="18" height="18"/>
+<text class="cia-t" x="422" y="381">SNS topic</text>
+<text class="cia-s" x="382" y="409">Emails me when a draft is ready</text>
+<text class="cia-m" x="382" y="427">also alarms and reminders</text>
+<rect class="cia-card" x="370" y="468" width="246" height="86" rx="10"/>
+<rect class="cia-ti-mo" x="382" y="480" width="30" height="30" rx="7"/>
+<use class="cia-ic-mo" href="#cia-sym-chart" x="388" y="486" width="18" height="18"/>
+<text class="cia-t" x="422" y="499">CloudWatch</text>
+<text class="cia-s" x="382" y="527">Logs kept 14 days, two alarms</text>
+<text class="cia-m" x="382" y="545">Lambda errors · DLQ messages</text>
+<rect class="cia-card" x="370" y="586" width="246" height="86" rx="10"/>
+<rect class="cia-ti-ms" x="382" y="598" width="30" height="30" rx="7"/>
+<use class="cia-ic-ms" href="#cia-sym-queue" x="388" y="604" width="18" height="18"/>
+<text class="cia-t" x="422" y="617">SQS dead-letter queue</text>
+<text class="cia-s" x="382" y="645">Failed and exhausted invocations</text>
+<text class="cia-m" x="382" y="663">one retry · 1 h event age</text>
+<text class="cia-lbl" x="370" y="692">Runtime stack - replaceable</text>
+
+<rect class="cia-out" x="660" y="84" width="280" height="650" rx="14"/>
+<rect class="cia-card" x="672" y="232" width="256" height="86" rx="10"/>
+<rect class="cia-ti-ou" x="684" y="244" width="30" height="30" rx="7"/>
+<use class="cia-ic-ou" href="#cia-sym-mail" x="690" y="250" width="18" height="18"/>
+<text class="cia-t" x="724" y="263">Gmail API</text>
+<text class="cia-s" x="684" y="291">Creates and inspects drafts only</text>
+<text class="cia-m" x="684" y="309">no send call in the code</text>
+<rect class="cia-card" x="672" y="468" width="256" height="86" rx="10"/>
+<rect class="cia-ti-ou" x="684" y="480" width="30" height="30" rx="7"/>
+<use class="cia-ic-ou" href="#cia-sym-id" x="690" y="486" width="18" height="18"/>
+<text class="cia-t" x="724" y="499">Human review</text>
+<text class="cia-s" x="684" y="527">I read the draft and send it myself</text>
+<text class="cia-m" x="684" y="545">cloud_state.confirm_sent</text>
+<text class="cia-lbl" x="676" y="724">Outside AWS</text>
+
+<path class="cia-tok" d="M493 200 V232" marker-end="url(#cia-aht)"/>
+<circle class="cia-num" cx="493" cy="216" r="11"/>
+<text class="cia-numt" x="493" y="220" text-anchor="middle">1</text>
+
+<path class="cia-tok" d="M370 258 H306" marker-end="url(#cia-aht)"/>
+<circle class="cia-num" cx="338" cy="258" r="11"/>
+<text class="cia-numt" x="338" y="262" text-anchor="middle">2</text>
+<path class="cia-tok" d="M370 292 H306" marker-end="url(#cia-aht)"/>
+<circle class="cia-num" cx="338" cy="292" r="11"/>
+<text class="cia-numt" x="338" y="296" text-anchor="middle">3</text>
+
+<path class="cia-tok" d="M616 275 H672" marker-end="url(#cia-aht)"/>
+<circle class="cia-num" cx="644" cy="275" r="11"/>
+<text class="cia-numt" x="644" y="279" text-anchor="middle">4</text>
+
+<path class="cia-tok" d="M493 318 V350" marker-end="url(#cia-aht)"/>
+<circle class="cia-num" cx="493" cy="334" r="11"/>
+<text class="cia-numt" x="493" y="338" text-anchor="middle">5</text>
+<path class="cia-tok" d="M616 393 H652 V511 H672" marker-end="url(#cia-aht)"/>
+
+<path class="cia-tok" d="M800 318 V468" marker-end="url(#cia-aht)"/>
+<circle class="cia-num" cx="800" cy="393" r="11"/>
+<text class="cia-numt" x="800" y="397" text-anchor="middle">6</text>
+<text class="cia-al" x="818" y="397">unsent draft</text>
+
+<path class="cia-arrd" d="M493 468 V436" marker-end="url(#cia-ah)"/>
+<path class="cia-arrd" d="M493 586 V554" marker-end="url(#cia-ah)"/>
+
+<path class="cia-arrd" d="M800 554 V762 H171 V702" marker-end="url(#cia-ah)"/>
+<circle class="cia-num" cx="800" cy="644" r="11"/>
+<text class="cia-numt" x="800" y="648" text-anchor="middle">7</text>
+<text class="cia-al" x="330" y="756">sent confirmation, entered by me from the command line</text>
+
+<line class="cia-rule" x1="20" y1="792" x2="940" y2="792"/>
+
+<text class="cia-hd" x="24" y="822">Invoice state in the ledger</text>
+<text class="cia-s" x="24" y="840">The stored phase decides what a repeated run is allowed to do.</text>
+
+<rect class="cia-card" x="20" y="856" width="160" height="104" rx="10"/>
+<text class="cia-t" x="32" y="882">Reserved</text>
+<text class="cia-s" x="32" y="904">Number taken in</text>
+<text class="cia-s" x="32" y="922">one transaction</text>
+<text class="cia-m" x="32" y="946">counter + month</text>
+<rect class="cia-card" x="210" y="856" width="160" height="104" rx="10"/>
+<text class="cia-t" x="222" y="882">Prepared</text>
+<text class="cia-s" x="222" y="904">PDF and email saved</text>
+<text class="cia-s" x="222" y="922">under operation ID</text>
+<text class="cia-m" x="222" y="946">frozen MIME in S3</text>
+<rect class="cia-card" x="400" y="856" width="160" height="104" rx="10"/>
+<text class="cia-t" x="412" y="882">Creating</text>
+<text class="cia-s" x="412" y="904">Marker saved before</text>
+<text class="cia-s" x="412" y="922">the Gmail request</text>
+<text class="cia-m" x="412" y="946">claim, then POST</text>
+<rect class="cia-card" x="590" y="856" width="160" height="104" rx="10"/>
+<text class="cia-t" x="602" y="882">Done</text>
+<text class="cia-s" x="602" y="904">Draft ID recorded,</text>
+<text class="cia-s" x="602" y="922">ready alert sent</text>
+<text class="cia-m" x="602" y="946">awaiting_approval</text>
+<rect class="cia-card" x="780" y="856" width="160" height="104" rx="10"/>
+<text class="cia-t" x="792" y="882">Sent confirmed</text>
+<text class="cia-s" x="792" y="904">Set only by me, not</text>
+<text class="cia-s" x="792" y="922">inferred from Gmail</text>
+<text class="cia-m" x="792" y="946">sent_confirmed</text>
+
+<path class="cia-arr" d="M180 908 H210" marker-end="url(#cia-ah)"/>
+<path class="cia-arr" d="M370 908 H400" marker-end="url(#cia-ah)"/>
+<path class="cia-arr" d="M560 908 H590" marker-end="url(#cia-ah)"/>
+<path class="cia-arrd" d="M750 908 H780" marker-end="url(#cia-ah)"/>
+
+<path class="cia-arrd" d="M480 960 V1000" marker-end="url(#cia-ah)"/>
+<text class="cia-al" x="470" y="985" text-anchor="end">outcome unknown</text>
+<path class="cia-arr" d="M670 1000 V960" marker-end="url(#cia-ah)"/>
+<text class="cia-al" x="680" y="985">exactly one draft found</text>
+
+<rect class="cia-card" x="210" y="1000" width="540" height="78" rx="10"/>
+<text class="cia-t" x="222" y="1026">Reconcile before retrying</text>
+<text class="cia-s" x="222" y="1047">A retry searches the drafts for the operation ID and adopts a single match.</text>
+<text class="cia-s" x="222" y="1065">None or several: the job stops and waits for me. No blind second request.</text>
+
+<rect class="cia-card" x="20" y="1106" width="450" height="176" rx="10"/>
+<path class="cia-band" d="M20 1116a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H20Z"/>
+<text class="cia-hd" x="34" y="1127">Billable days - how the amount is worked out</text>
+<text class="cia-s" x="34" y="1160">Working weekdays</text>
+<text class="cia-mk" x="206" y="1160">set per site</text>
+<text class="cia-s" x="34" y="1184">Public holidays</text>
+<text class="cia-mk" x="206" y="1184">regional, per year</text>
+<text class="cia-s" x="34" y="1208">Leave and overrides</text>
+<text class="cia-mk" x="206" y="1208">site beats global</text>
+<text class="cia-s" x="34" y="1232">Money</text>
+<text class="cia-mk" x="206" y="1232">Decimal, half-up to cents</text>
+<text class="cia-s" x="34" y="1262">A year with no holiday calendar stops the run. It does not guess.</text>
+
+<rect class="cia-card" x="490" y="1106" width="450" height="176" rx="10"/>
+<path class="cia-band" d="M490 1116a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H490Z"/>
+<text class="cia-hd" x="504" y="1127">PDF template - five fields replaced</text>
+<text class="cia-s" x="504" y="1160">Invoice number</text>
+<text class="cia-mk" x="676" y="1160">reserved in the ledger</text>
+<text class="cia-s" x="504" y="1184">Issue date</text>
+<text class="cia-mk" x="676" y="1184">generation date</text>
+<text class="cia-s" x="504" y="1208">Two site amounts</text>
+<text class="cia-mk" x="676" y="1208">days × daily rate</text>
+<text class="cia-s" x="504" y="1232">Total</text>
+<text class="cia-mk" x="676" y="1232">sum of both</text>
+<text class="cia-s" x="504" y="1262">Nothing else on the page changes. Tests compare pixels outside the fields.</text>
+
+<text class="cia-hd" x="24" y="1318">Legend</text>
+<rect class="cia-ti-co" x="24" y="1332" width="16" height="16" rx="4"/>
+<text class="cia-s" x="48" y="1344">Compute</text>
+<rect class="cia-ti-ms" x="124" y="1332" width="16" height="16" rx="4"/>
+<text class="cia-s" x="148" y="1344">Events and messaging</text>
+<rect class="cia-ti-da" x="300" y="1332" width="16" height="16" rx="4"/>
+<text class="cia-s" x="324" y="1344">Data</text>
+<rect class="cia-ti-se" x="380" y="1332" width="16" height="16" rx="4"/>
+<text class="cia-s" x="404" y="1344">Security</text>
+<rect class="cia-ti-mo" x="480" y="1332" width="16" height="16" rx="4"/>
+<text class="cia-s" x="504" y="1344">Monitoring</text>
+<rect class="cia-ti-ou" x="596" y="1332" width="16" height="16" rx="4"/>
+<text class="cia-s" x="620" y="1344">Outside AWS</text>
+<path class="cia-tok" d="M24 1370h30" marker-end="url(#cia-aht)"/>
+<text class="cia-s" x="62" y="1374">Invoice path</text>
+<path class="cia-arr" d="M164 1370h30" marker-end="url(#cia-ah)"/>
+<text class="cia-s" x="202" y="1374">State change</text>
+<path class="cia-arrd" d="M310 1370h30" marker-end="url(#cia-ah)"/>
+<text class="cia-s" x="348" y="1374">Failure path or manual step</text>
+
+<text class="cia-hd" x="24" y="1416">Flow</text>
+<circle class="cia-num" cx="35" cy="1440" r="11"/>
+<text class="cia-numt" x="35" y="1444" text-anchor="middle">1</text>
+<text class="cia-s" x="56" y="1444">EventBridge Scheduler invokes the Lambda on day three of the month at 21:00 Melbourne time.</text>
+<circle class="cia-num" cx="35" cy="1466" r="11"/>
+<text class="cia-numt" x="35" y="1470" text-anchor="middle">2</text>
+<text class="cia-s" x="56" y="1470">It reads the configuration and PDF template from S3, works out the charges and reserves the invoice number.</text>
+<circle class="cia-num" cx="35" cy="1492" r="11"/>
+<text class="cia-numt" x="35" y="1496" text-anchor="middle">3</text>
+<text class="cia-s" x="56" y="1496">The PDF and the complete email are saved to S3, then a creating marker is written to the ledger.</text>
+<circle class="cia-num" cx="35" cy="1518" r="11"/>
+<text class="cia-numt" x="35" y="1522" text-anchor="middle">4</text>
+<text class="cia-s" x="56" y="1522">With OAuth credentials from Secrets Manager it creates one Gmail draft. That request is not retried automatically.</text>
+<circle class="cia-num" cx="35" cy="1544" r="11"/>
+<text class="cia-numt" x="35" y="1548" text-anchor="middle">5</text>
+<text class="cia-s" x="56" y="1548">The draft ID is recorded and SNS emails me that the invoice is ready.</text>
+<circle class="cia-num" cx="35" cy="1570" r="11"/>
+<text class="cia-numt" x="35" y="1574" text-anchor="middle">6</text>
+<text class="cia-s" x="56" y="1574">I read the draft in Gmail and send it myself. The code has no send path.</text>
+<circle class="cia-num" cx="35" cy="1596" r="11"/>
+<text class="cia-numt" x="35" y="1600" text-anchor="middle">7</text>
+<text class="cia-s" x="56" y="1600">I confirm the send from the command line. Only then does the ledger move to sent_confirmed.</text>
+</svg>
