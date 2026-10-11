@@ -28,7 +28,10 @@ Nothing is invented. Edit the wording freely; don't add facts that aren't here.
 
 Availability line:
 
-> Available from October 2026 - Melbourne, Geelong, or remote across Australia.
+> Available with two weeks' notice - Melbourne, or anywhere in Australia.
+
+Changed 2026-10-11: his current contract was extended to the end of January 2027, on
+two weeks' notice. The extension itself isn't mentioned on the site.
 
 > **Open item:** the CV headline is now "Senior Software Engineer". The intro above
 > still says "a software engineer". Nobody has decided whether to change it - ask before
