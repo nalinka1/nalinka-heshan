@@ -1,6 +1,6 @@
 # Site Content - source of truth for copy
 
-Everything here is drawn from the CV (Sep 2026 version) and prior job-hunt knowledge.
+Everything here is drawn from the CV (11 Oct 2026 version) and prior job-hunt knowledge.
 Nothing is invented. Edit the wording freely; don't add facts that aren't here.
 
 ---
@@ -32,9 +32,8 @@ Availability line:
 Changed 2026-10-11: his current contract was extended to the end of January 2027, on
 two weeks' notice. The extension itself isn't mentioned on the site.
 
-> **Open item:** the CV headline is now "Senior Software Engineer". The intro above
-> still says "a software engineer". Nobody has decided whether to change it - ask before
-> touching it.
+> The CV headline is "Senior Software Engineer". The intro still says "a software
+> engineer" - that's settled (see CLAUDE.md), don't change it.
 
 ---
 
@@ -115,8 +114,7 @@ Source: the repo's README.md and docs/ARCHITECTURE.md, pasted by Nalinka 2026-10
 > run hadn't happened. Update once it has.
 > Keep the personal detail out: no site names, no rates, no employer or customer, no
 > named regional holidays. "Two sites" is as specific as it gets.
-> Not on the CV yet. EventBridge Scheduler, Secrets Manager and the Gmail API aren't in
-> the CV's skills either - stack line only, not the skills list.
+> On the CV since the 11 Oct 2026 version.
 
 ### Agent Failure Lab
 Added 2026-10-11. A hand-written tool-calling agent over three-way invoice matching,
@@ -135,7 +133,7 @@ FINDINGS.md - don't round them up or add new ones.
 
 > It's an experiment, not an automation product: synthetic fixtures, nothing deployed,
 > two days of work. Never describe it as an invoice approval system in use.
-> Not on the CV yet, and the OpenAI API isn't in the CV's skills - stack line only.
+> On the CV since the 11 Oct 2026 version.
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
@@ -168,12 +166,14 @@ are from the CV, not any earlier draft.
 Dec 2025 - Present
 Claims and payments systems for Victoria's transport accident insurer. Reverse-
 engineering 50+ interconnected systems to design the integration layer for a claims
-platform replacement, migrating 13,000+ financial records so a legacy system could be
-decommissioned, and extending the Fineos claims platform.
+platform replacement, migrating 13,000+ recovery-claims records so a legacy platform
+could be retired, and extending the Fineos claims platform.
 
-> The CV says "13,000+ financial records" and "legacy system decommissioned". Use that
-> wording - not "recovery-claims" or "recovery-payments", which aren't on the CV
-> (corrected 2026-10-11).
+> The 11 Oct 2026 CV says "13,000+ recovery-claims records ... allowing the legacy
+> platform to be retired". The role page follows its four TAC bullets. Two things came
+> off the CV in that version and off the site with it: the Domino documentation bullet
+> and the document-extraction batch jobs. Don't add them back. Fineos stays at
+> Nalinka's say-so even though the CV doesn't mention it.
 
 **Software Engineer - Cloud Solutions International** · Colombo, Sri Lanka ·
 Jul 2023 - Dec 2025 (remote from Australia from Jun 2025)
@@ -208,14 +208,9 @@ reporting systems on Apache Druid and Flink, and a major architectural migration
 
 ## Skills
 
-**Production:** Java, Spring Boot, Node.js, Angular, TypeScript, Apache Kafka,
-PostgreSQL, Oracle, MongoDB, Redis, Elasticsearch, Apache Druid, Apache Flink, Docker,
-Kubernetes, Red Hat OpenShift, Jenkins, JUnit, Mockito, Cypress, Selenium, REST and SOAP
-web services, MQ messaging, AWS (Lambda, EC2, S3, RDS, DynamoDB, Aurora PostgreSQL, SNS,
-SQS, API Gateway, CDK, CloudFormation, IoT, IAM, KMS, CloudWatch)
-
-**Project work:** Terraform, Bicep, Azure (Entra ID, Key Vault, RBAC, managed
-identities), GitHub Actions, OIDC workload identity federation, Python
+The site has no skills section. If one is ever added, take it from the CV's Technical
+Skills block (11 Oct 2026 version) and nothing else. That version no longer lists
+Bicep or an Azure line - Azure appears only in the Multi-Cloud project entry.
 
 Leave React off unless decided otherwise - it's rusty. Still unconfirmed, don't use:
 Jest, SonarQube, Ionic, Graylog.

@@ -38,17 +38,16 @@ The Backlog section at the end of that file is the to-do list. Start there.
   skills. docs/content.md holds site copy and per-item rules; where the two disagree on
   a fact, the CV wins and content.md gets corrected. Never invent projects, employers,
   metrics or skills.
-- Nothing about TAC beyond what's already public on the CV. TAC system names: Fineos
-  and Domino only. Fineos stays on the site even though the current PDF doesn't
-  mention it (Nalinka, 2026-10-11). No data, no architecture diagrams of TAC systems.
+- Nothing about TAC beyond what's already public on the CV. The only TAC system name
+  on the site is Fineos, kept at Nalinka's say-so (2026-10-11) though the CV doesn't
+  mention it. Domino came off the CV and the site the same day - don't add it back. No data, no architecture diagrams of TAC systems.
 - Azure and Terraform are project-level experience. Never presented at the same weight
   as production AWS work.
 - The AWS Event-Driven Order Platform was built for a client demo. Never name or refer
   to the client anywhere on the site, in the project row or on its deep-dive page.
-- Client names ARE allowed on /experience: Dr. Sulaiman Al Habib Medical Group (HMG,
-  the parent company of Cloud Solutions International - stays named even though the
-  current PDF doesn't name it, Nalinka 2026-10-11) and Seylan Bank (Qbitum Solution,
-  named on the CV).
+- Client names ARE allowed on /experience and in the role rows, because the CV names
+  them: Dr. Sulaiman Al Habib Medical Group (HMG, the parent company of Cloud Solutions
+  International) and Seylan Bank (Qbitum Solution).
 - Keep React off the site (rusty) unless told otherwise.
 - Skills: only what the CV lists. If it isn't on the CV, it doesn't go on the site.
 

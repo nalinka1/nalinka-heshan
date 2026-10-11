@@ -10,14 +10,15 @@ order: 4
 body:
   overview: "Backend services on Play Framework for a high-volume B2B eCommerce marketplace, plus analytics and reporting systems."
   work:
-    - "Developed core backend services for the marketplace through rapid transaction growth."
-    - "Developed analytics systems on Apache Druid and Apache Flink, improving data accuracy across client reporting by 15%."
-    - "Contributed to a major architectural change that improved platform scalability."
+    - "Built core backend services on Play Framework for the marketplace through rapid transaction growth."
+    - "Built analytics and reporting on Apache Druid and Apache Flink over large event datasets, with Elasticsearch analysis surfaced in Grafana. Client reporting accuracy up 15%."
+    - "Contributed to a major architectural change that improved platform scalability under load."
   stack:
     - "Java (Play Framework)"
     - "Druid"
     - "Flink"
     - "Kafka"
+    - "Elasticsearch"
     - "MongoDB"
     - "Jenkins"
     - "Grafana"
