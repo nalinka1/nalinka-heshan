@@ -102,7 +102,7 @@
   <text x="670" y="556" class="rqd-m" text-anchor="end">public, max-age=31536000, immutable</text>
   <text x="296" y="574" class="rqd-m">*.html</text>
   <text x="670" y="574" class="rqd-k" text-anchor="end">no-cache</text>
-  <text x="296" y="592" class="rqd-m">cv.pdf</text>
+  <text x="296" y="592" class="rqd-m">Nalinka_Heshan_CV.pdf</text>
   <text x="670" y="592" class="rqd-k" text-anchor="end">no-cache</text>
   <rect x="724" y="248" width="176" height="80" rx="10" class="rqd-card"/>
   <rect x="736" y="260" width="30" height="30" rx="7" fill="#E8F0E6"/>

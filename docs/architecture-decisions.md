@@ -79,7 +79,7 @@ own filter so removed files are still cleaned up:
 
 1. `_astro/*` - content-hashed by Vite → `cache-control: public, max-age=31536000,
    immutable`
-2. Everything else that isn't HTML and isn't `_astro/*` (favicon, `cv.pdf`) - `cv.pdf`
+2. Everything else that isn't HTML and isn't `_astro/*` (favicon, `Nalinka_Heshan_CV.pdf`) - the CV PDF
    gets `no-cache` specifically, since it isn't fingerprinted but does get updated
 3. `*.html` last, after the assets it references exist → `cache-control: no-cache`
 
@@ -162,8 +162,13 @@ Not started. One at a time, in roughly this order.
 - **CV entry for Multi-Cloud.** It still lists Bicep, AWS CDK, GitHub Actions, a
   "landing zone" and custom RBAC roles, none of which are in the repo. It also still
   says "2026, in build" - the project is done and the site no longer tags it. Nalinka to
-  correct the CV and replace `public/cv.pdf`. The site's stack line also names STS, API
+  correct the CV and replace `public/Nalinka_Heshan_CV.pdf`. The site's stack line also names STS, API
   Management and VNet, which the CV doesn't list yet.
+- **New CV PDF from Nalinka.** The file was renamed from `cv.pdf` to
+  `Nalinka_Heshan_CV.pdf` on 2026-10-11 so it downloads under his name; the old
+  `/cv.pdf` URL no longer exists. He is rebuilding the PDF from LaTeX and will drop
+  it in at `public/Nalinka_Heshan_CV.pdf`. Still open on it: his mobile number is in the
+  public copy.
 - **`claims-client-ai-agent` row.** Nalinka is finishing it (about 70% done on
   2026-10-11) and will say when it's ready. Public repo: github.com/nalinka1/
   claims-client-ai-agent. Review it the same way as agent-lab - only claim what's

@@ -79,7 +79,7 @@
   <text x="218" y="356" class="dpd-k" text-anchor="end">immutable</text>
   <text x="70" y="374" class="dpd-s">Other assets</text>
   <text x="218" y="374" class="dpd-x" text-anchor="end">default</text>
-  <text x="70" y="392" class="dpd-m">cv.pdf</text>
+  <text x="70" y="392" class="dpd-s">CV PDF</text>
   <text x="218" y="392" class="dpd-k" text-anchor="end">no-cache</text>
   <text x="70" y="410" class="dpd-m">*.html</text>
   <text x="218" y="410" class="dpd-k" text-anchor="end">no-cache</text>
