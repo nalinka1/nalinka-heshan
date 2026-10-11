@@ -38,8 +38,8 @@ Availability line:
 
 ## Projects
 
-Four shown, ordered by what he most wants to be hired for, in-progress work last. A
-fifth exists but isn't currently used.
+Four shown, ordered by what he most wants to be hired for. A fifth exists but isn't
+currently used.
 
 ### AWS Event-Driven Order Platform
 Serverless order flow built with API Gateway, Lambda, DynamoDB, SNS/SQS and S3,
@@ -90,6 +90,29 @@ https://github.com/nalinka1/multi-cloud-secure-document-platform
 project, so it uses "What I built" instead of Decisions. Diagrams via
 `MultiCloud.astro` - see docs/phase-3-plan.md. Still to add from Nalinka: what broke
 and any decisions worth recording.
+
+### Casual Services Invoice Automation
+Added 2026-10-11. Nalinka's own monthly invoicing: a scheduled Lambda works out
+billable days for two sites, fills five fields in his existing PDF template and leaves
+a Gmail draft. It never sends. Copy is in
+`src/content/projects/casual-services-invoice-automation.md`, row plus deep-dive page.
+
+`Python · AWS (Lambda, EventBridge Scheduler, DynamoDB, S3, Secrets Manager, SNS, SQS,
+CloudWatch) · CloudFormation · Gmail API`
+
+Source: the repo's README.md and docs/ARCHITECTURE.md, pasted by Nalinka 2026-10-11
+(October 2026 acceptance milestone). Only claim what those say is implemented - the
+"Implemented versus proposed" table is the boundary.
+
+> Not an AI project - it's deterministic. Don't describe it as AI or an agent.
+> No repo link: the repo isn't public yet. Add `repo:` once it is.
+> Don't say it has been running in production. At the milestone the schedules were
+> enabled and an isolated end-to-end run had passed, but the first recurring monthly
+> run hadn't happened. Update once it has.
+> Keep the personal detail out: no site names, no rates, no employer or customer, no
+> named regional holidays. "Two sites" is as specific as it gets.
+> Not on the CV yet. EventBridge Scheduler, Secrets Manager and the Gmail API aren't in
+> the CV's skills either - stack line only, not the skills list.
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
