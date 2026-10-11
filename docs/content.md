@@ -19,9 +19,8 @@ Nothing is invented. Edit the wording freely; don't add facts that aren't here.
 >
 > I build backend systems where failure costs real money - insurance claims, banking,
 > payments, hospital billing. Mostly Java and Spring Boot, Kafka at transactional scale,
-> and AWS. Right now I'm working on enterprise claims systems at the Transport Accident
-> Commission, mapping a payments platform and its interconnected systems to design the
-> integration layer for its replacement.
+> and AWS. Right now I'm at the Transport Accident Commission, reverse-engineering 50+
+> interconnected systems to design the integration layer for its next claims platform.
 >
 > Outside that I'm building cloud infrastructure projects to go deeper on AWS and Azure.
 > This site is one of them.
@@ -168,15 +167,19 @@ are from the CV, not any earlier draft.
 **Software Engineer - Transport Accident Commission** · Melbourne, VIC ·
 Dec 2025 - Present
 Claims and payments systems for Victoria's transport accident insurer. Reverse-
-engineering 50+ interconnected systems to design the integration layer for a platform
-replacement, migrating 13,000+ recovery-claims records with full reconciliation, and
-extending the Fineos claims platform.
+engineering 50+ interconnected systems to design the integration layer for a claims
+platform replacement, migrating 13,000+ financial records so a legacy system could be
+decommissioned, and extending the Fineos claims platform.
+
+> The CV says "13,000+ financial records" and "legacy system decommissioned". Use that
+> wording - not "recovery-claims" or "recovery-payments", which aren't on the CV
+> (corrected 2026-10-11).
 
 **Software Engineer - Cloud Solutions International** · Colombo, Sri Lanka ·
 Jul 2023 - Dec 2025 (remote from Australia from Jun 2025)
 Designed and owned the invoice, billing and payments platform for Dr. Sulaiman Al
 Habib Medical Group, the largest private healthcare network in the Middle East. Live
-two years, $100M+ in annual transactions, invoice failure rates cut to 0.1%. Also built
+two years, USD 100M+ in annual transactions (always "USD", as the CV has it), invoice failure rates cut to 0.1%. Also built
 a real-time drug interaction checking service against patient medical history.
 
 **Senior Software Engineer - Qbitum Solution** · Colombo, Sri Lanka ·

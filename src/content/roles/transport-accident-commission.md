@@ -4,7 +4,7 @@ company: "Transport Accident Commission"
 title: "Software Engineer"
 location: "Melbourne, VIC"
 startDate: "Dec 2025"
-summary: "Claims and payments systems for Victoria's transport accident insurer. Integration design for a platform replacement, a recovery-payments consolidation moving 13,000+ records, and extensions to the Fineos claims platform."
+summary: "Claims and payments systems for Victoria's transport accident insurer. Integration design for a claims platform replacement across 50+ systems, a migration of 13,000+ financial records that let a legacy system be decommissioned, and extensions to the Fineos claims platform."
 order: 1
 body:
   overview: "Claims and payments systems for Victoria's transport accident insurer, on an enterprise transformation program."

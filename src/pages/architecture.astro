@@ -23,7 +23,10 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 			Because the bucket isn't an S3 website endpoint, S3 won't
 			serve <code>/architecture/index.html</code> for a request to <code>/architecture</code>.
 			A CloudFront Function does it instead. It runs on every viewer request, before
-			the cache lookup, and rewrites <code>/path</code> to <code>/path/index.html</code>.
+			the cache lookup, and rewrites any path without a file extension:
+			<code>/path</code> becomes <code>/path/index.html</code>, and a trailing slash
+			gets <code>index.html</code> appended. Requests for files, like
+			<code>/cv.pdf</code>, pass through untouched.
 		</p>
 
 		<RequestPath />
@@ -51,9 +54,12 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 	<section aria-labelledby="infrastructure-heading">
 		<h2 id="infrastructure-heading">Infrastructure</h2>
 		<p>
-			The infrastructure - the S3 bucket, the CloudFront distribution, the ACM
-			certificate, and the IAM role itself - is defined in Terraform, not clicked
-			together by hand in the AWS console. State is local, not remote.
+			The infrastructure is defined in Terraform, not clicked together by hand in
+			the AWS console: the S3 bucket and its bucket policy, the CloudFront
+			distribution with its Origin Access Control and the URL-rewrite function, the
+			ACM certificate, the GitHub OIDC identity provider, and the IAM role that
+			trusts it. State is local, not remote - one operator and a handful of
+			resources, so there is nothing to lock against.
 		</p>
 	</section>
 
@@ -64,17 +70,20 @@ import RequestPath from '../components/diagrams/RequestPath.astro';
 			Registrar, and its registration agreement requires Cloudflare's own
 			nameservers at every plan tier - there's no delegating to Route 53. The ACM
 			validation record and the apex record pointing at CloudFront are both added
-			by hand in Cloudflare, with the proxy switched off. With the proxy on,
-			Cloudflare would terminate TLS with its own certificate in front of
-			CloudFront, which would make the ACM certificate pointless.
+			by hand in Cloudflare, with the proxy switched off. The apex record is a
+			CNAME, which standard DNS doesn't allow at the apex - Cloudflare flattens it
+			and answers with A records. With the proxy on, visitors would see
+			Cloudflare's certificate and every request would pass through two CDNs. The
+			ACM certificate would only secure the hop between them.
 		</p>
 	</section>
 
 	<section aria-labelledby="oidc-heading">
 		<h2 id="oidc-heading">OIDC subject claim</h2>
 		<p>
-			GitHub changed how it writes identity into the OIDC token: for repositories
-			created after 15 July 2026, the subject claim embeds the numeric owner and
+			GitHub <a href="https://github.blog/changelog/2026-04-23-immutable-subject-claims-for-github-actions-oidc-tokens/">changed
+			how it writes identity into the OIDC token</a>: for repositories created,
+			renamed or transferred after 15 July 2026, the subject claim embeds the numeric owner and
 			repository IDs, not just their names - <code>repo:nalinka1@35029715/nalinka-heshan@1358027744:ref:refs/heads/master</code>,
 			not the plain <code>repo:nalinka1/nalinka-heshan:ref:refs/heads/master</code> that
 			most OIDC tutorials still assume. I found this out by decoding the
