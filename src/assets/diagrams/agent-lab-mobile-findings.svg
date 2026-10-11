@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 1378" role="img" aria-labelledby="afs-title afs-desc">
+<title id="afs-title">Two findings from fifty runs of the agent failure lab</title>
+<desc id="afs-desc">Finding one: in case 7 the invoice, purchase order and goods receipt agree but the vendor lookup returns an error. All five attempts made the same calls and received the same results; one escalated and four approved. Finding two: across six approvals of the same invoice the model built the same idempotency key every time, but the payment tool writes the key and never reads it. Per case, eight of ten cases were correct five times out of five; case 2 was correct three times and case 7 once. After an injected crash and restart the invoice was not paid twice, only because the model chose to check, and the restart ended in reject, which is wrong.</desc>
+
+<defs>
+<style>
+.afs-bg{fill:#FBFBF9}
+.afs-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.afs-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.afs-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.afs-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.afs-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.afs-mk{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#16181D}
+.afs-lbl{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#5C626E}
+.afs-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.afs-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.afs-band{fill:#EDF2F2;stroke:#DFE0DC;stroke-width:1}
+.afs-arr{fill:none;stroke:#5C626E;stroke-width:1.5}
+</style>
+
+<marker id="afs-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<rect class="afs-bg" x="0" y="0" width="360" height="1378"/>
+
+<text class="afs-h1" x="24" y="40">Two findings</text>
+<text class="afs-sub" x="24" y="62">Fifty runs, a trace file behind each claim</text>
+
+<rect class="afs-card" x="18" y="84" width="324" height="290" rx="10"/>
+<path class="afs-band" d="M18 94a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="afs-hd" x="32" y="105">1 - Same evidence, different outcome</text>
+<text class="afs-s" x="32" y="140">Case 7: invoice, PO and receipt agree.</text>
+<text class="afs-s" x="32" y="158">The vendor lookup returns an error.</text>
+<rect class="afs-card" x="30" y="172" width="300" height="62" rx="10"/>
+<text class="afs-s" x="42" y="194">Five attempts, same calls, same results</text>
+<text class="afs-m" x="42" y="216">vendor_not_in_master_data</text>
+<path class="afs-arr" d="M100 234 V262" marker-end="url(#afs-ah)"/>
+<path class="afs-arr" d="M260 234 V262" marker-end="url(#afs-ah)"/>
+<rect class="afs-card" x="30" y="262" width="140" height="66" rx="10"/>
+<text class="afs-t" x="42" y="288">Escalated</text>
+<text class="afs-m" x="42" y="310">1 of 5</text>
+<rect class="afs-card" x="190" y="262" width="140" height="66" rx="10"/>
+<text class="afs-t" x="202" y="288">Approved</text>
+<text class="afs-m" x="202" y="310">4 of 5</text>
+<text class="afs-s" x="32" y="354">The error was in view when it approved.</text>
+
+<rect class="afs-card" x="18" y="398" width="324" height="262" rx="10"/>
+<path class="afs-band" d="M18 408a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="afs-hd" x="32" y="419">2 - A stable key that did nothing</text>
+<text class="afs-s" x="32" y="454">Six approvals of one invoice, fresh context.</text>
+<rect class="afs-card" x="30" y="468" width="300" height="62" rx="10"/>
+<text class="afs-s" x="42" y="490">The model built the same key every time</text>
+<text class="afs-m" x="42" y="512">INV-001-SUP-1001</text>
+<path class="afs-arr" d="M180 530 V558" marker-end="url(#afs-ah)"/>
+<rect class="afs-card" x="30" y="558" width="300" height="66" rx="10"/>
+<text class="afs-t" x="42" y="584">approve_for_payment</text>
+<text class="afs-s" x="42" y="606">Writes the key. Never reads it.</text>
+<text class="afs-s" x="32" y="646">A key only helps if the write path checks it.</text>
+
+<rect class="afs-card" x="18" y="684" width="324" height="322" rx="10"/>
+<path class="afs-band" d="M18 694a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="afs-hd" x="32" y="705">Correct outcomes out of five</text>
+<text class="afs-lbl" x="32" y="738">Case</text>
+<text class="afs-lbl" x="204" y="738">Expected</text>
+<text class="afs-lbl" x="282" y="738">Correct</text>
+<text class="afs-s" x="32" y="762">1 · Exact match</text>
+<text class="afs-mk" x="204" y="762">approve</text>
+<text class="afs-mk" x="282" y="762">5/5</text>
+<text class="afs-s" x="32" y="784">2 · Qty within tolerance</text>
+<text class="afs-mk" x="204" y="784">approve</text>
+<text class="afs-m" x="282" y="784">3/5</text>
+<text class="afs-s" x="32" y="806">3 · Price over tolerance</text>
+<text class="afs-mk" x="204" y="806">escalate</text>
+<text class="afs-mk" x="282" y="806">5/5</text>
+<text class="afs-s" x="32" y="828">4 · No goods receipt</text>
+<text class="afs-mk" x="204" y="828">escalate</text>
+<text class="afs-mk" x="282" y="828">5/5</text>
+<text class="afs-s" x="32" y="850">5 · Duplicate invoice</text>
+<text class="afs-mk" x="204" y="850">reject</text>
+<text class="afs-mk" x="282" y="850">5/5</text>
+<text class="afs-s" x="32" y="872">6 · Partial delivery</text>
+<text class="afs-mk" x="204" y="872">escalate</text>
+<text class="afs-mk" x="282" y="872">5/5</text>
+<text class="afs-s" x="32" y="894">7 · Vendor lookup error</text>
+<text class="afs-mk" x="204" y="894">escalate</text>
+<text class="afs-m" x="282" y="894">1/5</text>
+<text class="afs-s" x="32" y="916">8 · Currency mismatch</text>
+<text class="afs-mk" x="204" y="916">escalate</text>
+<text class="afs-mk" x="282" y="916">5/5</text>
+<text class="afs-s" x="32" y="938">9 · Missing PO number</text>
+<text class="afs-mk" x="204" y="938">escalate</text>
+<text class="afs-mk" x="282" y="938">5/5</text>
+<text class="afs-s" x="32" y="960">10 · Ambiguous PO</text>
+<text class="afs-mk" x="204" y="960">escalate</text>
+<text class="afs-mk" x="282" y="960">5/5</text>
+<text class="afs-s" x="32" y="988">Case 7 produced all four false approvals.</text>
+
+<rect class="afs-card" x="18" y="1030" width="324" height="150" rx="10"/>
+<path class="afs-band" d="M18 1040a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="afs-hd" x="32" y="1051">After an injected crash and restart</text>
+<text class="afs-s" x="32" y="1084">Paid twice</text>
+<text class="afs-mk" x="170" y="1084">no</text>
+<text class="afs-s" x="32" y="1108">Why not</text>
+<text class="afs-mk" x="170" y="1108">model chose to check</text>
+<text class="afs-s" x="32" y="1132">Restart ended in</text>
+<text class="afs-mk" x="170" y="1132">reject - wrong</text>
+<text class="afs-s" x="32" y="1162">Nothing required that check.</text>
+
+<rect class="afs-card" x="18" y="1204" width="324" height="150" rx="10"/>
+<path class="afs-band" d="M18 1214a10 10 0 0 1 10-10h304a10 10 0 0 1 10 10v22H18Z"/>
+<text class="afs-hd" x="32" y="1225">What I would build differently</text>
+<text class="afs-s" x="32" y="1260">Preconditions go in the tool, not the prompt.</text>
+<text class="afs-s" x="32" y="1282">Add an already-done outcome for retries.</text>
+<text class="afs-s" x="32" y="1304">Reset state before every run.</text>
+<text class="afs-s" x="32" y="1326">Report agreement across runs, not accuracy.</text>
+</svg>

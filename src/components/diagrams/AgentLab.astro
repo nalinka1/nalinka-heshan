@@ -1,0 +1,16 @@
+---
+// Agent failure lab diagrams for /projects/agent-lab. On narrow screens one run
+// and the findings are separate files. The run is drawn as steps, and the two
+// outcomes of case 7 stay side by side so they read as parallel
+// (docs/phase-3-plan.md).
+import InlineDiagram from './InlineDiagram.astro';
+import desktop from '../../assets/diagrams/agent-lab-desktop.svg?raw';
+import mobileRun from '../../assets/diagrams/agent-lab-mobile-run.svg?raw';
+import mobileFindings from '../../assets/diagrams/agent-lab-mobile-findings.svg?raw';
+---
+
+<InlineDiagram desktop={desktop} mobile={[mobileRun, mobileFindings]}>
+	Ten cases, five attempts each, every event written to a trace file. Four runs
+	approved with a vendor error in front of them, and the idempotency key the model
+	supplied was never checked by the tool that wrote it.
+</InlineDiagram>

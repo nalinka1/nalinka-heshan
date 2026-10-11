@@ -6,6 +6,7 @@ import { isPublished } from '../../lib/published';
 import OrderPlatform from '../../components/diagrams/OrderPlatform.astro';
 import MultiCloud from '../../components/diagrams/MultiCloud.astro';
 import InvoiceAutomation from '../../components/diagrams/InvoiceAutomation.astro';
+import AgentLab from '../../components/diagrams/AgentLab.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects', ({ data }) => isPublished(data.body));
@@ -30,6 +31,7 @@ const diagrams: Record<string, typeof OrderPlatform> = {
 	'aws-order-flow': OrderPlatform,
 	'multi-cloud-secure-document-platform': MultiCloud,
 	'casual-services-invoice-automation': InvoiceAutomation,
+	'agent-lab': AgentLab,
 };
 const ProjectDiagram = diagrams[project.data.slug];
 ---

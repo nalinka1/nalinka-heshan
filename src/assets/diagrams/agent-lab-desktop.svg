@@ -1,0 +1,309 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1752" role="img" aria-labelledby="afl-title afl-desc">
+<title id="afl-title">Agent failure lab: a hand-written tool-calling agent over three-way invoice matching, run fifty times</title>
+<desc id="afl-desc">A harness in one repository runs ten cases five times each. Before every attempt it restores a seed payment history, then starts an agent loop of about 130 lines with a hard limit of twelve steps. The loop sends the conversation and nine tool schemas to an OpenAI model, which answers with tool calls. Six lookup tools read five JSON fixture files; three terminal tools end the run, and only approve for payment writes anything. Every event is appended to a trace file and synced to disk, and a script reads the fifty traces into a per-case table. Results: 44 of 50 correct, 4 of 50 false approvals, 8 of 10 cases with full agreement. Finding one: in case 7 all five attempts made the same calls and received the same results, including a vendor lookup error, yet one escalated and four approved. Finding two: the model supplied the same idempotency key on every approval, but the payment tool wrote the key and never read it. After an injected crash the restart did not pay twice, only because the model chose to check for a prior payment, and it ended in reject, which is wrong.</desc>
+
+<defs>
+<style>
+.afl-bg{fill:#FBFBF9}
+.afl-h1{font-family:'IBM Plex Sans',sans-serif;font-size:22px;font-weight:600;fill:#16181D}
+.afl-sub{font-family:'IBM Plex Sans',sans-serif;font-size:13px;fill:#5C626E}
+.afl-t{font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;fill:#16181D}
+.afl-s{font-family:'IBM Plex Sans',sans-serif;font-size:12px;fill:#5C626E}
+.afl-m{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#17505C}
+.afl-mk{font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#16181D}
+.afl-lbl{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#5C626E}
+.afl-hd{font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:600;fill:#16181D}
+.afl-card{fill:#FFFFFF;stroke:#DFE0DC;stroke-width:1}
+.afl-band{fill:#EDF2F2;stroke:#DFE0DC;stroke-width:1}
+.afl-acct{fill:none;stroke:#DFE0DC;stroke-width:1}
+.afl-grp{fill:#F4F7F6;stroke:#C5D6D9;stroke-width:1}
+.afl-out{fill:none;stroke:#B9BCB5;stroke-width:1;stroke-dasharray:5 4}
+.afl-rule{stroke:#DFE0DC;stroke-width:1}
+.afl-arr{fill:none;stroke:#5C626E;stroke-width:1.5}
+.afl-tok{fill:none;stroke:#17505C;stroke-width:1.5}
+.afl-num{fill:#17505C}
+.afl-numt{font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;fill:#FFFFFF}
+.afl-ico{fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.afl-ti-co{fill:#F5EDE1}
+.afl-ic-co{stroke:#9A6A2E}
+.afl-ti-da{fill:#E6EEF3}
+.afl-ic-da{stroke:#2E5E7E}
+.afl-ti-ou{fill:#EFF0EC}
+.afl-ic-ou{stroke:#5C626E}
+</style>
+
+<marker id="afl-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#5C626E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="afl-aht" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L9 5 L1 9" fill="none" stroke="#17505C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+
+<symbol id="afl-sym-list" viewBox="0 0 18 18"><path class="afl-ico" d="M6.6 5h8.4M6.6 9h8.4M6.6 13h8.4M3 5h.6M3 9h.6M3 13h.6"/></symbol>
+<symbol id="afl-sym-reset" viewBox="0 0 18 18"><path class="afl-ico" d="M14.4 9a5.4 5.4 0 1 1-1.6-3.8M14.6 2.8v2.6H12"/></symbol>
+<symbol id="afl-sym-doc" viewBox="0 0 18 18"><path class="afl-ico" d="M5 2.6h5.6L14 6v9.4H5ZM10.4 2.8V6.2h3.4M7.2 9.4h4.6M7.2 12.2h4.6"/></symbol>
+<symbol id="afl-sym-table" viewBox="0 0 18 18"><rect class="afl-ico" x="2.6" y="3.6" width="12.8" height="10.8" rx="1.4"/><path class="afl-ico" d="M2.6 7.6h12.8M7.4 7.6v6.8"/></symbol>
+<symbol id="afl-sym-code" viewBox="0 0 18 18"><path class="afl-ico" d="M6.6 4.4 2.6 9l4 4.6M11.4 4.4 15.4 9l-4 4.6"/></symbol>
+<symbol id="afl-sym-bucket" viewBox="0 0 18 18"><ellipse class="afl-ico" cx="9" cy="4.6" rx="6" ry="2.3"/><path class="afl-ico" d="M3 4.6v8.8c0 1.3 2.7 2.3 6 2.3s6-1 6-2.3V4.6"/></symbol>
+<symbol id="afl-sym-chip" viewBox="0 0 18 18"><rect class="afl-ico" x="4.4" y="4.4" width="9.2" height="9.2" rx="1.6"/><path class="afl-ico" d="M7 2.2v2.2M11 2.2v2.2M7 13.6v2.2M11 13.6v2.2M2.2 7h2.2M2.2 11h2.2M13.6 7h2.2M13.6 11h2.2"/></symbol>
+</defs>
+
+<rect class="afl-bg" x="0" y="0" width="960" height="1752"/>
+
+<text class="afl-h1" x="24" y="40">Agent failure lab</text>
+<text class="afl-sub" x="24" y="62">A hand-written tool-calling agent over three-way invoice matching, run fifty times to count how it fails</text>
+
+<rect class="afl-acct" x="20" y="84" width="624" height="656" rx="14"/>
+<text class="afl-lbl" x="36" y="730">One repo, run locally</text>
+
+<rect class="afl-grp" x="36" y="100" width="270" height="608" rx="12"/>
+<rect class="afl-card" x="48" y="114" width="246" height="86" rx="10"/>
+<rect class="afl-ti-co" x="60" y="126" width="30" height="30" rx="7"/>
+<use class="afl-ic-co" href="#afl-sym-list" x="66" y="132" width="18" height="18"/>
+<text class="afl-t" x="100" y="145">10 cases × 5 attempts</text>
+<text class="afl-s" x="60" y="173">Each case has an expected outcome</text>
+<text class="afl-m" x="60" y="191">cases.py · run.py</text>
+<rect class="afl-card" x="48" y="232" width="246" height="86" rx="10"/>
+<rect class="afl-ti-co" x="60" y="244" width="30" height="30" rx="7"/>
+<use class="afl-ic-co" href="#afl-sym-reset" x="66" y="250" width="18" height="18"/>
+<text class="afl-t" x="100" y="263">State reset</text>
+<text class="afl-s" x="60" y="291">Seed file restored before each run</text>
+<text class="afl-m" x="60" y="309">payment_history.seed.json</text>
+<rect class="afl-card" x="48" y="420" width="246" height="86" rx="10"/>
+<rect class="afl-ti-da" x="60" y="432" width="30" height="30" rx="7"/>
+<use class="afl-ic-da" href="#afl-sym-doc" x="66" y="438" width="18" height="18"/>
+<text class="afl-t" x="100" y="451">Trace file per run</text>
+<text class="afl-s" x="60" y="479">One line per event, synced to disk</text>
+<text class="afl-m" x="60" y="497">traces/run_*.jsonl</text>
+<rect class="afl-card" x="48" y="592" width="246" height="86" rx="10"/>
+<rect class="afl-ti-co" x="60" y="604" width="30" height="30" rx="7"/>
+<use class="afl-ic-co" href="#afl-sym-table" x="66" y="610" width="18" height="18"/>
+<text class="afl-t" x="100" y="623">Per-case table</text>
+<text class="afl-s" x="60" y="651">Agreement, correctness and cost</text>
+<text class="afl-m" x="60" y="669">analyse.py</text>
+<text class="afl-lbl" x="48" y="698">Harness</text>
+
+<rect class="afl-grp" x="358" y="100" width="270" height="608" rx="12"/>
+<rect class="afl-card" x="370" y="114" width="246" height="86" rx="10"/>
+<rect class="afl-ti-co" x="382" y="126" width="30" height="30" rx="7"/>
+<use class="afl-ic-co" href="#afl-sym-code" x="388" y="132" width="18" height="18"/>
+<text class="afl-t" x="422" y="145">Agent loop</text>
+<text class="afl-s" x="382" y="173">About 130 lines, no framework</text>
+<text class="afl-m" x="382" y="191">loop.py · MAX_STEPS = 12</text>
+
+<rect class="afl-card" x="370" y="232" width="246" height="176" rx="10"/>
+<path class="afl-band" d="M370 242a10 10 0 0 1 10-10h226a10 10 0 0 1 10 10v22H370Z"/>
+<text class="afl-hd" x="384" y="253">Six lookups - read only</text>
+<text class="afl-mk" x="384" y="288">get_invoice</text>
+<text class="afl-mk" x="384" y="308">get_purchase_order</text>
+<text class="afl-mk" x="384" y="328">get_goods_receipt</text>
+<text class="afl-mk" x="384" y="348">get_vendor</text>
+<text class="afl-mk" x="384" y="368">find_purchase_orders</text>
+<text class="afl-mk" x="384" y="388">check_duplicate_payment</text>
+
+<rect class="afl-card" x="370" y="420" width="246" height="140" rx="10"/>
+<path class="afl-band" d="M370 430a10 10 0 0 1 10-10h226a10 10 0 0 1 10 10v22H370Z"/>
+<text class="afl-hd" x="384" y="441">Three terminal actions</text>
+<text class="afl-mk" x="384" y="476">approve_for_payment</text>
+<text class="afl-mk" x="384" y="498">reject</text>
+<text class="afl-mk" x="384" y="520">escalate</text>
+<text class="afl-s" x="384" y="546">Only approve writes anything.</text>
+
+<rect class="afl-card" x="370" y="592" width="246" height="86" rx="10"/>
+<rect class="afl-ti-da" x="382" y="604" width="30" height="30" rx="7"/>
+<use class="afl-ic-da" href="#afl-sym-bucket" x="388" y="610" width="18" height="18"/>
+<text class="afl-t" x="422" y="623">Five JSON fixtures</text>
+<text class="afl-s" x="382" y="651">Stand in for an ERP</text>
+<text class="afl-m" x="382" y="669">payment_history.json</text>
+<text class="afl-lbl" x="370" y="698">Agent and tools</text>
+
+<rect class="afl-out" x="660" y="84" width="280" height="146" rx="14"/>
+<rect class="afl-card" x="672" y="98" width="256" height="86" rx="10"/>
+<rect class="afl-ti-ou" x="684" y="110" width="30" height="30" rx="7"/>
+<use class="afl-ic-ou" href="#afl-sym-chip" x="690" y="116" width="18" height="18"/>
+<text class="afl-t" x="724" y="129">OpenAI model</text>
+<text class="afl-s" x="684" y="157">Chooses which tool to call next</text>
+<text class="afl-m" x="684" y="175">gpt-5.6-luna · reasoning off</text>
+<text class="afl-lbl" x="676" y="216">Outside the repo</text>
+
+<rect class="afl-card" x="660" y="250" width="280" height="216" rx="10"/>
+<path class="afl-band" d="M660 260a10 10 0 0 1 10-10h260a10 10 0 0 1 10 10v22H660Z"/>
+<text class="afl-hd" x="674" y="271">Fifty runs - the numbers</text>
+<text class="afl-s" x="674" y="306">Correct outcome</text>
+<text class="afl-mk" x="846" y="306">44 / 50</text>
+<text class="afl-s" x="674" y="330">False approvals</text>
+<text class="afl-m" x="846" y="330">4 / 50</text>
+<text class="afl-s" x="674" y="354">Cases at 5/5 agreement</text>
+<text class="afl-mk" x="846" y="354">8 / 10</text>
+<text class="afl-s" x="674" y="378">Median steps per run</text>
+<text class="afl-mk" x="846" y="378">3</text>
+<text class="afl-s" x="674" y="402">Median cost per run</text>
+<text class="afl-mk" x="846" y="402">AUD 0.0008</text>
+<text class="afl-s" x="674" y="426">Total spend</text>
+<text class="afl-mk" x="846" y="426">AUD 0.04</text>
+<text class="afl-s" x="674" y="452">Run on 19 September 2026.</text>
+
+<rect class="afl-card" x="660" y="490" width="280" height="150" rx="10"/>
+<path class="afl-band" d="M660 500a10 10 0 0 1 10-10h260a10 10 0 0 1 10 10v22H660Z"/>
+<text class="afl-hd" x="674" y="511">Left out on purpose</text>
+<text class="afl-s" x="674" y="546">No agent framework</text>
+<text class="afl-s" x="674" y="568">No retries, no self-correction prompt</text>
+<text class="afl-s" x="674" y="590">No validation layer</text>
+<text class="afl-s" x="674" y="612">Tool errors returned, never raised</text>
+
+<path class="afl-arr" d="M171 200 V232" marker-end="url(#afl-ah)"/>
+
+<path class="afl-tok" d="M294 157 H370" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="332" cy="157" r="11"/>
+<text class="afl-numt" x="332" y="161" text-anchor="middle">1</text>
+
+<path class="afl-tok" d="M616 145 H672" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="644" cy="145" r="11"/>
+<text class="afl-numt" x="644" y="149" text-anchor="middle">2</text>
+<path class="afl-tok" d="M672 175 H616" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="644" cy="175" r="11"/>
+<text class="afl-numt" x="644" y="179" text-anchor="middle">3</text>
+
+<path class="afl-tok" d="M493 200 V232" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="493" cy="216" r="11"/>
+<text class="afl-numt" x="493" y="220" text-anchor="middle">4</text>
+
+<path class="afl-tok" d="M493 560 V592" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="493" cy="576" r="11"/>
+<text class="afl-numt" x="493" y="580" text-anchor="middle">5</text>
+
+<path class="afl-tok" d="M370 186 H332 V463 H294" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="332" cy="340" r="11"/>
+<text class="afl-numt" x="332" y="344" text-anchor="middle">6</text>
+
+<path class="afl-tok" d="M171 506 V592" marker-end="url(#afl-aht)"/>
+<circle class="afl-num" cx="171" cy="549" r="11"/>
+<text class="afl-numt" x="171" y="553" text-anchor="middle">7</text>
+
+<line class="afl-rule" x1="20" y1="770" x2="940" y2="770"/>
+
+<text class="afl-hd" x="24" y="800">Two findings</text>
+<text class="afl-s" x="24" y="818">Each has trace files behind it in the repo.</text>
+
+<rect class="afl-card" x="20" y="834" width="450" height="262" rx="10"/>
+<path class="afl-band" d="M20 844a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H20Z"/>
+<text class="afl-hd" x="34" y="855">1 - Same evidence, different outcome</text>
+<text class="afl-s" x="34" y="888">Case 7: invoice, PO and receipt agree. The vendor lookup fails.</text>
+<rect class="afl-card" x="34" y="902" width="422" height="62" rx="10"/>
+<text class="afl-s" x="46" y="924">Five attempts, the same five calls, byte-identical results</text>
+<text class="afl-m" x="46" y="946">get_vendor: {"error": "vendor_not_in_master_data"}</text>
+<path class="afl-arr" d="M135 964 V996" marker-end="url(#afl-ah)"/>
+<path class="afl-arr" d="M354 964 V996" marker-end="url(#afl-ah)"/>
+<rect class="afl-card" x="34" y="996" width="203" height="66" rx="10"/>
+<text class="afl-t" x="46" y="1022">Escalated - 1 of 5</text>
+<text class="afl-m" x="46" y="1044">escalate</text>
+<rect class="afl-card" x="253" y="996" width="203" height="66" rx="10"/>
+<text class="afl-t" x="265" y="1022">Approved - 4 of 5</text>
+<text class="afl-m" x="265" y="1044">approve_for_payment</text>
+<text class="afl-s" x="34" y="1084">The error was in the transcript at the moment it approved.</text>
+
+<rect class="afl-card" x="490" y="834" width="450" height="262" rx="10"/>
+<path class="afl-band" d="M490 844a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H490Z"/>
+<text class="afl-hd" x="504" y="855">2 - A stable key that guaranteed nothing</text>
+<text class="afl-s" x="504" y="888">Six approvals of the same invoice, fresh context each time.</text>
+<rect class="afl-card" x="504" y="902" width="422" height="62" rx="10"/>
+<text class="afl-s" x="516" y="924">The model built the same idempotency key every time</text>
+<text class="afl-m" x="516" y="946">INV-001-SUP-1001</text>
+<path class="afl-arr" d="M715 964 V996" marker-end="url(#afl-ah)"/>
+<rect class="afl-card" x="504" y="996" width="422" height="66" rx="10"/>
+<text class="afl-t" x="516" y="1022">approve_for_payment</text>
+<text class="afl-s" x="516" y="1044">Writes the key into the payment record. Never reads it.</text>
+<text class="afl-s" x="504" y="1084">A key only protects if something on the write path checks it.</text>
+
+<rect class="afl-card" x="20" y="1124" width="450" height="322" rx="10"/>
+<path class="afl-band" d="M20 1134a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H20Z"/>
+<text class="afl-hd" x="34" y="1145">Per case - correct outcomes out of five</text>
+<text class="afl-lbl" x="34" y="1178">Case</text>
+<text class="afl-lbl" x="250" y="1178">Expected</text>
+<text class="afl-lbl" x="370" y="1178">Correct</text>
+<text class="afl-s" x="34" y="1202">1 · Exact match</text>
+<text class="afl-mk" x="250" y="1202">approve</text>
+<text class="afl-mk" x="370" y="1202">5/5</text>
+<text class="afl-s" x="34" y="1224">2 · Quantity within tolerance</text>
+<text class="afl-mk" x="250" y="1224">approve</text>
+<text class="afl-m" x="370" y="1224">3/5</text>
+<text class="afl-s" x="34" y="1246">3 · Price over tolerance</text>
+<text class="afl-mk" x="250" y="1246">escalate</text>
+<text class="afl-mk" x="370" y="1246">5/5</text>
+<text class="afl-s" x="34" y="1268">4 · No goods receipt</text>
+<text class="afl-mk" x="250" y="1268">escalate</text>
+<text class="afl-mk" x="370" y="1268">5/5</text>
+<text class="afl-s" x="34" y="1290">5 · Duplicate invoice</text>
+<text class="afl-mk" x="250" y="1290">reject</text>
+<text class="afl-mk" x="370" y="1290">5/5</text>
+<text class="afl-s" x="34" y="1312">6 · Partial delivery</text>
+<text class="afl-mk" x="250" y="1312">escalate</text>
+<text class="afl-mk" x="370" y="1312">5/5</text>
+<text class="afl-s" x="34" y="1334">7 · Vendor lookup error</text>
+<text class="afl-mk" x="250" y="1334">escalate</text>
+<text class="afl-m" x="370" y="1334">1/5</text>
+<text class="afl-s" x="34" y="1356">8 · Currency mismatch</text>
+<text class="afl-mk" x="250" y="1356">escalate</text>
+<text class="afl-mk" x="370" y="1356">5/5</text>
+<text class="afl-s" x="34" y="1378">9 · Missing PO number</text>
+<text class="afl-mk" x="250" y="1378">escalate</text>
+<text class="afl-mk" x="370" y="1378">5/5</text>
+<text class="afl-s" x="34" y="1400">10 · Ambiguous PO</text>
+<text class="afl-mk" x="250" y="1400">escalate</text>
+<text class="afl-mk" x="370" y="1400">5/5</text>
+<text class="afl-s" x="34" y="1428">Case 7 produced all four false approvals. Case 2 over-escalated twice.</text>
+
+<rect class="afl-card" x="490" y="1124" width="450" height="150" rx="10"/>
+<path class="afl-band" d="M490 1134a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H490Z"/>
+<text class="afl-hd" x="504" y="1145">After an injected crash and restart</text>
+<text class="afl-s" x="504" y="1178">Paid twice</text>
+<text class="afl-mk" x="676" y="1178">no</text>
+<text class="afl-s" x="504" y="1202">Why not</text>
+<text class="afl-mk" x="676" y="1202">the model chose to check</text>
+<text class="afl-s" x="504" y="1226">Restart ended in</text>
+<text class="afl-mk" x="676" y="1226">reject, which is wrong</text>
+<text class="afl-s" x="504" y="1256">Nothing required that check, and the key played no part.</text>
+
+<rect class="afl-card" x="490" y="1296" width="450" height="150" rx="10"/>
+<path class="afl-band" d="M490 1306a10 10 0 0 1 10-10h430a10 10 0 0 1 10 10v22H490Z"/>
+<text class="afl-hd" x="504" y="1317">What I would build differently</text>
+<text class="afl-s" x="504" y="1352">Preconditions go in the tool, not the prompt.</text>
+<text class="afl-s" x="504" y="1374">Actions with side effects need an already-done outcome.</text>
+<text class="afl-s" x="504" y="1396">Reset state before every run, or the numbers mislead.</text>
+<text class="afl-s" x="504" y="1418">Report agreement across runs, not one run's accuracy.</text>
+
+<text class="afl-hd" x="24" y="1482">Legend</text>
+<rect class="afl-ti-co" x="24" y="1496" width="16" height="16" rx="4"/>
+<text class="afl-s" x="48" y="1508">Harness and loop</text>
+<rect class="afl-ti-da" x="170" y="1496" width="16" height="16" rx="4"/>
+<text class="afl-s" x="194" y="1508">Data and traces</text>
+<rect class="afl-ti-ou" x="310" y="1496" width="16" height="16" rx="4"/>
+<text class="afl-s" x="334" y="1508">Outside the repo</text>
+<path class="afl-tok" d="M460 1504h30" marker-end="url(#afl-aht)"/>
+<text class="afl-s" x="498" y="1508">One run</text>
+<path class="afl-arr" d="M570 1504h30" marker-end="url(#afl-ah)"/>
+<text class="afl-s" x="608" y="1508">Leads to</text>
+
+<text class="afl-hd" x="24" y="1546">Flow</text>
+<circle class="afl-num" cx="35" cy="1570" r="11"/>
+<text class="afl-numt" x="35" y="1574" text-anchor="middle">1</text>
+<text class="afl-s" x="56" y="1574">run.py picks a case and an attempt, restores the seed payment history and starts the loop.</text>
+<circle class="afl-num" cx="35" cy="1596" r="11"/>
+<text class="afl-numt" x="35" y="1600" text-anchor="middle">2</text>
+<text class="afl-s" x="56" y="1600">The loop sends the conversation and the nine tool schemas to the model.</text>
+<circle class="afl-num" cx="35" cy="1622" r="11"/>
+<text class="afl-numt" x="35" y="1626" text-anchor="middle">3</text>
+<text class="afl-s" x="56" y="1626">The model answers with tool calls - typically four lookups in a single turn.</text>
+<circle class="afl-num" cx="35" cy="1648" r="11"/>
+<text class="afl-numt" x="35" y="1652" text-anchor="middle">4</text>
+<text class="afl-s" x="56" y="1652">Each call is dispatched. Results go back to the model as data, and so do errors.</text>
+<circle class="afl-num" cx="35" cy="1674" r="11"/>
+<text class="afl-numt" x="35" y="1678" text-anchor="middle">5</text>
+<text class="afl-s" x="56" y="1678">A terminal tool ends the run. Only approve_for_payment writes: one record in the payment history.</text>
+<circle class="afl-num" cx="35" cy="1700" r="11"/>
+<text class="afl-numt" x="35" y="1704" text-anchor="middle">6</text>
+<text class="afl-s" x="56" y="1704">Every model call, tool call and result is appended to the run's trace file and synced to disk.</text>
+<circle class="afl-num" cx="35" cy="1726" r="11"/>
+<text class="afl-numt" x="35" y="1730" text-anchor="middle">7</text>
+<text class="afl-s" x="56" y="1730">analyse.py reads the fifty traces and builds the per-case table.</text>
+</svg>

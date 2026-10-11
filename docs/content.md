@@ -129,6 +129,8 @@ Source: the public repo's README.md and FINDINGS.md, reviewed 2026-10-11. Every 
 on the site (44/50 correct, 4/50 false approvals, about four cents, two days) is from
 FINDINGS.md - don't round them up or add new ones.
 
+**Has diagrams** via `AgentLab.astro` - see docs/phase-3-plan.md.
+
 > It's an experiment, not an automation product: synthetic fixtures, nothing deployed,
 > two days of work. Never describe it as an invoice approval system in use.
 > Not on the CV yet, and the OpenAI API isn't in the CV's skills - stack line only.

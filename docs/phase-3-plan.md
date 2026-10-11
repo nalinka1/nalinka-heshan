@@ -109,6 +109,17 @@ Facts are from that repo's README, docs/ARCHITECTURE.md and the resource types i
 `infrastructure/storage.json` and `runtime.json`. No resource names, account IDs, site
 names or rates are drawn - the repo keeps those private and so does the site.
 
+### 6. Agent failure lab - `/projects/agent-lab` - done
+
+Added 2026-10-11, same pattern. `AgentLab.astro` inlines `agent-lab-desktop.svg` at 960
+wide: the harness, the loop and its nine tools, the model outside the repo, the two
+findings, the per-case table and the crash experiment. Below that, two 360-wide files:
+one run as steps (`agent-lab-mobile-run.svg`) and the findings and tables
+(`agent-lab-mobile-findings.svg`). Case 7's two outcomes stay side by side on every
+width - they are parallel results of the same evidence, not a sequence.
+
+Every number and tool name is from the public repo's FINDINGS.md and `tools.py`.
+
 ---
 
 ## What gets a photo
