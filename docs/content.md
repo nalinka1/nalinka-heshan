@@ -38,7 +38,7 @@ Availability line:
 
 ## Projects
 
-Four shown, ordered by what he most wants to be hired for. A fifth exists but isn't
+Five shown, ordered by what he most wants to be hired for. One more exists but isn't
 currently used.
 
 ### AWS Event-Driven Order Platform
@@ -113,6 +113,23 @@ Source: the repo's README.md and docs/ARCHITECTURE.md, pasted by Nalinka 2026-10
 > named regional holidays. "Two sites" is as specific as it gets.
 > Not on the CV yet. EventBridge Scheduler, Secrets Manager and the Gmail API aren't in
 > the CV's skills either - stack line only, not the skills list.
+
+### Agent Failure Lab
+Added 2026-10-11. A hand-written tool-calling agent over three-way invoice matching,
+run fifty times to count how it fails. Copy is in `src/content/projects/agent-lab.md`,
+row plus deep-dive page.
+
+`Python · OpenAI API (tool calling)`
+
+https://github.com/nalinka1/agent-lab
+
+Source: the public repo's README.md and FINDINGS.md, reviewed 2026-10-11. Every number
+on the site (44/50 correct, 4/50 false approvals, about four cents, two days) is from
+FINDINGS.md - don't round them up or add new ones.
+
+> It's an experiment, not an automation product: synthetic fixtures, nothing deployed,
+> two days of work. Never describe it as an invoice approval system in use.
+> Not on the CV yet, and the OpenAI API isn't in the CV's skills - stack line only.
 
 ### AI-Powered LEGO Sorting System
 Computer vision and a CNN classifying LEGO pieces by type in real time. The interesting
