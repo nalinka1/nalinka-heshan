@@ -164,6 +164,13 @@ Not started. One at a time, in roughly this order.
   says "2026, in build" - the project is done and the site no longer tags it. Nalinka to
   correct the CV and replace `public/cv.pdf`. The site's stack line also names STS, API
   Management and VNet, which the CV doesn't list yet.
+- **`claims-client-ai-agent` row.** Nalinka is finishing it (about 70% done on
+  2026-10-11) and will say when it's ready. Public repo: github.com/nalinka1/
+  claims-client-ai-agent. Review it the same way as agent-lab - only claim what's
+  built - then a row, a deep-dive page and diagrams. That makes six projects, which is
+  when `/projects` gets two headings (AI and automation, cloud and platform) via a
+  `category` field. Not the abandoned Claims Intelligence Assistant - a different
+  project.
 - **`claims-lakehouse` row?** It's a project on the CV (github.com/nalinka1/
   claims-lakehouse) but not on the site. Review the repo the same way as the
   multi-cloud project - only claim what's built - and draft a row if Nalinka wants it.
