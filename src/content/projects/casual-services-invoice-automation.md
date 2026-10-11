@@ -7,6 +7,7 @@ stack:
   - "AWS (Lambda, EventBridge Scheduler, DynamoDB, S3, Secrets Manager, SNS, SQS, CloudWatch)"
   - "CloudFormation"
   - "Gmail API"
+repo: "https://github.com/nalinka1/casual-invoice-automation"
 order: 3
 body:
   whatItIs: "A monthly job that turns the previous month's service dates into an invoice and a Gmail draft, without my computer being on. Preparing the draft is automated. Sending it is not - I review it and send it myself.\n\nIt is small on purpose: two sites, one PDF template, one invoice a month. The work went into the parts that are easy to get wrong - invoice numbering, retries against an API that can fail without saying whether it succeeded, and not creating the same draft twice."

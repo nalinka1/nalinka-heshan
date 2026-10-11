@@ -105,7 +105,7 @@ Source: the repo's README.md and docs/ARCHITECTURE.md, pasted by Nalinka 2026-10
 "Implemented versus proposed" table is the boundary.
 
 > Not an AI project - it's deterministic. Don't describe it as AI or an agent.
-> No repo link: the repo isn't public yet. Add `repo:` once it is.
+> Repo is public since 2026-10-11: https://github.com/nalinka1/casual-invoice-automation
 > Don't say it has been running in production. At the milestone the schedules were
 > enabled and an isolated end-to-end run had passed, but the first recurring monthly
 > run hadn't happened. Update once it has.
